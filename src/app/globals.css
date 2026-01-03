@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --bg: 248 250 252;
+  --fg: 15 23 42;
+  --card: 255 255 255;
+  --card-fg: 15 23 42;
+  --muted: 241 245 249;
+  --muted-fg: 71 85 105;
+  --border: 226 232 240;
+  --ring: 148 163 184;
+  --brand: 10 110 209;
+  --brand-2: 15 23 42;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+.dark {
+  --bg: 6 12 24;
+  --fg: 226 232 240;
+  --card: 10 18 38;
+  --card-fg: 226 232 240;
+  --muted: 15 23 42;
+  --muted-fg: 148 163 184;
+  --border: 30 41 59;
+  --ring: 51 65 85;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+}

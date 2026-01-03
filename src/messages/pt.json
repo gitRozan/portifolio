@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "title": "Nicolas Belchior | SAP Fiori & BTP Developer",
+    "description": "Portfólio de Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP."
+  },
+  "nav": {
+    "about": "Sobre",
+    "experience": "Experiência",
+    "projects": "Projetos",
+    "skills": "Competências",
+    "contact": "Contato",
+    "menu": "Menu"
+  },
+  "hero": {
+    "name": "Nicolas Belchior",
+    "role": "SAP Full Stack Developer | Fiori & BTP Specialist",
+    "ctaContact": "Fale comigo",
+    "ctaDownload": "Baixar CV",
+    "cvSimple": "CV simples (PDF)",
+    "cvVisual": "CV visual (PDF)"
+  },
+  "about": {
+    "title": "Sobre",
+    "summary": "Estudante de Ciência da Computação, MEI desde 2025, com atuação no ecossistema SAP desde 2022 (SAPUI5/Fiori, BTP, ABAP/RAP) e base sólida em desenvolvimento web moderno.",
+    "location": "Minas Gerais, Brasil (Remoto)",
+    "hook": "Conectando backends SAP robustos a interfaces modernas, fluídas e consistentes."
+  },
+  "experience": {
+    "title": "Experiência",
+    "since": "Linha do tempo (SAP desde 2022)"
+  },
+  "projects": {
+    "title": "Projetos",
+    "tabSap": "Ecossistema SAP",
+    "tabWeb": "Web / Full Stack",
+    "viewProject": "Ver projeto",
+    "deepDive": "Detalhamento técnico",
+    "impact": "Impacto no negócio",
+    "gallery": "Galeria",
+    "badgeSap": "SAP",
+    "badgeWeb": "WEB"
+  },
+  "skills": {
+    "title": "Competências",
+    "primary": "Primárias",
+    "secondary": "Secundárias",
+    "languages": "Idiomas"
+  },
+  "content": {
+    "experience": {
+      "spro": {
+        "role": "Consultor SAP Full Stack (FIORI/ABAP/BTP/RAP)",
+        "start": "Abr 2025",
+        "end": "Presente",
+        "highlights": [
+          "Atuo na sustentação e evolução de aplicações SAP Fiori/UI5 e objetos ABAP em ambientes SAP S/4HANA e SAP BTP.",
+          "Desenvolvo serviços OData, CDS Views e entregas em RAP (ABAP RESTful Application Programming Model) com foco em consistência e performance.",
+          "Executo correções e melhorias em produção com foco em confiabilidade, usabilidade e aderência aos processos de negócio."
+        ],
+        "subtopics": [
+          {
+            "title": "Cliente/Alocação: SIPAL — Otimização Agrícola",
+            "items": [
+              "Desenvolvimento e otimização de apps SAPUI5/Fiori para modernização de processos de gestão agrícola.",
+              "Serviços OData baseados em CDS Views e RAP para consumo por UI com menor acoplamento.",
+              "Evolução de UX e performance orientadas a execução rápida por equipes de campo e administrativo."
+            ]
+          },
+          {
+            "title": "Cliente/Alocação: BRF — AppGrãos",
+            "items": [
+              "Aplicação híbrida SAPUI5 com suporte offline e sincronização para cenários de baixa conectividade.",
+              "Modelagem de dados e integração com backend SAP via OData, com foco em consistência e rastreabilidade.",
+              "Entrega de fluxos críticos (ex.: cálculo de frete e validações) com UX orientada a produtividade."
+            ]
+          },
+          {
+            "title": "São Salvador Alimentos (SSA) — Sustentação Técnica SAP (ABAP, Fiori e Asset Manager)",
+            "items": [
+              "Sustentação e evolução de soluções SAP com foco em confiabilidade, rastreabilidade e velocidade de entrega.",
+              "Resolução de tickets funcionais e técnicos com correções/melhorias em CDS Views, serviços OData e lógica ABAP.",
+              "Manutenção de aplicações Fiori freestyle e extensões sobre módulos standard, alinhando o sistema aos processos do cliente.",
+              "Trabalho com Eclipse ADT, versionamento e transportes via TASK/TR.",
+              "Atuação em SAP Asset Manager com configurações e extensões técnicas para aderência aos fluxos de manutenção e gestão de ativos."
+            ]
+          },
+          {
+            "title": "Cliente/Alocação: LIGGA",
+            "items": [
+              "Atuação em sustentação e evolução de aplicações SAP, com foco em correções técnicas, estabilidade e melhoria contínua."
+            ]
+          }
+        ]
+      },
+      "agrobold": {
+        "role": "Desenvolvedor Web (React/Node/Vue)",
+        "start": "Mai 2021",
+        "end": "Mar 2022",
+        "highlights": [
+          "Desenvolvi sistemas para o ramo de leilão agro, melhorando fluidez operacional e consistência de UX.",
+          "Implementei integrações e fluxos de negócio no backend com Node.js e SQL, reduzindo retrabalho e falhas de operação.",
+          "Entreguei interfaces responsivas com foco em performance e usabilidade."
+        ]
+      },
+      "ztg": {
+        "role": "Consultor SAP Full Stack (Fiori/UI5, BTP)",
+        "start": "Mar 2022",
+        "end": "Abr 2025",
+        "highlights": [
+          "Desenvolvimento de aplicações SAPUI5 freestyle e templates Fiori com foco em usabilidade, padrões e performance.",
+          "Atuação em SAP BTP (Neo) com Web IDE e SAP Business Application Studio (BAS), cobrindo desenvolvimento, deploy e sustentação.",
+          "Integrações com backend SAP via OData, com previsibilidade de contratos e desacoplamento entre camadas.",
+          "Contribuições full stack em JavaScript/Node.js e front-end (React/HTML/CSS), conforme demanda do projeto."
+        ],
+        "subtopics": [
+          {
+            "title": "Projeto: Cockpit de Gerenciamento de Veículos (ACCÇÃO)",
+            "items": [
+              "SAPUI5 Freestyle consumindo OData com persistência em HANA Cloud.",
+              "Integrações em SAP BTP para validações e orquestração de fluxos."
+            ]
+          },
+          {
+            "title": "Domvs IT — Estruturação da célula SAP e produtos greenfield em SAP BTP",
+            "items": [
+              "Atuação na estruturação inicial da célula SAP, incluindo prospecção técnica e definição de arquitetura de soluções.",
+              "Desenvolvimento de produtos greenfield baseados em SAP BTP, com SAP CAP como camada central e SAP BAS no ciclo de entrega.",
+              "Aplicação de diretrizes Clean Core para desacoplamento e escalabilidade, com modelagem e persistência em SAP HANA Cloud."
+            ]
+          },
+          {
+            "title": "Projeto/Alocação: IBM — Americanas",
+            "items": [
+              "Desenvolvimento front-end em SAPUI5 e Fiori com aplicações freestyle ricas e responsivas usando arquitetura MVC.",
+              "Criação de controles customizados para requisitos complexos e correções pontuais visando otimização de performance.",
+              "Participação em estimativas/orçamento de gaps e ajustes simples de configuração no SAP Asset Manager para suportar funcionalidades."
+            ]
+          }
+        ]
+      },
+      "compilart": {
+        "role": "Analista de Sistemas (Sistemas de Gestão/ERP)",
+        "start": "Mar 2020",
+        "end": "Abr 2021",
+        "highlights": [
+          "Implementei sistemas de gestão baseados em MySQL para bares e restaurantes, garantindo consistência operacional.",
+          "Desenvolvi soluções personalizadas por cliente, reduzindo processos manuais e aumentando confiabilidade.",
+          "Projetei relatórios gerenciais para apoiar decisões e visibilidade de indicadores."
+        ]
+      },
+      "alastra": {
+        "role": "Desenvolvedor Web (Voluntário)",
+        "start": "Jan 2020",
+        "end": "Fev 2020",
+        "highlights": [
+          "Implementei melhorias pontuais de layout e usabilidade com HTML/CSS/JavaScript, elevando experiência do usuário.",
+          "Colaborei com time de desenvolvimento em ajustes de front-end com entregas rápidas."
+        ]
+      }
+    },
+    "projects": {
+      "cockpit-veiculos": {
+        "title": "Cockpit de Gerenciamento de Veículos (ACCÇÃO)",
+        "summary": "Gestão de frotas com rastreio e integrações externas.",
+        "technicalDeepDive": [
+          "UI5 Freestyle com consumo de serviços OData",
+          "Integração em BTP e persistência/consulta em HANA Cloud",
+          "Integração com Detran para validações e status"
+        ],
+        "businessImpact": [
+          "Visibilidade operacional em tempo próximo do real",
+          "Redução de esforço manual em conciliações e consultas"
+        ]
+      },
+      "integracao-ecommerce-domvs": {
+        "title": "Integração E-commerce (Domvs IT)",
+        "summary": "Arquitetura de integração para conciliação financeira e saneamento de vendas duplicadas em plataformas externas.",
+        "technicalDeepDive": [
+          "SAP CAP como camada de serviço e modelagem de dados",
+          "SAP Integration Suite (iFlows) para orquestração e rastreabilidade ponta a ponta",
+          "Tabelas auxiliares em SAP HANA Cloud para integridade e persistência transacional",
+          "Regras para detecção e saneamento de duplicidades e conciliação de recebíveis"
+        ],
+        "businessImpact": [
+          "Conciliação financeira mais confiável e automatizada",
+          "Menos retrabalho e inconsistências entre SAP e plataforma externa"
+        ]
+      },
+      "sipal-otimizacao-agricola": {
+        "title": "SIPAL Otimização Agrícola",
+        "summary": "Ferramentas para otimização do time de campo com foco em eficiência.",
+        "technicalDeepDive": [
+          "Modelagem com CDS Views e exposição via RAP",
+          "Camada ABAP para regras e validações",
+          "Fiori com UX orientada a execução rápida"
+        ],
+        "businessImpact": [
+          "Processos de campo mais rápidos e padronizados",
+          "Melhor rastreabilidade de operações"
+        ]
+      },
+      "appgraos-brf": {
+        "title": "AppGrãos (BRF)",
+        "summary": "Aplicativo híbrido com suporte offline para compra de commodities e cálculo de frete.",
+        "technicalDeepDive": [
+          "UI5 em HAT com estratégia de armazenamento offline",
+          "Fluxos para cálculo de frete e validações",
+          "Sincronização quando conectado"
+        ],
+        "businessImpact": [
+          "Operação viável em ambientes com conectividade limitada",
+          "Mais agilidade na tomada de decisão em campo"
+        ]
+      },
+      "leiloes-agrobold": {
+        "title": "Leilões AgroBold",
+        "summary": "Plataforma de leilão em tempo real com atualização contínua.",
+        "technicalDeepDive": [
+          "Integração WebSocket para lances em tempo real",
+          "Back-end em PHP para regras e persistência",
+          "UI responsiva para alta taxa de eventos"
+        ],
+        "businessImpact": [
+          "Maior engajamento por latência menor",
+          "Processo de leilão mais transparente"
+        ]
+      },
+      "leilao-cotas": {
+        "title": "Leilão Cotas",
+        "summary": "App de gestão de investimentos com back-end serverless.",
+        "technicalDeepDive": [
+          "Arquitetura serverless para escalar por demanda",
+          "App móvel com UX focada em dados e segurança",
+          "Integração com serviços gerenciados AWS"
+        ],
+        "businessImpact": [
+          "Custos proporcionais ao uso",
+          "Entrega rápida de novas features"
+        ]
+      }
+    },
+    "skills": {
+      "languages": ["Português (Nativo)", "Inglês (Profissional)", "Espanhol (Profissional)"]
+    }
+  },
+  "footer": {
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "whatsapp": "WhatsApp"
+  }
+}
+

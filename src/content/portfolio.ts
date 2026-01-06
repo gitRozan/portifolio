@@ -13,6 +13,23 @@ export type Experience = {
   startYM: string;
 };
 
+export type CredentialKind = "higherEducation" | "course" | "certification" | "badge";
+
+export type CredentialProof = {
+  type: "external" | "pdf";
+  href: string;
+};
+
+export type Credential = {
+  id: string;
+  title: string;
+  kind: CredentialKind;
+  issuer: string;
+  issueYM?: string;
+  status?: "inProgress" | "completed";
+  proof?: CredentialProof;
+};
+
 export const experiences: Experience[] = [
   {
     id: "spro",
@@ -83,5 +100,21 @@ export const skills = {
   primary: ["SAP Fiori", "SAPUI5", "SAP BTP", "ABAP", "RAP", "CDS Views", "CAP", "HANA Cloud"],
   secondary: ["React.js", "Vue.js", "Node.js", "PHP", "TypeScript"]
 };
+
+export const credentials: Credential[] = [
+  {
+    id: "bsc-compsci",
+    title: "Ciência da Computação",
+    kind: "higherEducation",
+    issuer: "Ensino Superior",
+    status: "inProgress",
+  },
+  {
+    id: "ka-btp-clean-core",
+    title: "SAP BTP e Clean Core",
+    kind: "course",
+    issuer: "Ka Solution",
+  },
+];
 
 

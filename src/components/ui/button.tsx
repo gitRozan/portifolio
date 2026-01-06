@@ -17,7 +17,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center rounded-md border px-4 font-semibold tracking-tight transition-[transform,box-shadow,filter,background-color,border-color,color]",
+        "inline-flex items-center justify-center rounded-none border px-4 font-semibold tracking-tight transition-[transform,box-shadow,filter,background-color,border-color,color]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:opacity-50 disabled:pointer-events-none",
         size === "sm" ? "h-9 text-sm" : "h-11 text-sm",

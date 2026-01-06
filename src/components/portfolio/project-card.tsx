@@ -48,7 +48,7 @@ export function ProjectCard({ project, onClick, ctaLabel, className }: Props) {
         </div>
         <div
           className={cn(
-            "inline-flex items-center justify-center rounded-md border border-slate-200 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 transition-[opacity,transform,background-color,border-color,box-shadow] opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:border-slate-300 group-hover:shadow-md dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:group-hover:border-slate-700"
+            "inline-flex items-center justify-center rounded-md border border-slate-200 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 transition-[transform,background-color,border-color,box-shadow] group-hover:-translate-y-0.5 group-hover:border-slate-300 group-hover:shadow-md dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:group-hover:border-slate-700"
           )}
         >
           {ctaLabel}

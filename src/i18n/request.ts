@@ -5,7 +5,7 @@ import { isLocale } from "@/i18n/locales";
 
 export default getRequestConfig(async ({ locale }) => {
   if (!locale || !isLocale(locale)) notFound();
-  return { locale, messages: await getMessages(locale) };
+  return { locale, messages: await getMessages(locale), timeZone: "America/Sao_Paulo" };
 });
 
 

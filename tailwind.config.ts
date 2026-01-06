@@ -4,6 +4,14 @@ const config: Config = {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
+    borderRadius: {
+      none: "0px",
+      sm: "2px",
+      md: "3px",
+      lg: "4px",
+      xl: "4px",
+      full: "9999px",
+    },
     extend: {
       colors: {
         bg: "rgb(var(--bg) / <alpha-value>)",
@@ -17,11 +25,8 @@ const config: Config = {
         brand: "rgb(var(--brand) / <alpha-value>)",
         "brand-2": "rgb(var(--brand-2) / <alpha-value>)",
       },
-      borderRadius: {
-        xl: "1rem",
-      },
       boxShadow: {
-        soft: "0 10px 30px rgb(0 0 0 / 0.10)",
+        soft: "0 18px 44px rgb(0 0 0 / 0.16)",
       },
     },
   },

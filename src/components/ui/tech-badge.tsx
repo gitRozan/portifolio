@@ -58,87 +58,17 @@ function iconForTone(tone: Tone): ReactNode {
   return <Code2 className="h-3.5 w-3.5" />;
 }
 
-function toneClasses(tone: Tone) {
-  if (tone === "react")
-    return {
-      ring: "group-hover:border-cyan-400/50 group-hover:shadow-[0_0_0_1px_rgba(34,211,238,.28),0_0_22px_rgba(34,211,238,.18)]",
-      accent: "text-cyan-600 dark:text-cyan-300",
-    };
-  if (tone === "js")
-    return {
-      ring: "group-hover:border-amber-400/50 group-hover:shadow-[0_0_0_1px_rgba(251,191,36,.28),0_0_22px_rgba(251,191,36,.16)]",
-      accent: "text-amber-700 dark:text-amber-300",
-    };
-  if (tone === "ts")
-    return {
-      ring: "group-hover:border-sky-400/55 group-hover:shadow-[0_0_0_1px_rgba(56,189,248,.28),0_0_22px_rgba(56,189,248,.18)]",
-      accent: "text-sky-700 dark:text-sky-300",
-    };
-  if (tone === "node")
-    return {
-      ring: "group-hover:border-emerald-400/50 group-hover:shadow-[0_0_0_1px_rgba(52,211,153,.25),0_0_22px_rgba(52,211,153,.16)]",
-      accent: "text-emerald-700 dark:text-emerald-300",
-    };
-  if (tone === "php")
-    return {
-      ring: "group-hover:border-indigo-400/50 group-hover:shadow-[0_0_0_1px_rgba(129,140,248,.25),0_0_22px_rgba(129,140,248,.16)]",
-      accent: "text-indigo-700 dark:text-indigo-300",
-    };
-  if (tone === "vue")
-    return {
-      ring: "group-hover:border-emerald-400/50 group-hover:shadow-[0_0_0_1px_rgba(52,211,153,.25),0_0_22px_rgba(52,211,153,.16)]",
-      accent: "text-emerald-700 dark:text-emerald-300",
-    };
-  if (tone === "sap")
-    return {
-      ring: "group-hover:border-sky-400/55 group-hover:shadow-[0_0_0_1px_rgba(14,165,233,.26),0_0_24px_rgba(14,165,233,.18)]",
-      accent: "text-sky-700 dark:text-sky-300",
-    };
-  if (tone === "cloud")
-    return {
-      ring: "group-hover:border-violet-400/55 group-hover:shadow-[0_0_0_1px_rgba(167,139,250,.24),0_0_22px_rgba(167,139,250,.16)]",
-      accent: "text-violet-700 dark:text-violet-300",
-    };
-  if (tone === "db")
-    return {
-      ring: "group-hover:border-teal-400/55 group-hover:shadow-[0_0_0_1px_rgba(45,212,191,.22),0_0_22px_rgba(45,212,191,.14)]",
-      accent: "text-teal-700 dark:text-teal-300",
-    };
-  if (tone === "api")
-    return {
-      ring: "group-hover:border-fuchsia-400/55 group-hover:shadow-[0_0_0_1px_rgba(232,121,249,.22),0_0_22px_rgba(232,121,249,.14)]",
-      accent: "text-fuchsia-700 dark:text-fuchsia-300",
-    };
-  if (tone === "mobile")
-    return {
-      ring: "group-hover:border-lime-400/55 group-hover:shadow-[0_0_0_1px_rgba(163,230,53,.22),0_0_22px_rgba(163,230,53,.14)]",
-      accent: "text-lime-700 dark:text-lime-300",
-    };
-  if (tone === "security")
-    return {
-      ring: "group-hover:border-rose-400/55 group-hover:shadow-[0_0_0_1px_rgba(251,113,133,.22),0_0_22px_rgba(251,113,133,.14)]",
-      accent: "text-rose-700 dark:text-rose-300",
-    };
-  return {
-    ring: "group-hover:border-slate-400/40 group-hover:shadow-[0_0_0_1px_rgba(148,163,184,.18)]",
-    accent: "text-slate-700 dark:text-slate-200",
-  };
-}
-
 export function TechBadge({ label, tone, className }: Props) {
   const resolved = tone ?? toneForLabel(label);
-  const styles = toneClasses(resolved);
 
   return (
     <span
       className={cn(
-        "group inline-flex items-center gap-1.5 rounded-md border border-slate-200/70 bg-white/50 px-2 py-1 text-[11px] font-medium tracking-tight text-slate-700 transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200",
-        "backdrop-blur-sm",
-        styles.ring,
+        "group inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-card/55 px-2 py-1 text-[11px] font-medium tracking-tight text-muted-fg backdrop-blur-sm transition-[transform,box-shadow,border-color,color,background-color] hover:-translate-y-0.5 hover:border-ring/60 hover:text-fg hover:bg-card/70",
         className
       )}
     >
-      <span className={cn(styles.accent)}>{iconForTone(resolved)}</span>
+      <span className="text-brand">{iconForTone(resolved)}</span>
       <span className="whitespace-nowrap">{label}</span>
     </span>
   );

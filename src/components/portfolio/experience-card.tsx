@@ -30,11 +30,17 @@ export function ExperienceCard({ experience, className }: Props) {
   const start = t(`content.experience.${experience.id}.start`);
   const end = t(`content.experience.${experience.id}.end`);
   const highlights = useMemo(() => {
-    const raw = t.raw(`content.experience.${experience.id}.highlights`);
+    const key = `content.experience.${experience.id}.highlights`;
+    const raw = "has" in t && typeof (t as unknown as { has: (k: string) => boolean }).has === "function" && !(t as unknown as { has: (k: string) => boolean }).has(key)
+      ? []
+      : t.raw(key);
     return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === "string") : [];
   }, [experience.id, t]);
   const subtopics = useMemo(() => {
-    const raw = t.raw(`content.experience.${experience.id}.subtopics`);
+    const key = `content.experience.${experience.id}.subtopics`;
+    const raw = "has" in t && typeof (t as unknown as { has: (k: string) => boolean }).has === "function" && !(t as unknown as { has: (k: string) => boolean }).has(key)
+      ? []
+      : t.raw(key);
     if (!Array.isArray(raw)) return [];
     return raw
       .map((x) => {

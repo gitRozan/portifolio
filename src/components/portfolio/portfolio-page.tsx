@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Moon, Sun, Languages, Download, Mail, Github, Linkedin } from "lucide-react";
+import { Moon, Sun, Languages, Download, Mail, Linkedin } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/i18n/locales";
@@ -14,6 +14,9 @@ import { TechBadge } from "@/components/ui/tech-badge";
 import { experiences, projects, skills, type Project, type ProjectCategory } from "@/content/portfolio";
 import { ExperienceCard } from "@/components/portfolio/experience-card";
 import { ProjectCard } from "@/components/portfolio/project-card";
+import { AboutSection } from "@/components/portfolio/about-section";
+import { CredentialsSection } from "@/components/portfolio/credentials-section";
+import { ContactFab } from "@/components/portfolio/contact-fab";
 
 function useCurrentLocale(): Locale {
   const pathname = usePathname();
@@ -58,8 +61,9 @@ export function PortfolioPage() {
     { id: "about", label: t("nav.about") },
     { id: "experience", label: t("nav.experience") },
     { id: "projects", label: t("nav.projects") },
+    { id: "credentials", label: t("nav.credentials"), shortLabel: t("nav.credentialsShort") },
     { id: "skills", label: t("nav.skills") },
-    { id: "contact", label: t("nav.contact") }
+    { id: "contact", label: t("nav.contact") },
   ];
 
   const toStringArray = (value: unknown) =>
@@ -68,32 +72,51 @@ export function PortfolioPage() {
   return (
     <div className="min-h-screen bg-bg text-fg">
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-bg/70 backdrop-blur-md dark:border-slate-800">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3.5">
-          <div className="min-w-0">
-            <div className="truncate text-sm font-semibold">{t("hero.name")}</div>
-            <div className="truncate text-xs text-slate-500 dark:text-slate-400">{t("hero.role")}</div>
-          </div>
+        <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-3.5">
+          <a
+            href="#about"
+            className="shrink-0 font-mono text-sm font-black tracking-tight text-fg"
+            aria-label={t("hero.name")}
+          >
+            NBP
+          </a>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <nav className="mr-2 flex items-center gap-1">
-              {navItems.map((it) => (
-                <a
-                  key={it.id}
-                  href={`#${it.id}`}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
-                >
-                  {it.label}
-                </a>
-              ))}
+          <div className="hidden min-w-0 flex-1 items-center gap-2 md:flex">
+            <nav className="min-w-0 flex-1">
+              <div className="flex min-w-0 items-center gap-0.5 overflow-hidden">
+                {navItems.map((it) => (
+                  <a
+                    key={it.id}
+                    href={`#${it.id}`}
+                    className="whitespace-nowrap rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight text-slate-600 transition-colors hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
+                  >
+                    {it.shortLabel ? (
+                      <>
+                        <span className="inline xl:hidden">{it.shortLabel}</span>
+                        <span className="hidden xl:inline">{it.label}</span>
+                      </>
+                    ) : (
+                      it.label
+                    )}
+                  </a>
+                ))}
+              </div>
             </nav>
 
-            <div className="relative">
-              <Button variant="secondary" onClick={() => setCvOpen((v) => !v)}>
-                <Download className="mr-2 h-4 w-4" />
-                {t("hero.ctaDownload")}
-              </Button>
+            <div className="flex shrink-0 items-center gap-1.5">
+              <div className="relative">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="px-2"
+                  onClick={() => setCvOpen((v) => !v)}
+                  aria-label={t("hero.ctaDownload")}
+                >
+                  <Download className="h-4 w-4" />
+                  <span className="hidden xl:inline">{t("hero.ctaDownload")}</span>
+                </Button>
               {cvOpen ? (
-                <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-lg border border-slate-200/70 bg-white/70 shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
+                <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-md border border-slate-200/70 bg-white/70 shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
                   <a
                     className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
                     href="/assets/cv/Profile.pdf"
@@ -112,47 +135,49 @@ export function PortfolioPage() {
                   </a>
                 </div>
               ) : null}
-            </div>
+              </div>
 
-            <a href="#contact">
-              <Button variant="primary">
-                <Mail className="mr-2 h-4 w-4" />
-                {t("hero.ctaContact")}
+              <a href="#contact">
+                <Button variant="primary" size="sm" className="px-2" aria-label={t("hero.ctaContact")}>
+                  <Mail className="h-4 w-4" />
+                  <span className="hidden xl:inline">{t("hero.ctaContact")}</span>
+                </Button>
+              </a>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className="px-2"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
-            </a>
 
-            <Button
-              variant="ghost"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-
-            <div className="flex items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
-              <button
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium tracking-tight transition-colors",
-                  locale === "pt"
-                    ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
-                    : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
-                )}
-                onClick={() => switchLocale("pt")}
-              >
-                <Languages className="h-4 w-4" />
-                PT
-              </button>
-              <button
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium tracking-tight transition-colors",
-                  locale === "en"
-                    ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
-                    : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
-                )}
-                onClick={() => switchLocale("en")}
-              >
-                EN
-              </button>
+              <div className="flex items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
+                <button
+                  className={cn(
+                    "inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
+                    locale === "pt"
+                      ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
+                      : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
+                  )}
+                  onClick={() => switchLocale("pt")}
+                >
+                  PT
+                </button>
+                <button
+                  className={cn(
+                    "inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
+                    locale === "en"
+                      ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
+                      : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
+                  )}
+                  onClick={() => switchLocale("en")}
+                >
+                  EN
+                </button>
+              </div>
             </div>
           </div>
 
@@ -186,7 +211,7 @@ export function PortfolioPage() {
                     {t("hero.ctaDownload")}
                   </Button>
                   {cvOpen ? (
-                    <div className="overflow-hidden rounded-lg border border-slate-200/70 bg-white/70 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
+                    <div className="overflow-hidden rounded-md border border-slate-200/70 bg-white/70 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
                       <a
                         className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
                         href="/assets/cv/Profile.pdf"
@@ -228,51 +253,18 @@ export function PortfolioPage() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl px-4 py-12">
-        <section className="relative overflow-hidden rounded-lg border border-slate-200/70 bg-white/45 p-8 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/35">
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-0 opacity-80",
-              "[mask-image:radial-gradient(ellipse_at_top,black,transparent_65%)]",
-              "bg-[linear-gradient(to_right,rgba(15,23,42,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.08)_1px,transparent_1px)] bg-[size:56px_56px]",
-              "dark:bg-[linear-gradient(to_right,rgba(148,163,184,0.10)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.10)_1px,transparent_1px)]"
-            )}
-          />
+        <div className="grid gap-10">
+          <AboutSection />
 
-          <div className="relative grid gap-4">
-            <h1 className="text-balance text-3xl font-semibold tracking-tight md:text-4xl">
-              {t("hero.name")}
-            </h1>
-            <p className="max-w-2xl text-pretty text-base text-slate-600 dark:text-slate-300 md:text-lg">
-              {t("hero.role")}
-            </p>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <a href="#projects">
-                <Button variant="primary" className="w-full sm:w-auto">
-                  {t("nav.projects")}
-                </Button>
-              </a>
-              <a href="#contact">
-                <Button variant="secondary" className="w-full sm:w-auto">
-                  {t("nav.contact")}
-                </Button>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <div className="mt-10 grid gap-10">
-          <section id="about" className="rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
-            <div className="text-sm font-semibold tracking-tight">{t("about.title")}</div>
-            <div className="mt-4 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <p>{t("about.summary")}</p>
-              <p className="text-slate-500 dark:text-slate-400">{t("about.location")}</p>
-              <p className="text-fg">{t("about.hook")}</p>
-            </div>
-          </section>
-
-          <section id="experience" className="rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
+          <section
+            id="experience"
+            aria-labelledby="experience-title"
+            className="rounded-md border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50"
+          >
             <div className="flex items-baseline justify-between gap-4">
-              <div className="text-sm font-semibold tracking-tight">{t("experience.title")}</div>
+              <h2 id="experience-title" className="text-sm font-semibold tracking-tight">
+                {t("experience.title")}
+              </h2>
               <div className="text-xs font-medium text-slate-500 dark:text-slate-400">{t("experience.since")}</div>
             </div>
             <ol className="mt-5 grid gap-3">
@@ -284,9 +276,15 @@ export function PortfolioPage() {
             </ol>
           </section>
 
-          <section id="projects" className="rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
+          <section
+            id="projects"
+            aria-labelledby="projects-title"
+            className="rounded-md border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50"
+          >
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="text-sm font-semibold tracking-tight">{t("projects.title")}</div>
+              <h2 id="projects-title" className="text-sm font-semibold tracking-tight">
+                {t("projects.title")}
+              </h2>
               <div className="flex items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
                 <button
                   className={cn(
@@ -320,8 +318,16 @@ export function PortfolioPage() {
             </div>
           </section>
 
-          <section id="skills" className="rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
-            <div className="text-sm font-semibold tracking-tight">{t("skills.title")}</div>
+          <CredentialsSection />
+
+          <section
+            id="skills"
+            aria-labelledby="skills-title"
+            className="rounded-md border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50"
+          >
+            <h2 id="skills-title" className="text-sm font-semibold tracking-tight">
+              {t("skills.title")}
+            </h2>
             <div className="mt-5 grid gap-6 md:grid-cols-3">
               <div>
                 <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t("skills.primary")}</div>
@@ -355,10 +361,16 @@ export function PortfolioPage() {
             </div>
           </section>
 
-          <footer id="contact" className="rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50">
+          <footer
+            id="contact"
+            aria-labelledby="contact-title"
+            className="rounded-md border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/50"
+          >
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <div className="text-sm font-semibold tracking-tight">{t("nav.contact")}</div>
+                <h2 id="contact-title" className="text-sm font-semibold tracking-tight">
+                  {t("nav.contact")}
+                </h2>
                 <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">dev@nicolasbelchior.com</div>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -386,20 +398,13 @@ export function PortfolioPage() {
                   <Linkedin className="h-4 w-4" />
                   {t("footer.linkedin")}
                 </a>
-                <a
-                  className="inline-flex items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-4 py-2 text-sm font-semibold tracking-tight text-slate-800 transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:hover:border-slate-700"
-                  href="https://github.com/gitRozan"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Github className="h-4 w-4" />
-                  {t("footer.github")}
-                </a>
               </div>
             </div>
           </footer>
         </div>
       </main>
+
+      <ContactFab />
 
       <Modal
         open={selected !== null}

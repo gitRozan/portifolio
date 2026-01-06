@@ -1,29 +1,44 @@
 {
   "meta": {
     "title": "Nicolas Belchior | SAP Fiori & BTP Developer",
-    "description": "Portfolio of Nicolas Belchior — SAP Full Stack Developer, specialized in Fiori and SAP BTP."
+    "description": "Portfolio of Nicolas Belchior — SAP Full Stack Developer (ABAP/RAP, Fiori/SAPUI5, SAP BTP, CAP, HANA Cloud, OData/CDS)."
   },
   "nav": {
     "about": "About",
     "experience": "Experience",
     "projects": "Projects",
+    "credentials": "Education & Qualifications",
+    "credentialsShort": "Education",
     "skills": "Skills",
     "contact": "Contact",
     "menu": "Menu"
   },
   "hero": {
     "name": "Nicolas Belchior",
-    "role": "SAP Full Stack Developer | Fiori & BTP Specialist",
+    "role": "SAP Full Stack Developer | Fiori/SAPUI5, ABAP/RAP and SAP BTP",
     "ctaContact": "Contact Me",
     "ctaDownload": "Download CV",
     "cvSimple": "Simple CV (PDF)",
     "cvVisual": "Visual CV (PDF)"
   },
   "about": {
-    "title": "About",
-    "summary": "Computer Science student, MEI since 2025, working in the SAP ecosystem since 2022 (SAPUI5/Fiori, BTP, ABAP/RAP) with a strong foundation in modern web development.",
-    "location": "Minas Gerais, Brazil (Remote)",
-    "hook": "Bridging robust SAP backends with modern, fluid, consistent user interfaces."
+    "kicker": "Strong technical base • Production-focused • Continuous improvement",
+    "headline": "SAP development focused on stable delivery, solid integrations, and user-friendly execution.",
+    "body": "I have worked as a full stack SAP developer since 2022, primarily with SAP Fiori/SAPUI5 on the front end and ABAP (RAP), CDS Views, and OData services on the back end.\n\nI work in a production context: fixes, enhancements, and continuous evolution, aiming for consistent OData contracts, well-modeled data, and performance that holds up under real usage.\n\nOn SAP BTP, I have experience with SAP CAP, SAP Integration Suite (iFlows), and SAP HANA Cloud, contributing to integrations and greenfield solutions. I have also worked on web and hybrid mobile scenarios, including offline support (e.g., SAPUI5 in HAT/Asset Manager), when operations depend on limited connectivity.",
+    "locationLabel": "Base",
+    "location": "Minas Gerais, Brazil • Remote",
+    "photoAlt": "Professional photo",
+    "photoFallback": "NB",
+    "photoLabel": "Portrait",
+    "facts": {
+      "xpLabel": "Experience (SAP)",
+      "xpValue": "2022 → now",
+      "focusLabel": "Primary focus",
+      "focusValue": "Fiori/UI5 • ABAP/RAP • Integration • Production support",
+      "stackLabel": "Core stack",
+      "stackValue": "SAP Fiori/SAPUI5 • ABAP/RAP • CDS • OData • SAP BTP (CAP, Integration Suite) • HANA Cloud",
+      "signalValue": "Consistent OData contracts • iFlows • Delivery that holds up in production"
+    }
   },
   "experience": {
     "title": "Experience",
@@ -46,6 +61,19 @@
     "secondary": "Secondary",
     "languages": "Languages"
   },
+  "credentials": {
+    "title": "Education & Qualifications",
+    "count": "{n} items",
+    "emptyKicker": "Add education, courses and certifications",
+    "emptyBody": "Edit src/content/portfolio.ts to include degrees, technical courses and certificates (external URL or PDF).",
+    "kindCertification": "Certifications",
+    "kindBadge": "Badges",
+    "kindCourse": "Courses",
+    "kindHigherEducation": "Higher education",
+    "statusInProgress": "In progress",
+    "proofExternal": "Open certificate",
+    "proofPdf": "Open PDF"
+  },
   "content": {
     "experience": {
       "spro": {
@@ -53,25 +81,25 @@
         "start": "Apr 2025",
         "end": "Present",
         "highlights": [
-          "Support and evolution of SAP Fiori/UI5 applications and ABAP objects in SAP S/4HANA and SAP BTP environments.",
-          "Delivery with OData services, CDS Views and RAP (ABAP RESTful Application Programming Model) focused on consistency and performance.",
-          "Production fixes and enhancements with an emphasis on reliability, usability and alignment with business processes."
+          "Production support and evolution of SAP Fiori/SAPUI5 applications and ABAP objects in an SAP S/4HANA environment, focused on stability and traceability.",
+          "Build and maintenance of OData services based on CDS Views and RAP, prioritizing model consistency, performance, and predictable contracts for the UI.",
+          "Work on production demand (incidents and enhancements) with root-cause analysis, targeted fixes, and usability improvements where it impacts productivity."
         ],
         "subtopics": [
           {
             "title": "Client/Allocation: SIPAL — Agricultural Optimization",
             "items": [
               "Development and optimization of SAPUI5/Fiori apps to modernize agricultural management processes.",
-              "OData services based on CDS Views and RAP for UI consumption with lower coupling.",
-              "UX and performance improvements oriented to fast execution for field and back-office teams."
+              "Data exposure via CDS Views and RAP with robust OData services, reducing coupling and rework across layers.",
+              "UX and performance improvements focused on fast execution for field and back-office teams."
             ]
           },
           {
             "title": "Client/Allocation: BRF — AppGrãos",
             "items": [
-              "Hybrid SAPUI5 application with offline support and synchronization for low-connectivity scenarios.",
-              "Data modeling and integration with SAP backend via OData, focusing on consistency and traceability.",
-              "Delivery of critical flows (e.g., freight calculation and validations) with productivity-oriented UX."
+              "Hybrid SAPUI5 application with offline support and synchronization, enabling operations in low-connectivity scenarios.",
+              "Data modeling and integration with the SAP back end via OData, focusing on consistency, validation, and traceability.",
+              "Delivery and evolution of critical flows (e.g., freight calculation and validations) with productivity-oriented UX for field work."
             ]
           },
           {
@@ -80,14 +108,14 @@
               "Provided support and continuous improvement for SAP solutions, focusing on reliability, traceability and delivery agility.",
               "Resolved functional and technical tickets with fixes and enhancements in CDS Views, OData services and ABAP logic.",
               "Maintained and evolved Fiori freestyle apps and custom extensions over standard SAP modules, aligning the system to client processes.",
-              "Worked with Eclipse ADT, versioning and transports via TASK/TR.",
+              "Worked with Eclipse ADT and transports via TASK/TR, maintaining delivery discipline and impact control.",
               "Delivered SAP Asset Manager configurations and technical extensions to align the app with maintenance and asset management flows."
             ]
           },
           {
             "title": "Client/Allocation: LIGGA",
             "items": [
-              "Support and evolution of SAP solutions, focusing on technical fixes, stability and continuous improvement."
+              "Support and evolution of SAP solutions, focusing on technical fixes, stability, and continuous improvement in production."
             ]
           }
         ]
@@ -97,43 +125,44 @@
         "start": "May 2021",
         "end": "Mar 2022",
         "highlights": [
-          "Built systems for the agribusiness auction domain, improving operational flow and UX consistency.",
-          "Implemented integrations and backend business flows with Node.js and SQL, reducing rework and operational failures.",
-          "Delivered responsive UI with a focus on performance and usability."
+          "Developed and maintained MVC-based web systems for auctions, focused on operational flow and consistent UX.",
+          "Built integrations with external APIs (WhatsApp, Instagram, and others) and business rules connected to SQL/MySQL databases.",
+          "Delivered responsive, performant interfaces in Vue.js with stable back-end integration and continuous product evolution."
         ]
       },
       "ztg": {
-        "role": "SAP Full Stack Consultant (Fiori/UI5, BTP)",
+        "role": "SAPUI5 Consultant / JavaScript Full Stack (Fiori, BTP Neo/BAS)",
         "start": "Mar 2022",
         "end": "Apr 2025",
         "highlights": [
-          "Built SAPUI5 freestyle applications and Fiori templates focused on usability, standards and performance.",
-          "Worked on SAP BTP (Neo) using Web IDE and SAP Business Application Studio (BAS), covering development, deployment and support.",
-          "Integrated with SAP backends via OData, keeping API contracts predictable and layers decoupled.",
-          "Contributed full stack in JavaScript/Node.js and front-end (React/HTML/CSS) when required by the project."
+          "Developed SAPUI5 freestyle applications and Fiori templates aligned with Fiori Design Guidelines, focused on usability and performance.",
+          "Worked on SAP BTP (NEO) using Web IDE and SAP Business Application Studio (BAS), covering development, deployment, and support.",
+          "Integrated with SAP back ends via OData, keeping contracts clear and layers decoupled across UI, services, and data.",
+          "Delivered custom components/controls and contributed full stack in JavaScript/Node.js and front-end (React/HTML/CSS) when required by the project."
         ],
         "subtopics": [
           {
             "title": "Project: Vehicle Management Cockpit (ACCÇÃO)",
             "items": [
-              "SAPUI5 Freestyle consuming OData with persistence on HANA Cloud.",
-              "SAP BTP integrations for validations and flow orchestration."
+              "Modular SAPUI5 freestyle applications for fleet management (drivers, vehicles, and operational data) consuming OData.",
+              "Persistence and querying on SAP HANA Cloud, focused on responsiveness and consistent data for decision-making.",
+              "SAP BTP integrations and validations for flow orchestration and end-to-end traceability."
             ]
           },
           {
             "title": "Domvs IT — Building the SAP cell and greenfield products on SAP BTP",
             "items": [
-              "Helped structure the SAP cell from scratch, including technical prospecting and solution architecture definition.",
-              "Built greenfield products on SAP BTP, using SAP CAP as the core layer and SAP BAS in the delivery lifecycle.",
-              "Applied Clean Core guidelines for decoupling and scalability, with data modeling and persistence on SAP HANA Cloud."
+              "Strategic contribution to structuring the initial SAP cell, including technical prospecting and solution architecture definition.",
+              "Built greenfield products on SAP BTP with SAP CAP as the core layer, delivered through SAP Business Application Studio (BAS).",
+              "Applied Clean Core practices with data modeling and persistence on SAP HANA Cloud, targeting decoupling and scalability."
             ]
           },
           {
             "title": "Project/Allocation: IBM — Americanas",
             "items": [
               "Front-end development in SAPUI5 and Fiori, building rich, responsive freestyle apps using MVC architecture.",
-              "Built custom controls for complex business requirements and applied targeted fixes to improve UI performance.",
-              "Participated in gap estimation and performed simple SAP Asset Manager configuration adjustments to support new features."
+              "Built custom controls for complex business requirements and applied targeted fixes focused on performance and stability.",
+              "Participated in gap estimation and SAP Asset Manager configuration adjustments to support new features."
             ]
           }
         ]
@@ -143,9 +172,9 @@
         "start": "Mar 2020",
         "end": "Apr 2021",
         "highlights": [
-          "Implemented MySQL-based management systems for bars and restaurants, ensuring day-to-day operational consistency.",
-          "Delivered client-specific solutions, reducing manual processes and increasing reliability.",
-          "Designed management reports to support decision-making and KPI visibility."
+          "Developed and maintained systems for bars, restaurants, and local businesses (order tabs, NFC-e issuance, and fiscal routines).",
+          "Built fiscal and management reports (e.g., DRE and Sintegra), focused on data consistency and decision support.",
+          "Delivered client-specific customizations, technical support, and small integrations on top of MySQL, with web deliveries (HTML/CSS/JavaScript/React/Vue) as needed."
         ]
       },
       "alastra": {
@@ -153,8 +182,8 @@
         "start": "Jan 2020",
         "end": "Feb 2020",
         "highlights": [
-          "Implemented targeted UI and usability improvements with HTML/CSS/JavaScript, improving user experience.",
-          "Collaborated with the development team on fast front-end deliveries."
+          "Implemented targeted layout and usability improvements with HTML/CSS/JavaScript, prioritizing visual clarity and UI consistency.",
+          "Supported the team with focused front-end deliveries."
         ]
       }
     },
@@ -246,7 +275,6 @@
   "footer": {
     "email": "Email",
     "linkedin": "LinkedIn",
-    "github": "GitHub",
     "whatsapp": "WhatsApp"
   }
 }

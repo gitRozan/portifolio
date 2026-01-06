@@ -49,7 +49,7 @@ export function Modal({ open, onClose, title, children }: Props) {
             aria-label={title}
             className={cn(
               "absolute left-1/2 top-1/2 w-[min(720px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2",
-              "rounded-lg border border-slate-200/70 bg-white/60 text-card-fg shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
+              "rounded-md border border-slate-200/70 bg-white/60 text-card-fg shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
             )}
             initial={{ y: 12, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}

@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Moon, Sun, Languages, Download, Mail, Linkedin } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Languages, Download, Mail, Linkedin } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/i18n/locales";
 import { isLocale } from "@/i18n/locales";
@@ -11,12 +10,13 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { TechBadge } from "@/components/ui/tech-badge";
-import { experiences, projects, skills, type Project, type ProjectCategory } from "@/content/portfolio";
+import { experiences, projects, skills, credentials, type Project, type ProjectCategory } from "@/content/portfolio";
 import { ExperienceCard } from "@/components/portfolio/experience-card";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { CredentialsSection } from "@/components/portfolio/credentials-section";
 import { ContactFab } from "@/components/portfolio/contact-fab";
+import { generateCVHTML, downloadPDF, getAssetAsDataUrl } from "@/lib/generate-cv";
 
 function useCurrentLocale(): Locale {
   const pathname = usePathname();
@@ -29,10 +29,8 @@ export function PortfolioPage() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useCurrentLocale();
-  const { theme, setTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cvOpen, setCvOpen] = useState(false);
   const [tab, setTab] = useState<ProjectCategory>("sap");
   const [selected, setSelected] = useState<Project | null>(null);
 
@@ -66,8 +64,96 @@ export function PortfolioPage() {
     { id: "contact", label: t("nav.contact") },
   ];
 
+  const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null;
+
   const toStringArray = (value: unknown) =>
     Array.isArray(value) ? value.filter((x): x is string => typeof x === "string") : [];
+
+  const handleDownloadCV = async () => {
+    const photoDataUrl = await getAssetAsDataUrl("/assets/profile.jpg");
+
+    const highlightsTitle = locale === "pt" ? "Destaques" : "Highlights";
+    const recommendationsTitle = locale === "pt" ? "Referências" : "References";
+
+    const highlights = [
+      { label: t("about.facts.xpLabel"), value: t("about.facts.xpValue") },
+      { label: t("about.facts.focusLabel"), value: t("about.facts.focusValue") },
+      { label: t("about.facts.stackLabel"), value: t("about.facts.stackValue") },
+    ];
+
+    const recommendationGroups = [
+      {
+        title: "SAPUI5/FIORI/BTP",
+        people: [
+          { name: "Maylon de Oliveira Zanardi", phone: "+55 041 99980-8928", email: "maylonzanardi@hotmail.com" },
+          { name: "Mauricio Eduardo de Oliveira Filho", phone: "+55 041 99971-4773", email: "meofi1993@gmail.com" },
+          { name: "João Henrique Moreira Gabardo", phone: "+55 041 99884-5186", email: "joaohmgabardo@gmail.com" },
+        ],
+      },
+    ];
+
+    const cvData = {
+      name: t("hero.name"),
+      role: t("hero.role"),
+      photoDataUrl: photoDataUrl ?? undefined,
+      photoAlt: t("about.photoAlt"),
+      email: "dev@nicolasbelchior.com",
+      phone: "+55 35 99743-4763",
+      location: t("about.location"),
+      linkedin: "linkedin.com/in/nicolas-belchior",
+      about: t("about.body"),
+      highlightsTitle,
+      highlights,
+      experienceTitle: t("experience.title"),
+      experienceSections: experiencesSorted.map((exp) => {
+        let subtopics;
+        const subtopicsKey = `content.experience.${exp.id}.subtopics` as const;
+        if (t.has(subtopicsKey)) {
+          const rawSubtopics = t.raw(subtopicsKey);
+          if (rawSubtopics && Array.isArray(rawSubtopics)) {
+            subtopics = rawSubtopics
+              .filter(isRecord)
+              .map((sub) => ({
+                title: typeof sub.title === "string" ? sub.title : "",
+                items: toStringArray(sub.items),
+              }))
+              .filter((sub) => sub.title.length > 0 && sub.items.length > 0);
+          }
+        }
+
+        return {
+          company: exp.company,
+          role: t(`content.experience.${exp.id}.role`),
+          period: `${t(`content.experience.${exp.id}.start`)} - ${t(`content.experience.${exp.id}.end`)}`,
+          highlights: toStringArray(t.raw(`content.experience.${exp.id}.highlights`)),
+          subtopics,
+        };
+      }),
+      skillsTitle: t("skills.title"),
+      skillsPrimary: skills.primary,
+      skillsSecondary: skills.secondary,
+      languages: toStringArray(t.raw("content.skills.languages")),
+      projectsTitle: t("projects.title"),
+      projectsSections: projects.map((proj) => ({
+        title: t(`content.projects.${proj.id}.title`),
+        summary: t(`content.projects.${proj.id}.summary`),
+        stack: proj.stack,
+      })),
+      credentialsTitle: t("credentials.title"),
+      credentialsSections: credentials.map((cred) => ({
+        title: cred.title,
+        issuer: cred.issuer,
+        period: cred.issueYM,
+        status: cred.status === "inProgress" ? t("credentials.statusInProgress") : undefined,
+      })),
+      recommendationsTitle,
+      recommendationGroups,
+    };
+
+    const html = generateCVHTML(cvData);
+    const fileName = `${t("hero.name").replace(/\s+/g, "_")}_CV_${new Date().toISOString().split("T")[0]}.pdf`;
+    await downloadPDF(html, fileName);
+  };
 
   return (
     <div className="min-h-screen bg-bg text-fg">
@@ -104,38 +190,16 @@ export function PortfolioPage() {
             </nav>
 
             <div className="flex shrink-0 items-center gap-1.5">
-              <div className="relative">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="px-2"
-                  onClick={() => setCvOpen((v) => !v)}
-                  aria-label={t("hero.ctaDownload")}
-                >
-                  <Download className="h-4 w-4" />
-                  <span className="hidden xl:inline">{t("hero.ctaDownload")}</span>
-                </Button>
-              {cvOpen ? (
-                <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-md border border-slate-200/70 bg-white/70 shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
-                  <a
-                    className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
-                    href="/assets/cv/Profile.pdf"
-                    download
-                    onClick={() => setCvOpen(false)}
-                  >
-                    {t("hero.cvSimple")}
-                  </a>
-                  <a
-                    className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
-                    href="/assets/cv/Nicolas_Belchior_Visual.pdf"
-                    download
-                    onClick={() => setCvOpen(false)}
-                  >
-                    {t("hero.cvVisual")}
-                  </a>
-                </div>
-              ) : null}
-              </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="px-2"
+                onClick={handleDownloadCV}
+                aria-label={t("hero.ctaDownload")}
+              >
+                <Download className="h-4 w-4" />
+                <span className="hidden xl:inline">{t("hero.ctaDownload")}</span>
+              </Button>
 
               <a href="#contact">
                 <Button variant="primary" size="sm" className="px-2" aria-label={t("hero.ctaContact")}>
@@ -143,16 +207,6 @@ export function PortfolioPage() {
                   <span className="hidden xl:inline">{t("hero.ctaContact")}</span>
                 </Button>
               </a>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                className="px-2"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label="Toggle theme"
-              >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </Button>
 
               <div className="flex items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
                 <button
@@ -206,28 +260,16 @@ export function PortfolioPage() {
                 ))}
 
                 <div className="grid gap-2 pt-2">
-                  <Button variant="secondary" onClick={() => setCvOpen((v) => !v)}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      handleDownloadCV();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
                     <Download className="mr-2 h-4 w-4" />
                     {t("hero.ctaDownload")}
                   </Button>
-                  {cvOpen ? (
-                    <div className="overflow-hidden rounded-md border border-slate-200/70 bg-white/70 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/70">
-                      <a
-                        className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
-                        href="/assets/cv/Profile.pdf"
-                        download
-                      >
-                        {t("hero.cvSimple")}
-                      </a>
-                      <a
-                        className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-950/5 dark:text-slate-200 dark:hover:bg-slate-100/10"
-                        href="/assets/cv/Nicolas_Belchior_Visual.pdf"
-                        download
-                      >
-                        {t("hero.cvVisual")}
-                      </a>
-                    </div>
-                  ) : null}
 
                   <a href="#contact">
                     <Button variant="primary">
@@ -237,9 +279,6 @@ export function PortfolioPage() {
                   </a>
 
                   <div className="flex gap-2">
-                    <Button variant="ghost" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-                      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                    </Button>
                     <Button variant="ghost" onClick={() => switchLocale(locale === "pt" ? "en" : "pt")}>
                       <Languages className="mr-2 h-4 w-4" />
                       {locale === "pt" ? "EN" : "PT"}
@@ -404,7 +443,7 @@ export function PortfolioPage() {
         </div>
       </main>
 
-      <ContactFab />
+      <ContactFab onDownloadCV={handleDownloadCV} />
 
       <Modal
         open={selected !== null}

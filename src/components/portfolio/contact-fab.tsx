@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Mail, MessageSquare, X } from "lucide-react";
+import { Mail, MessageSquare, X, Download } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -13,7 +13,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export function ContactFab() {
+export function ContactFab({ onDownloadCV }: { onDownloadCV: () => void }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -34,6 +34,17 @@ export function ContactFab() {
             open ? "pointer-events-auto opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-1"
           )}
         >
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center border border-border bg-card text-fg shadow-soft backdrop-blur-sm transition-[transform,border-color,background-color] hover:-translate-y-0.5 hover:border-ring/60 hover:bg-card/70 active:translate-y-0 active:scale-95"
+            aria-label="Download CV"
+            onClick={() => {
+              onDownloadCV();
+              setOpen(false);
+            }}
+          >
+            <Download className="h-4 w-4 text-brand" />
+          </button>
           <a
             href="https://api.whatsapp.com/send?phone=5535997434763"
             target="_blank"

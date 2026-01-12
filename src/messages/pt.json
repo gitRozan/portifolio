@@ -19,7 +19,8 @@
     "ctaContact": "Fale comigo",
     "ctaDownload": "Baixar CV",
     "cvSimple": "CV simples (PDF)",
-    "cvVisual": "CV visual (PDF)"
+    "cvVisual": "CV visual (PDF)",
+    "cvGenerated": "CV Gerado (HTML)"
   },
   "about": {
     "kicker": "Base técnica forte • Produção na rotina • Evolução contínua",

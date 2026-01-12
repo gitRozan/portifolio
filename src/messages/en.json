@@ -19,7 +19,8 @@
     "ctaContact": "Contact Me",
     "ctaDownload": "Download CV",
     "cvSimple": "Simple CV (PDF)",
-    "cvVisual": "Visual CV (PDF)"
+    "cvVisual": "Visual CV (PDF)",
+    "cvGenerated": "Generated CV (HTML)"
   },
   "about": {
     "kicker": "Strong technical base • Production-focused • Continuous improvement",

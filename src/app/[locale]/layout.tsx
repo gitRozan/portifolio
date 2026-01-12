@@ -22,14 +22,35 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
   const t = await getTranslations({ locale: locale as Locale });
   const title = t("meta.title");
   const description = t("meta.description");
+  const siteUrl = "https://nicolasbelchior.com";
+  const pageUrl = `${siteUrl}/${locale}/`;
+  const imageUrl = `${siteUrl}/assets/profile.jpg`;
+  const ogLocale = locale === "pt" ? "pt_BR" : "en_US";
 
   return {
+    metadataBase: new URL(siteUrl),
     title,
     description,
+    alternates: {
+      canonical: pageUrl,
+      languages: {
+        pt: `${siteUrl}/pt/`,
+        en: `${siteUrl}/en/`,
+      },
+    },
     openGraph: {
       title,
       description,
+      url: pageUrl,
       type: "website",
+      locale: ogLocale,
+      images: [imageUrl],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
     },
   };
 }

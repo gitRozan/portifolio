@@ -11,6 +11,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Nicolas Belchior | SAP Fiori & BTP Developer",
   description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
+  icons: {
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    icon: [
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "Nicolas Belchior | SAP Fiori & BTP Developer",
     description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",

@@ -33,9 +33,9 @@ export function AboutSection({ className }: { className?: string }) {
                   {t("about.kicker")}
                 </div>
                 <div className="grid gap-3">
-                  <h2 id="about-title" className="text-balance text-3xl font-semibold tracking-tight md:text-4xl">
+                  <h1 id="about-title" className="text-balance text-3xl font-semibold tracking-tight md:text-4xl">
                     {t("hero.name")}
-                  </h2>
+                  </h1>
                   <div className="max-w-2xl text-pretty text-base font-semibold tracking-tight text-slate-600 dark:text-slate-300 md:text-lg">
                     {highlightKeywords(t("hero.role"))}
                   </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Languages, Download, Mail, Linkedin } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/i18n/locales";
@@ -18,17 +18,12 @@ import { CredentialsSection } from "@/components/portfolio/credentials-section";
 import { ContactFab } from "@/components/portfolio/contact-fab";
 import { generateCVHTML, downloadPDF, getAssetAsDataUrl } from "@/lib/generate-cv";
 
-function useCurrentLocale(): Locale {
-  const pathname = usePathname();
-  const seg = pathname.split("/").filter(Boolean)[0] ?? "en";
-  return isLocale(seg) ? seg : "en";
-}
-
 export function PortfolioPage() {
   const t = useTranslations();
+  const currentLocale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const locale = useCurrentLocale();
+  const locale = isLocale(currentLocale) ? currentLocale : "en";
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [tab, setTab] = useState<ProjectCategory>("sap");

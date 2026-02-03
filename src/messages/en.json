@@ -18,14 +18,16 @@
     "role": "SAP Full Stack Developer | Fiori/SAPUI5, ABAP/RAP and SAP BTP",
     "ctaContact": "Contact Me",
     "ctaDownload": "Download CV",
+    "cvFormatPdf": "PDF",
+    "cvFormatWord": "Word (.docx)",
     "cvSimple": "Simple CV (PDF)",
     "cvVisual": "Visual CV (PDF)",
     "cvGenerated": "Generated CV (HTML)"
   },
   "about": {
-    "kicker": "Strong technical base • Production-focused • Continuous improvement",
+    "kicker": "ABAP RAP • SAP Fiori • SAP BTP • Delivery in production",
     "headline": "SAP development focused on stable delivery, solid integrations, and user-friendly execution.",
-    "body": "I have worked as a full stack SAP developer since 2022, primarily with SAP Fiori/SAPUI5 on the front end and ABAP (RAP), CDS Views, and OData services on the back end.\n\nI work in a production context: fixes, enhancements, and continuous evolution, aiming for consistent OData contracts, well-modeled data, and performance that holds up under real usage.\n\nOn SAP BTP, I have experience with SAP CAP, SAP Integration Suite (iFlows), and SAP HANA Cloud, contributing to integrations and greenfield solutions. I have also worked on web and hybrid mobile scenarios, including offline support (e.g., SAPUI5 in HAT/Asset Manager), when operations depend on limited connectivity.",
+    "body": "I have been developing in SAP Full Stack since 2022: SAP Fiori/SAPUI5 on the front end and ABAP (RAP), CDS Views, and OData services on the back end.\n\nI work in production sustaining stable OData contracts, consistent CDS modeling, and performance that supports real team usage — continuous evolution without breaking integrations or degrading experience.\n\nOn SAP BTP, I have architected and implemented solutions with SAP CAP, SAP Integration Suite (iFlows), and SAP HANA Cloud in greenfield scenarios. I have also led deliveries in SAPUI5 with offline support (HAT/Asset Manager) in operations with limited connectivity.",
     "locationLabel": "Base",
     "location": "Minas Gerais, Brazil • Remote",
     "photoAlt": "Professional photo",
@@ -38,12 +40,12 @@
       "focusValue": "Fiori/UI5 • ABAP/RAP • Integration • Production support",
       "stackLabel": "Core stack",
       "stackValue": "SAP Fiori/SAPUI5 • ABAP/RAP • CDS • OData • SAP BTP (CAP, Integration Suite) • HANA Cloud",
-      "signalValue": "Consistent OData contracts • iFlows • Delivery that holds up in production"
+      "signalValue": "Stable OData • iFlows in production • RAP/CDS • Sustainable delivery"
     }
   },
   "experience": {
     "title": "Experience",
-    "since": "Timeline (SAP since 2022)"
+    "since": "SAP trajectory (2022 — present)"
   },
   "projects": {
     "title": "Projects",
@@ -270,7 +272,7 @@
       }
     },
     "skills": {
-      "languages": ["Portuguese (Native)", "English (Full Professional)", "Spanish (Professional)"]
+      "languages": ["Portuguese (Native)", "English (Advanced)", "Spanish (Intermediate)"]
     }
   },
   "footer": {

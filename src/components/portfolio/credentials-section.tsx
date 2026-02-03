@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useRef, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { Award, GraduationCap, BadgeCheck, ExternalLink, FileText } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { credentials, type Credential, type CredentialKind } from "@/content/portfolio";
+import { Modal } from "@/components/ui/modal";
 
 function kindIcon(kind: CredentialKind) {
   if (kind === "badge") return <BadgeCheck className="h-4 w-4 text-brand" />;
@@ -28,12 +30,50 @@ function formatYM(ym: string) {
   }
 }
 
-function Card({ item, label }: { item: Credential; label: string }) {
+const HOVER_PREVIEW_DELAY_MS = 400;
+const PREVIEW_Z_INDEX = 100;
+
+function Card({
+  item,
+  label,
+  onOpenCertificate,
+  onHoverStart,
+  onHoverEnd,
+  canHoverPreview,
+}: {
+  item: Credential;
+  label: string;
+  onOpenCertificate: (cred: Credential) => void;
+  onHoverStart: (cred: Credential, rect: DOMRect) => void;
+  onHoverEnd: () => void;
+  canHoverPreview: boolean;
+}) {
   const t = useTranslations();
+  const cardRef = useRef<HTMLDivElement>(null);
   const date = item.issueYM ? formatYM(item.issueYM) : "";
   const proof = item.proof?.href && item.proof.href.trim().length ? item.proof : null;
+  const isPdf = proof?.type === "pdf";
+
+  const handleMouseEnter = useCallback(() => {
+    if (!isPdf || !canHoverPreview || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    onHoverStart(item, rect);
+  }, [isPdf, canHoverPreview, item, onHoverStart]);
+
   return (
-    <div className="group rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/50 dark:hover:border-slate-700">
+    <div
+      ref={cardRef}
+      className={cn(
+        "group relative rounded-lg border border-slate-200/70 bg-white/50 p-6 backdrop-blur-sm transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/50 dark:hover:border-slate-700",
+        isPdf && "cursor-pointer"
+      )}
+      onClick={() => isPdf && onOpenCertificate(item)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={onHoverEnd}
+      role={isPdf ? "button" : undefined}
+      tabIndex={isPdf ? 0 : undefined}
+      onKeyDown={(e) => isPdf && (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpenCertificate(item))}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="grid gap-1">
           <div className="text-[11px] font-semibold tracking-tight text-slate-500 dark:text-slate-400">{label}</div>
@@ -47,22 +87,79 @@ function Card({ item, label }: { item: Credential; label: string }) {
         <div className="shrink-0">{kindIcon(item.kind)}</div>
       </div>
       {proof ? (
-        <a
-          href={proof.href}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex w-fit items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:hover:border-slate-700"
-        >
-          {proof.type === "pdf" ? <FileText className="h-4 w-4 text-brand" /> : <ExternalLink className="h-4 w-4 text-brand" />}
-          {proof.type === "pdf" ? t("credentials.proofPdf") : t("credentials.proofExternal")}
-        </a>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {isPdf ? (
+            <span className="inline-flex items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100">
+              <FileText className="h-4 w-4 text-brand" />
+              {t("credentials.proofPdf")}
+            </span>
+          ) : (
+            <a
+              href={proof.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-fit items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:hover:border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ExternalLink className="h-4 w-4 text-brand" />
+              {t("credentials.proofExternal")}
+            </a>
+          )}
+        </div>
       ) : null}
     </div>
   );
 }
 
+type HoverPreviewState = { cred: Credential; rect: DOMRect } | null;
+
 export function CredentialsSection({ className }: { className?: string }) {
   const t = useTranslations();
+  const [modalCredential, setModalCredential] = useState<Credential | null>(null);
+  const [hoverPreview, setHoverPreview] = useState<HoverPreviewState>(null);
+  const [canHoverPreview, setCanHoverPreview] = useState(false);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover)");
+    setCanHoverPreview(mq.matches);
+    const handler = () => setCanHoverPreview(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (!hoverPreview) return;
+    const onScroll = () => setHoverPreview(null);
+    window.addEventListener("scroll", onScroll, true);
+    return () => window.removeEventListener("scroll", onScroll, true);
+  }, [hoverPreview]);
+
+  const handleHoverStart = useCallback((cred: Credential, rect: DOMRect) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => setHoverPreview({ cred, rect }), HOVER_PREVIEW_DELAY_MS);
+  }, []);
+
+  const handleHoverEnd = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = setTimeout(() => setHoverPreview(null), 120);
+  }, []);
+
+  const cancelClosePreview = useCallback(() => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  }, []);
 
   const groups = useMemo(() => {
     const sorted = [...credentials].sort((a, b) => (b.issueYM || "").localeCompare(a.issueYM || ""));
@@ -108,7 +205,15 @@ export function CredentialsSection({ className }: { className?: string }) {
                   <div className="text-xs font-semibold tracking-tight text-slate-500 dark:text-slate-400">{label}</div>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {list.map((item) => (
-                      <Card key={item.id} item={item} label={label} />
+                      <Card
+                        key={item.id}
+                        item={item}
+                        label={label}
+                        onOpenCertificate={setModalCredential}
+                        onHoverStart={handleHoverStart}
+                        onHoverEnd={handleHoverEnd}
+                        canHoverPreview={canHoverPreview}
+                      />
                     ))}
                   </div>
                 </div>
@@ -121,6 +226,56 @@ export function CredentialsSection({ className }: { className?: string }) {
           </div>
         )}
       </div>
+
+      {modalCredential?.proof?.type === "pdf" && modalCredential.proof.href && (
+        <Modal
+          open={!!modalCredential}
+          onClose={() => setModalCredential(null)}
+          title={modalCredential.title}
+        >
+          <iframe
+            title={modalCredential.title}
+            src={modalCredential.proof.href}
+            className="h-[min(75vh,720px)] w-full rounded border-0 border-slate-200/70 dark:border-slate-700"
+          />
+        </Modal>
+      )}
+
+      {hoverPreview?.cred.proof?.type === "pdf" &&
+        hoverPreview.cred.proof.href &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed w-[min(320px,90vw)] overflow-hidden rounded-lg border border-slate-200/70 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900"
+            style={{
+              zIndex: PREVIEW_Z_INDEX,
+              left: (() => {
+                const w = Math.min(320, window.innerWidth * 0.9);
+                return Math.max(8, Math.min(hoverPreview.rect.left, window.innerWidth - w - 16));
+              })(),
+              top: (() => {
+                const h = 420;
+                const pad = 8;
+                if (hoverPreview.rect.bottom + pad + h <= window.innerHeight - pad) {
+                  return hoverPreview.rect.bottom + pad;
+                }
+                return Math.max(pad, hoverPreview.rect.top - h - pad);
+              })(),
+            }}
+            onMouseEnter={cancelClosePreview}
+            onMouseLeave={() => setHoverPreview(null)}
+          >
+            <div className="border-b border-slate-200/70 px-3 py-2 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200">
+              {hoverPreview.cred.title}
+            </div>
+            <iframe
+              title={hoverPreview.cred.title}
+              src={hoverPreview.cred.proof.href}
+              className="h-[min(420px,60vh)] w-full border-0"
+            />
+          </div>,
+          document.body
+        )}
     </section>
   );
 }

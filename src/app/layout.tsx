@@ -8,10 +8,13 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://nicolasbelchior.com";
+const ogImage = `${siteUrl}/assets/profile.jpg`;
+
 export const metadata: Metadata = {
   title: "Nicolas Belchior | SAP Fiori & BTP Developer",
   description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
-  metadataBase: new URL("https://nicolasbelchior.com"),
+  metadataBase: new URL(siteUrl),
   icons: {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     icon: [
@@ -24,14 +27,24 @@ export const metadata: Metadata = {
     title: "Nicolas Belchior | SAP Fiori & BTP Developer",
     description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
     type: "website",
-    url: "https://nicolasbelchior.com/",
-    images: ["/assets/profile.jpg"],
+    url: `${siteUrl}/`,
+    siteName: "Nicolas Belchior",
+    locale: "pt_BR",
+    alternateLocale: ["en_US"],
+    images: [
+      {
+        url: ogImage,
+        width: 512,
+        height: 512,
+        alt: "Nicolas Belchior",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nicolas Belchior | SAP Fiori & BTP Developer",
     description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
-    images: ["/assets/profile.jpg"],
+    images: [ogImage],
   },
 };
 

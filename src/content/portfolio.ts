@@ -114,6 +114,10 @@ export const credentials: Credential[] = [
     title: "SAP BTP e Clean Core",
     kind: "course",
     issuer: "Ka Solution",
+    proof: {
+      type: "pdf",
+      href: "/assets/certificados/CLEANCORE-BTP-INTEGRATION-SUITE-KASOLUTION-10-2025.pdf",
+    },
   },
 ];
 

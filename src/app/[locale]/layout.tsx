@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
   const description = t("meta.description");
   const siteUrl = "https://nicolasbelchior.com";
   const pageUrl = `${siteUrl}/${locale}/`;
-  const imageUrl = `${siteUrl}/assets/profile.jpg`;
+  const ogImage = `${siteUrl}/assets/profile.jpg`;
   const ogLocale = locale === "pt" ? "pt_BR" : "en_US";
 
   return {
@@ -43,14 +43,23 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
       description,
       url: pageUrl,
       type: "website",
+      siteName: "Nicolas Belchior",
       locale: ogLocale,
-      images: [imageUrl],
+      alternateLocale: ogLocale === "pt_BR" ? ["en_US"] : ["pt_BR"],
+      images: [
+        {
+          url: ogImage,
+          width: 512,
+          height: 512,
+          alt: "Nicolas Belchior",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [imageUrl],
+      images: [ogImage],
     },
   };
 }

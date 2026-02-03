@@ -1,4 +1,6 @@
-type CVData = {
+import { Document as DocxDocument, Packer, Paragraph, HeadingLevel } from "docx";
+
+export type CVData = {
   name: string;
   role: string;
   photoDataUrl?: string;
@@ -96,6 +98,7 @@ export function generateCVHTML(data: CVData): string {
     }
 
     a { color: inherit; text-decoration: none; }
+    .meta-value a { color: var(--brand); text-decoration: underline; }
 
     .page {
       max-width: 960px;
@@ -497,11 +500,11 @@ export function generateCVHTML(data: CVData): string {
           <div class="meta-list">
             <div class="meta-item">
               <div class="meta-label">Email</div>
-              <div class="meta-value">${data.email}</div>
+              <div class="meta-value"><a href="mailto:${data.email}">${data.email}</a></div>
             </div>
             <div class="meta-item">
               <div class="meta-label">Telefone</div>
-              <div class="meta-value">${data.phone}</div>
+              <div class="meta-value"><a href="tel:${data.phone}">${data.phone}</a></div>
             </div>
             <div class="meta-item">
               <div class="meta-label">Local</div>
@@ -509,7 +512,7 @@ export function generateCVHTML(data: CVData): string {
             </div>
             <div class="meta-item">
               <div class="meta-label">LinkedIn</div>
-              <div class="meta-value">${data.linkedin}</div>
+              <div class="meta-value"><a href="${data.linkedin.startsWith("http") ? data.linkedin : `https://${data.linkedin}`}">${data.linkedin}</a></div>
             </div>
           </div>
         </div>
@@ -774,4 +777,84 @@ export async function downloadPDF(html: string, filename: string): Promise<void>
   } finally {
     document.body.removeChild(iframe);
   }
+}
+
+function docxP(
+  text: string,
+  heading?: (typeof HeadingLevel)[keyof typeof HeadingLevel]
+): Paragraph {
+  return new Paragraph(heading ? { text, heading } : { text });
+}
+
+export async function generateCVDocx(data: CVData): Promise<Blob> {
+  const children: Paragraph[] = [
+    docxP(data.name, HeadingLevel.TITLE),
+    docxP(data.role),
+    new Paragraph({ text: "" }),
+    docxP(data.about),
+    new Paragraph({ text: "" }),
+    docxP("Contato", HeadingLevel.HEADING_2),
+    docxP(`Email: ${data.email}`),
+    docxP(`Telefone: ${data.phone}`),
+    docxP(`Local: ${data.location}`),
+    docxP(`LinkedIn: ${data.linkedin}`),
+    new Paragraph({ text: "" }),
+    docxP(data.experienceTitle, HeadingLevel.HEADING_2),
+  ];
+
+  for (const exp of data.experienceSections) {
+    children.push(docxP(exp.company, HeadingLevel.HEADING_3));
+    children.push(docxP(`${exp.role} | ${exp.period}`));
+    for (const h of exp.highlights) {
+      children.push(new Paragraph({ text: h, bullet: { level: 0 } }));
+    }
+    if (exp.subtopics?.length) {
+      for (const sub of exp.subtopics) {
+        children.push(docxP(sub.title, HeadingLevel.HEADING_4));
+        for (const item of sub.items) {
+          children.push(new Paragraph({ text: item, bullet: { level: 1 } }));
+        }
+      }
+    }
+    children.push(new Paragraph({ text: "" }));
+  }
+
+  children.push(docxP(data.skillsTitle, HeadingLevel.HEADING_2));
+  children.push(docxP(`Primárias: ${data.skillsPrimary.join(", ")}`));
+  children.push(docxP(`Secundárias: ${data.skillsSecondary.join(", ")}`));
+  children.push(docxP(`Idiomas: ${data.languages.join(", ")}`));
+  children.push(new Paragraph({ text: "" }));
+  children.push(docxP(data.projectsTitle, HeadingLevel.HEADING_2));
+
+  for (const proj of data.projectsSections) {
+    children.push(docxP(proj.title, HeadingLevel.HEADING_3));
+    children.push(docxP(proj.summary));
+    children.push(docxP(proj.stack.join(", ")));
+    children.push(new Paragraph({ text: "" }));
+  }
+
+  children.push(docxP(data.credentialsTitle, HeadingLevel.HEADING_2));
+  for (const cred of data.credentialsSections) {
+    children.push(docxP(cred.title, HeadingLevel.HEADING_3));
+    children.push(docxP(`${cred.issuer}${cred.period ? ` | ${cred.period}` : ""}${cred.status ? ` | ${cred.status}` : ""}`));
+  }
+
+  if (data.recommendationGroups?.length) {
+    children.push(new Paragraph({ text: "" }));
+    children.push(docxP(data.recommendationsTitle ?? "Referências", HeadingLevel.HEADING_2));
+    for (const g of data.recommendationGroups) {
+      children.push(docxP(g.title, HeadingLevel.HEADING_3));
+      for (const person of g.people) {
+        children.push(docxP(person.name));
+        if (person.phone) children.push(docxP(person.phone));
+        if (person.email) children.push(docxP(person.email));
+      }
+    }
+  }
+
+  const doc = new DocxDocument({
+    sections: [{ children }],
+  });
+
+  return Packer.toBlob(doc);
 }

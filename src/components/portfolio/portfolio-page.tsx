@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Languages, Download, Mail, Linkedin } from "lucide-react";
+import { Languages, Download, Mail, Linkedin, ChevronDown } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/i18n/locales";
 import { isLocale } from "@/i18n/locales";
@@ -16,7 +16,13 @@ import { ProjectCard } from "@/components/portfolio/project-card";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { CredentialsSection } from "@/components/portfolio/credentials-section";
 import { ContactFab } from "@/components/portfolio/contact-fab";
-import { generateCVHTML, downloadPDF, getAssetAsDataUrl } from "@/lib/generate-cv";
+import {
+  generateCVHTML,
+  generateCVDocx,
+  downloadPDF,
+  getAssetAsDataUrl,
+  type CVData,
+} from "@/lib/generate-cv";
 
 export function PortfolioPage() {
   const t = useTranslations();
@@ -26,8 +32,20 @@ export function PortfolioPage() {
   const locale = isLocale(currentLocale) ? currentLocale : "en";
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cvDropdownOpen, setCvDropdownOpen] = useState(false);
+  const cvDropdownRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<ProjectCategory>("sap");
   const [selected, setSelected] = useState<Project | null>(null);
+
+  useEffect(() => {
+    if (!cvDropdownOpen) return;
+    const close = (e: MouseEvent) => {
+      if (cvDropdownRef.current?.contains(e.target as Node)) return;
+      setCvDropdownOpen(false);
+    };
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [cvDropdownOpen]);
 
   const projectsFiltered = useMemo(
     () => projects.filter((p) => p.category === tab),
@@ -64,18 +82,15 @@ export function PortfolioPage() {
   const toStringArray = (value: unknown) =>
     Array.isArray(value) ? value.filter((x): x is string => typeof x === "string") : [];
 
-  const handleDownloadCV = async () => {
+  const getCvData = async (): Promise<CVData> => {
     const photoDataUrl = await getAssetAsDataUrl("/assets/profile.jpg");
-
     const highlightsTitle = locale === "pt" ? "Destaques" : "Highlights";
     const recommendationsTitle = locale === "pt" ? "Referências" : "References";
-
     const highlights = [
       { label: t("about.facts.xpLabel"), value: t("about.facts.xpValue") },
       { label: t("about.facts.focusLabel"), value: t("about.facts.focusValue") },
       { label: t("about.facts.stackLabel"), value: t("about.facts.stackValue") },
     ];
-
     const recommendationGroups = [
       {
         title: "SAPUI5/FIORI/BTP",
@@ -87,7 +102,7 @@ export function PortfolioPage() {
       },
     ];
 
-    const cvData = {
+    return {
       name: t("hero.name"),
       role: t("hero.role"),
       photoDataUrl: photoDataUrl ?? undefined,
@@ -115,7 +130,6 @@ export function PortfolioPage() {
               .filter((sub) => sub.title.length > 0 && sub.items.length > 0);
           }
         }
-
         return {
           company: exp.company,
           role: t(`content.experience.${exp.id}.role`),
@@ -144,19 +158,33 @@ export function PortfolioPage() {
       recommendationsTitle,
       recommendationGroups,
     };
+  };
 
+  const handleDownloadCV = async () => {
+    const cvData = await getCvData();
     const html = generateCVHTML(cvData);
     const fileName = `${t("hero.name").replace(/\s+/g, "_")}_CV_${new Date().toISOString().split("T")[0]}.pdf`;
     await downloadPDF(html, fileName);
   };
 
+  const handleDownloadDocx = async () => {
+    const cvData = await getCvData();
+    const blob = await generateCVDocx(cvData);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${t("hero.name").replace(/\s+/g, "_")}_CV_${new Date().toISOString().split("T")[0]}.docx`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-bg text-fg">
-      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-bg/70 backdrop-blur-md dark:border-slate-800">
+      <header className="sticky top-0 z-40 cursor-default border-b border-slate-200/70 bg-bg/70 backdrop-blur-md dark:border-slate-800">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-3.5">
           <a
             href="#about"
-            className="shrink-0 font-mono text-sm font-black tracking-tight text-fg"
+            className="shrink-0 cursor-pointer font-mono text-sm font-black tracking-tight text-fg"
             aria-label={t("hero.name")}
           >
             NBP
@@ -164,12 +192,12 @@ export function PortfolioPage() {
 
           <div className="hidden min-w-0 flex-1 items-center gap-2 md:flex">
             <nav className="min-w-0 flex-1">
-              <div className="flex min-w-0 items-center gap-0.5 overflow-hidden">
+              <div className="flex min-w-0 cursor-pointer items-center gap-0.5 overflow-hidden">
                 {navItems.map((it) => (
                   <a
                     key={it.id}
                     href={`#${it.id}`}
-                    className="whitespace-nowrap rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight text-slate-600 transition-colors hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
+                    className="cursor-pointer whitespace-nowrap rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight text-slate-600 transition-colors hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
                   >
                     {it.shortLabel ? (
                       <>
@@ -184,29 +212,59 @@ export function PortfolioPage() {
               </div>
             </nav>
 
-            <div className="flex shrink-0 items-center gap-1.5">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="px-2"
-                onClick={handleDownloadCV}
-                aria-label={t("hero.ctaDownload")}
-              >
-                <Download className="h-4 w-4" />
-                <span className="hidden xl:inline">{t("hero.ctaDownload")}</span>
-              </Button>
+            <div className="flex shrink-0 cursor-pointer items-center gap-4">
+              <div className="relative" ref={cvDropdownRef}>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="min-w-0 gap-2 pl-3 pr-3"
+                  onClick={() => setCvDropdownOpen((v) => !v)}
+                  aria-label={t("hero.ctaDownload")}
+                  aria-expanded={cvDropdownOpen}
+                  aria-haspopup="true"
+                >
+                  <Download className="h-4 w-4 shrink-0" />
+                  <span className="hidden xl:inline">{t("hero.ctaDownload")}</span>
+                  <ChevronDown className={cn("h-4 w-4 shrink-0", cvDropdownOpen && "rotate-180")} />
+                </Button>
+                {cvDropdownOpen ? (
+                  <div className="absolute left-0 top-full z-50 mt-1 min-w-[10rem] rounded-md border border-slate-200/70 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm font-medium text-fg hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => {
+                        handleDownloadCV();
+                        setCvDropdownOpen(false);
+                      }}
+                    >
+                      {t("hero.cvFormatPdf")}
+                    </button>
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm font-medium text-fg hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => {
+                        handleDownloadDocx();
+                        setCvDropdownOpen(false);
+                      }}
+                    >
+                      {t("hero.cvFormatWord")}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
 
-              <a href="#contact">
-                <Button variant="primary" size="sm" className="px-2" aria-label={t("hero.ctaContact")}>
-                  <Mail className="h-4 w-4" />
+              <a href="#contact" className="cursor-pointer">
+                <Button variant="primary" size="sm" className="gap-2 pl-3 pr-3" aria-label={t("hero.ctaContact")}>
+                  <Mail className="h-4 w-4 shrink-0" />
                   <span className="hidden xl:inline">{t("hero.ctaContact")}</span>
                 </Button>
               </a>
 
-              <div className="flex items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
+              <div className="flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200/70 bg-white/60 p-1 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40">
                 <button
+                  type="button"
                   className={cn(
-                    "inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
+                    "cursor-pointer inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
                     locale === "pt"
                       ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
                       : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
@@ -216,8 +274,9 @@ export function PortfolioPage() {
                   PT
                 </button>
                 <button
+                  type="button"
                   className={cn(
-                    "inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
+                    "cursor-pointer inline-flex items-center rounded-md px-2 py-1.5 text-xs font-semibold tracking-tight transition-colors",
                     locale === "en"
                       ? "bg-slate-950/5 text-slate-900 dark:bg-slate-100/10 dark:text-slate-50"
                       : "text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
@@ -231,7 +290,8 @@ export function PortfolioPage() {
           </div>
 
           <button
-            className="md:hidden rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-sm font-medium tracking-tight backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40"
+            type="button"
+            className="md:hidden cursor-pointer rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-sm font-medium tracking-tight backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40"
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label="Open menu"
           >
@@ -247,7 +307,7 @@ export function PortfolioPage() {
                   <a
                     key={it.id}
                     href={`#${it.id}`}
-                    className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
+                    className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-950/5 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-100/10 dark:hover:text-slate-50"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {it.label}
@@ -257,13 +317,25 @@ export function PortfolioPage() {
                 <div className="grid gap-2 pt-2">
                   <Button
                     variant="secondary"
+                    className="cursor-pointer gap-2"
                     onClick={() => {
                       handleDownloadCV();
                       setMobileMenuOpen(false);
                     }}
                   >
-                    <Download className="mr-2 h-4 w-4" />
-                    {t("hero.ctaDownload")}
+                    <Download className="h-4 w-4 shrink-0" />
+                    {t("hero.ctaDownload")} ({t("hero.cvFormatPdf")})
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="cursor-pointer gap-2 justify-start"
+                    onClick={() => {
+                      handleDownloadDocx();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Download className="h-4 w-4 shrink-0" />
+                    {t("hero.ctaDownload")} ({t("hero.cvFormatWord")})
                   </Button>
 
                   <a href="#contact">

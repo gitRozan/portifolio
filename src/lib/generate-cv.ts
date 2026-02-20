@@ -1,6 +1,9 @@
 import { Document as DocxDocument, Packer, Paragraph, HeadingLevel } from "docx";
 
+export type CVLocale = "pt" | "en";
+
 export type CVData = {
+  locale: CVLocale;
   name: string;
   role: string;
   photoDataUrl?: string;
@@ -53,13 +56,45 @@ export type CVData = {
 
 export function generateCVHTML(data: CVData): string {
   const topSkills = data.skillsPrimary.slice(0, 8);
+  const strings =
+    data.locale === "pt"
+      ? {
+          lang: "pt-BR",
+          docTitle: "Currículo",
+          contact: "Contato",
+          email: "Email",
+          phone: "Telefone",
+          location: "Local",
+          linkedin: "LinkedIn",
+          primary: "Primárias",
+          secondary: "Secundárias",
+          languages: "Idiomas",
+          about: "Sobre",
+          highlights: "Destaques",
+          references: "Referências",
+        }
+      : {
+          lang: "en",
+          docTitle: "CV",
+          contact: "Contact",
+          email: "Email",
+          phone: "Phone",
+          location: "Location",
+          linkedin: "LinkedIn",
+          primary: "Primary",
+          secondary: "Secondary",
+          languages: "Languages",
+          about: "About",
+          highlights: "Highlights",
+          references: "References",
+        };
 
   return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="${strings.lang}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${data.name} - Currículo</title>
+  <title>${data.name} - ${strings.docTitle}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -496,18 +531,18 @@ export function generateCVHTML(data: CVData): string {
         <div class="divider"></div>
 
         <div class="block">
-          <h2 class="section-title">Contato</h2>
+          <h2 class="section-title">${strings.contact}</h2>
           <div class="meta-list">
             <div class="meta-item">
-              <div class="meta-label">Email</div>
+              <div class="meta-label">${strings.email}</div>
               <div class="meta-value"><a href="mailto:${data.email}">${data.email}</a></div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">Telefone</div>
+              <div class="meta-label">${strings.phone}</div>
               <div class="meta-value"><a href="tel:${data.phone}">${data.phone}</a></div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">Local</div>
+              <div class="meta-label">${strings.location}</div>
               <div class="meta-value">${data.location}</div>
             </div>
             <div class="meta-item">
@@ -522,14 +557,14 @@ export function generateCVHTML(data: CVData): string {
         <div class="block">
           <h2 class="section-title">${data.skillsTitle}</h2>
           <div class="meta-item">
-            <div class="meta-label">Primárias</div>
+            <div class="meta-label">${strings.primary}</div>
             <div class="tag-list">
               ${data.skillsPrimary.map((s) => `<span class="tag">${s}</span>`).join("")}
             </div>
           </div>
           <div style="height: 12px"></div>
           <div class="meta-item">
-            <div class="meta-label">Secundárias</div>
+            <div class="meta-label">${strings.secondary}</div>
             <div class="tag-list">
               ${data.skillsSecondary.map((s) => `<span class="tag">${s}</span>`).join("")}
             </div>
@@ -539,7 +574,7 @@ export function generateCVHTML(data: CVData): string {
         <div class="divider"></div>
 
         <div class="block">
-          <h2 class="section-title">Idiomas</h2>
+          <h2 class="section-title">${strings.languages}</h2>
           <div class="tag-list">
             ${data.languages.map((s) => `<span class="tag">${s}</span>`).join("")}
           </div>
@@ -585,7 +620,7 @@ export function generateCVHTML(data: CVData): string {
         </header>
 
         <section class="content-section">
-          <h2 class="section-title">Sobre</h2>
+          <h2 class="section-title">${strings.about}</h2>
           <div class="summary">${data.about}</div>
         </section>
 
@@ -593,7 +628,7 @@ export function generateCVHTML(data: CVData): string {
           data.highlights && data.highlights.length > 0
             ? `
         <section class="content-section">
-          <h2 class="section-title">${data.highlightsTitle ?? "Destaques"}</h2>
+          <h2 class="section-title">${data.highlightsTitle ?? strings.highlights}</h2>
           ${data.highlights
             .slice(0, 4)
             .map(
@@ -614,7 +649,7 @@ export function generateCVHTML(data: CVData): string {
           data.recommendationGroups && data.recommendationGroups.length > 0
             ? `
         <section class="content-section">
-          <h2 class="section-title">${data.recommendationsTitle ?? "Referências"}</h2>
+          <h2 class="section-title">${data.recommendationsTitle ?? strings.references}</h2>
           ${data.recommendationGroups
             .map(
               (g) => `
@@ -787,17 +822,42 @@ function docxP(
 }
 
 export async function generateCVDocx(data: CVData): Promise<Blob> {
+  const strings =
+    data.locale === "pt"
+      ? {
+          contact: "Contato",
+          email: "Email",
+          phone: "Telefone",
+          location: "Local",
+          linkedin: "LinkedIn",
+          primary: "Primárias",
+          secondary: "Secundárias",
+          languages: "Idiomas",
+          references: "Referências",
+        }
+      : {
+          contact: "Contact",
+          email: "Email",
+          phone: "Phone",
+          location: "Location",
+          linkedin: "LinkedIn",
+          primary: "Primary",
+          secondary: "Secondary",
+          languages: "Languages",
+          references: "References",
+        };
+
   const children: Paragraph[] = [
     docxP(data.name, HeadingLevel.TITLE),
     docxP(data.role),
     new Paragraph({ text: "" }),
     docxP(data.about),
     new Paragraph({ text: "" }),
-    docxP("Contato", HeadingLevel.HEADING_2),
-    docxP(`Email: ${data.email}`),
-    docxP(`Telefone: ${data.phone}`),
-    docxP(`Local: ${data.location}`),
-    docxP(`LinkedIn: ${data.linkedin}`),
+    docxP(strings.contact, HeadingLevel.HEADING_2),
+    docxP(`${strings.email}: ${data.email}`),
+    docxP(`${strings.phone}: ${data.phone}`),
+    docxP(`${strings.location}: ${data.location}`),
+    docxP(`${strings.linkedin}: ${data.linkedin}`),
     new Paragraph({ text: "" }),
     docxP(data.experienceTitle, HeadingLevel.HEADING_2),
   ];
@@ -820,9 +880,9 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
   }
 
   children.push(docxP(data.skillsTitle, HeadingLevel.HEADING_2));
-  children.push(docxP(`Primárias: ${data.skillsPrimary.join(", ")}`));
-  children.push(docxP(`Secundárias: ${data.skillsSecondary.join(", ")}`));
-  children.push(docxP(`Idiomas: ${data.languages.join(", ")}`));
+  children.push(docxP(`${strings.primary}: ${data.skillsPrimary.join(", ")}`));
+  children.push(docxP(`${strings.secondary}: ${data.skillsSecondary.join(", ")}`));
+  children.push(docxP(`${strings.languages}: ${data.languages.join(", ")}`));
   children.push(new Paragraph({ text: "" }));
   children.push(docxP(data.projectsTitle, HeadingLevel.HEADING_2));
 
@@ -841,7 +901,7 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
 
   if (data.recommendationGroups?.length) {
     children.push(new Paragraph({ text: "" }));
-    children.push(docxP(data.recommendationsTitle ?? "Referências", HeadingLevel.HEADING_2));
+    children.push(docxP(data.recommendationsTitle ?? strings.references, HeadingLevel.HEADING_2));
     for (const g of data.recommendationGroups) {
       children.push(docxP(g.title, HeadingLevel.HEADING_3));
       for (const person of g.people) {

@@ -103,6 +103,7 @@ export function PortfolioPage() {
     ];
 
     return {
+      locale,
       name: t("hero.name"),
       role: t("hero.role"),
       photoDataUrl: photoDataUrl ?? undefined,

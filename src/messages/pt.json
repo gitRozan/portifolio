@@ -29,7 +29,7 @@
     "headline": "Desenvolvimento SAP com foco em entregar features estáveis, integradas e com boa experiência de uso.",
     "body": "Desenvolvo em SAP Full Stack desde 2022: SAP Fiori/SAPUI5 no front-end e ABAP (RAP), CDS Views e serviços OData no back-end.\n\nAtuo em produção sustentando contratos OData estáveis, modelagem CDS consistente e performance que suporta o uso real do time — evolução contínua sem quebrar integrações ou degradar experiência.\n\nNo SAP BTP, arquitetei e implementei soluções com SAP CAP, SAP Integration Suite (iFlows) e SAP HANA Cloud em cenários greenfield. Já liderei entregas em SAPUI5 com suporte offline (HAT/Asset Manager) em operações de conectividade limitada.",
     "locationLabel": "Base",
-    "location": "Minas Gerais, Brasil • Remoto",
+    "location": "São Paulo - REMOTO",
     "photoAlt": "Foto profissional",
     "photoFallback": "NB",
     "photoLabel": "Retrato",
@@ -158,14 +158,6 @@
               "Atuação estratégica na estruturação inicial da célula SAP, incluindo prospecção técnica e definição de arquitetura de soluções.",
               "Desenvolvimento de produtos greenfield em SAP BTP com SAP CAP como camada central, construídos no SAP Business Application Studio (BAS).",
               "Aplicação rigorosa de Clean Core, com modelagem e persistência em SAP HANA Cloud e decisões orientadas a desacoplamento e escalabilidade."
-            ]
-          },
-          {
-            "title": "Projeto/Alocação: IBM — Americanas",
-            "items": [
-              "Desenvolvimento front-end em SAPUI5/Fiori com aplicações freestyle ricas e responsivas usando arquitetura MVC.",
-              "Criação de controles customizados para requisitos complexos e correções pontuais com foco em performance e estabilidade.",
-              "Participação em estimativas/orçamento de gaps e ajustes de configuração no SAP Asset Manager para suportar novas funcionalidades."
             ]
           }
         ]

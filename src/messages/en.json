@@ -159,14 +159,6 @@
               "Built greenfield products on SAP BTP with SAP CAP as the core layer, delivered through SAP Business Application Studio (BAS).",
               "Applied Clean Core practices with data modeling and persistence on SAP HANA Cloud, targeting decoupling and scalability."
             ]
-          },
-          {
-            "title": "Project/Allocation: IBM — Americanas",
-            "items": [
-              "Front-end development in SAPUI5 and Fiori, building rich, responsive freestyle apps using MVC architecture.",
-              "Built custom controls for complex business requirements and applied targeted fixes focused on performance and stability.",
-              "Participated in gap estimation and SAP Asset Manager configuration adjustments to support new features."
-            ]
           }
         ]
       },

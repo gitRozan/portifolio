@@ -75,7 +75,8 @@
     "kindHigherEducation": "Ensino superior",
     "statusInProgress": "Em andamento",
     "proofExternal": "Abrir certificado",
-    "proofPdf": "Abrir PDF"
+    "proofPdf": "Abrir PDF",
+    "proofCredly": "Ver no Credly"
   },
   "content": {
     "experience": {

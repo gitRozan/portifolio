@@ -53,6 +53,7 @@ function Card({
   const date = item.issueYM ? formatYM(item.issueYM) : "";
   const proof = item.proof?.href && item.proof.href.trim().length ? item.proof : null;
   const isPdf = proof?.type === "pdf";
+  const credlyUrl = item.credlyUrl?.trim() || "";
 
   const handleMouseEnter = useCallback(() => {
     if (!isPdf || !canHoverPreview || !cardRef.current) return;
@@ -86,14 +87,14 @@ function Card({
         </div>
         <div className="shrink-0">{kindIcon(item.kind)}</div>
       </div>
-      {proof ? (
+      {proof || credlyUrl ? (
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {isPdf ? (
             <span className="inline-flex items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100">
               <FileText className="h-4 w-4 text-brand" />
               {t("credentials.proofPdf")}
             </span>
-          ) : (
+          ) : proof ? (
             <a
               href={proof.href}
               target="_blank"
@@ -104,7 +105,19 @@ function Card({
               <ExternalLink className="h-4 w-4 text-brand" />
               {t("credentials.proofExternal")}
             </a>
-          )}
+          ) : null}
+          {credlyUrl ? (
+            <a
+              href={credlyUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-fit items-center gap-2 rounded-md border border-slate-200/70 bg-white/60 px-3 py-2 text-xs font-semibold tracking-tight text-slate-800 transition-[transform,box-shadow,border-color,background-color] hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-800 dark:bg-slate-950/20 dark:text-slate-100 dark:hover:border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ExternalLink className="h-4 w-4 text-brand" />
+              {t("credentials.proofCredly")}
+            </a>
+          ) : null}
         </div>
       ) : null}
     </div>

@@ -75,7 +75,8 @@
     "kindHigherEducation": "Higher education",
     "statusInProgress": "In progress",
     "proofExternal": "Open certificate",
-    "proofPdf": "Open PDF"
+    "proofPdf": "Open PDF",
+    "proofCredly": "View on Credly"
   },
   "content": {
     "experience": {

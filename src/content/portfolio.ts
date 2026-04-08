@@ -28,6 +28,7 @@ export type Credential = {
   issueYM?: string;
   status?: "inProgress" | "completed";
   proof?: CredentialProof;
+  credlyUrl?: string;
 };
 
 export const experiences: Experience[] = [
@@ -128,6 +129,8 @@ export const credentials: Credential[] = [
       type: "pdf",
       href: "/assets/certificados/SAP2024Certification20260408-31-58uldt.pdf",
     },
+    credlyUrl:
+      "https://www.credly.com/badges/d91a7f87-8e0b-4445-af47-daac97fb2cec/linked_in?t=td6s60",
   },
 ];
 

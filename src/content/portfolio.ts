@@ -119,6 +119,16 @@ export const credentials: Credential[] = [
       href: "/assets/certificados/CLEANCORE-BTP-INTEGRATION-SUITE-KASOLUTION-10-2025.pdf",
     },
   },
+  {
+    id: "sap-certified-fiori-application-developer",
+    title: "SAP Certified - SAP Fiori Application Developer",
+    kind: "certification",
+    issuer: "SAP",
+    proof: {
+      type: "pdf",
+      href: "/assets/certificados/SAP2024Certification20260408-31-58uldt.pdf",
+    },
+  },
 ];
 
 

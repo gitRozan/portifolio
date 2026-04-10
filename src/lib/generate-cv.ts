@@ -1,6 +1,18 @@
 import { Document as DocxDocument, Packer, Paragraph, HeadingLevel } from "docx";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 export type CVLocale = "pt" | "en";
+
+export type CVCredentialSection = {
+  title: string;
+  issuer: string;
+  period?: string;
+  status?: string;
+  credlyUrl?: string;
+  kind?: string;
+  badgeDataUrl?: string;
+};
 
 export type CVData = {
   locale: CVLocale;
@@ -37,12 +49,7 @@ export type CVData = {
     stack: string[];
   }>;
   credentialsTitle: string;
-  credentialsSections: Array<{
-    title: string;
-    issuer: string;
-    period?: string;
-    status?: string;
-  }>;
+  credentialsSections: CVCredentialSection[];
   recommendationsTitle?: string;
   recommendationGroups?: Array<{
     title: string;
@@ -54,24 +61,50 @@ export type CVData = {
   }>;
 };
 
+function groupCredentials(creds: CVCredentialSection[], locale: CVLocale) {
+  const labels =
+    locale === "pt"
+      ? { certification: "Certificações", higherEducation: "Formação", course: "Cursos", badge: "Badges" }
+      : { certification: "Certifications", higherEducation: "Education", course: "Courses", badge: "Badges" };
+
+  const order = ["certification", "higherEducation", "course", "badge"] as const;
+  const groups: Array<{ label: string; items: CVCredentialSection[] }> = [];
+
+  for (const kind of order) {
+    const items = creds.filter((c) => c.kind === kind);
+    if (items.length > 0) {
+      groups.push({ label: labels[kind] ?? kind, items });
+    }
+  }
+
+  const uncategorized = creds.filter((c) => !c.kind || !order.includes(c.kind as (typeof order)[number]));
+  if (uncategorized.length > 0) {
+    groups.push({ label: locale === "pt" ? "Outros" : "Other", items: uncategorized });
+  }
+
+  return groups;
+}
+
 export function generateCVHTML(data: CVData): string {
   const topSkills = data.skillsPrimary.slice(0, 8);
+  const credGroups = groupCredentials(data.credentialsSections, data.locale);
   const strings =
     data.locale === "pt"
       ? {
           lang: "pt-BR",
-          docTitle: "Currículo",
+          docTitle: "Curriculo",
           contact: "Contato",
           email: "Email",
           phone: "Telefone",
           location: "Local",
           linkedin: "LinkedIn",
-          primary: "Primárias",
-          secondary: "Secundárias",
+          primary: "Primarias",
+          secondary: "Secundarias",
           languages: "Idiomas",
           about: "Sobre",
           highlights: "Destaques",
-          references: "Referências",
+          references: "Referencias",
+          verifyCredly: "Verificar no Credly",
         }
       : {
           lang: "en",
@@ -87,6 +120,7 @@ export function generateCVHTML(data: CVData): string {
           about: "About",
           highlights: "Highlights",
           references: "References",
+          verifyCredly: "Verify on Credly",
         };
 
   return `<!DOCTYPE html>
@@ -95,9 +129,6 @@ export function generateCVHTML(data: CVData): string {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${data.name} - ${strings.docTitle}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --ink: #0f172a;
@@ -108,38 +139,25 @@ export function generateCVHTML(data: CVData): string {
       --sidebar: #f8fafc;
       --brand: #2563eb;
       --brand-ink: #1e40af;
-
       --radius: 12px;
-      --space-1: 6px;
-      --space-2: 10px;
-      --space-3: 14px;
-      --space-4: 18px;
-      --space-5: 24px;
-
-      --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      --font-display: "Space Grotesk", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
-      margin: 0;
       background: var(--surface);
       color: var(--text);
       font-family: var(--font-sans);
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
       line-height: 1.45;
+      font-size: 13px;
     }
 
     a { color: inherit; text-decoration: none; }
-    .meta-value a { color: var(--brand); text-decoration: underline; }
+    .link { color: var(--brand); text-decoration: underline; }
 
-    .page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 18px;
-    }
+    .page { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 
     .cv {
       border: 1px solid var(--line);
@@ -147,148 +165,90 @@ export function generateCVHTML(data: CVData): string {
       overflow: hidden;
       background: var(--surface);
     }
-
-    .cv--first {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-    }
-
-    .cv--rest {
-      margin-top: 16px;
-    }
+    .cv--first { display: grid; grid-template-columns: 300px 1fr; }
+    .cv--rest { margin-top: 16px; }
 
     .sidebar {
       background: var(--sidebar);
-      padding: 26px 20px;
+      padding: 24px 18px;
       border-right: 1px solid var(--line);
-    }
-
-    .avatar-wrap {
-      display: flex;
-      justify-content: center;
-      padding-top: 4px;
-    }
-
-    .content {
-      padding: 26px 24px;
+      overflow: hidden;
       min-width: 0;
     }
 
-    .content--full {
-      padding: 26px 24px;
+    .avatar-wrap { display: flex; justify-content: center; }
+    .avatar {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 8px;
+      border: 1px solid rgba(226, 232, 240, 0.7);
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
     }
+
+    .content { padding: 24px 22px; min-width: 0; overflow: hidden; }
+    .content--full { padding: 24px 22px; overflow: hidden; }
 
     .header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 18px;
-      align-items: start;
-      padding-bottom: 18px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--line);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
     .name {
-      font-family: var(--font-display);
-      font-size: 30px;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
       color: var(--ink);
-      margin: 0;
     }
-
     .role {
-      margin-top: 8px;
-      font-size: 13px;
+      margin-top: 6px;
+      font-size: 12px;
       color: var(--muted);
       font-weight: 600;
     }
-
-    .top-skills {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
+    .top-skills { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px; max-width: 100%; overflow: hidden; }
     .chip {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       padding: 4px 10px;
       border-radius: 999px;
       border: 1px solid rgba(37, 99, 235, 0.22);
       background: rgba(37, 99, 235, 0.06);
       color: var(--brand-ink);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       white-space: nowrap;
+      line-height: 1.2;
     }
 
-    .avatar {
-      width: 140px;
-      height: 140px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-
-    .block + .block { margin-top: 18px; }
-
+    .block + .block { margin-top: 16px; }
+    .divider { height: 1px; background: var(--line); margin: 14px 0; }
     .section-title {
-      font-family: var(--font-display);
-      font-size: 12px;
-      letter-spacing: 0.12em;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--ink);
-      margin: 0 0 10px;
+      margin: 0 0 8px;
     }
 
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 16px 0;
-    }
+    .meta-list { display: grid; gap: 8px; font-size: 11.5px; }
+    .meta-item { display: grid; gap: 1px; }
+    .meta-label { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.02em; }
+    .meta-value { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; font-size: 11.5px; }
+    .meta-value a { color: var(--brand); text-decoration: underline; }
 
-    .meta-list {
-      display: grid;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text);
-    }
+    .summary { font-size: 12px; color: var(--text); white-space: pre-line; line-height: 1.5; }
 
-    .meta-item {
-      display: grid;
-      gap: 2px;
-    }
-
-    .meta-label {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    .meta-value {
-      font-weight: 600;
-      color: var(--ink);
-      overflow-wrap: anywhere;
-    }
-
-    .summary {
-      font-size: 12.5px;
-      color: var(--text);
-      white-space: pre-line;
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
+    .tag-list { display: flex; flex-wrap: wrap; gap: 5px; max-width: 100%; overflow: hidden; }
     .tag {
-      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--text);
       background: rgba(15, 23, 42, 0.04);
@@ -296,227 +256,79 @@ export function generateCVHTML(data: CVData): string {
       padding: 4px 8px;
       border-radius: 999px;
       white-space: nowrap;
-    }
-
-    .edu-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .edu-item {
-      display: grid;
-      gap: 4px;
-      padding: 10px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      background: rgba(15, 23, 42, 0.03);
-    }
-
-    .edu-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--ink);
       line-height: 1.2;
     }
 
-    .edu-issuer {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      overflow-wrap: anywhere;
+    .edu-list { display: grid; gap: 8px; }
+    .edu-item {
+      display: grid;
+      gap: 3px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background: rgba(15, 23, 42, 0.02);
     }
+    .edu-header { display: flex; align-items: start; gap: 8px; }
+    .edu-badge { width: 36px; height: 36px; border-radius: 4px; object-fit: contain; flex-shrink: 0; }
+    .edu-text { min-width: 0; }
+    .edu-title { font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .edu-issuer { font-size: 10.5px; font-weight: 600; color: var(--text); }
+    .edu-meta { font-size: 10px; font-weight: 600; color: var(--muted); }
+    .edu-link { font-size: 10px; font-weight: 600; }
 
-    .edu-meta {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-    }
+    .cred-group + .cred-group { margin-top: 12px; }
+    .cred-group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 
-    .rec-group + .rec-group {
-      margin-top: 12px;
-    }
-
-    .rec-group-title {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      color: var(--ink);
-      margin: 0 0 8px;
-    }
-
+    .rec-group + .rec-group { margin-top: 12px; }
+    .rec-group-title { font-size: 11px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
     .rec-card {
-      border-radius: 10px;
-      padding: 10px 10px;
-      border: 1px solid rgba(37, 99, 235, 0.22);
-      background: rgba(37, 99, 235, 0.06);
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      background: rgba(37, 99, 235, 0.04);
     }
+    .rec-card + .rec-card { margin-top: 8px; }
+    .rec-name { font-size: 11.5px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
+    .rec-line { font-size: 10.5px; font-weight: 600; color: var(--text); line-height: 1.3; overflow-wrap: anywhere; }
 
-    .rec-card + .rec-card {
-      margin-top: 10px;
-    }
-
-    .rec-name {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--ink);
-      margin: 0 0 6px;
-    }
-
-    .rec-line {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-    }
-
-    .content-section { margin-top: 18px; }
-
+    .content-section { margin-top: 16px; }
     .item {
-      padding: 12px 12px;
-      border-radius: 12px;
+      padding: 10px;
+      border-radius: 10px;
       border: 1px solid rgba(226, 232, 240, 0.9);
       background: rgba(248, 250, 252, 0.55);
     }
+    .item + .item { margin-top: 8px; }
+    .item-head { display: grid; gap: 1px; margin-bottom: 6px; }
+    .item-title { font-size: 12px; font-weight: 700; color: var(--ink); }
+    .item-subtitle { font-size: 11.5px; color: var(--text); font-weight: 600; }
+    .item-meta { font-size: 10.5px; color: var(--muted); font-weight: 600; }
 
-    .item + .item { margin-top: 10px; }
+    ul.bullets { margin: 0; padding-left: 14px; display: grid; gap: 4px; color: var(--text); font-size: 11.5px; }
+    .subtopic { margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(148, 163, 184, 0.5); }
+    .subtopic-title { font-size: 10.5px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
 
-    .item-head {
-      display: grid;
-      gap: 2px;
-      margin-bottom: 8px;
-    }
-
-    .item-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .item-subtitle {
-      font-size: 12px;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .item-meta {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    ul.bullets {
-      margin: 0;
-      padding-left: 16px;
-      display: grid;
-      gap: 6px;
-      color: var(--text);
-      font-size: 12px;
-    }
-
-    .subtopic {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(148, 163, 184, 0.5);
-    }
-
-    .subtopic-title {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: 0.02em;
-      margin: 0 0 8px;
-    }
-
-    .project-title { font-size: 13px; font-weight: 800; color: var(--ink); }
-    .project-summary { font-size: 12px; color: var(--text); margin-top: 4px; }
-
-    .stack {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
+    .project-title { font-size: 12px; font-weight: 700; color: var(--ink); }
+    .project-summary { font-size: 11.5px; color: var(--text); margin-top: 3px; }
+    .stack { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 5px; max-width: 100%; overflow: hidden; }
     .stack-tag {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: var(--brand-ink);
-      background: rgba(37, 99, 235, 0.08);
-      border: 1px solid rgba(37, 99, 235, 0.18);
-      padding: 3px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600; color: var(--brand-ink);
+      background: rgba(37, 99, 235, 0.06); border: 1px solid rgba(37, 99, 235, 0.16);
+      padding: 3px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.2;
     }
 
     @media print {
-      @page {
-        size: A4;
-        margin: 14mm;
-      }
-
-      * {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      body {
-        background: #ffffff;
-      }
-
-      .page {
-        padding: 0;
-        max-width: none;
-      }
-
-      .cv {
-        border: 0;
-        border-radius: 0;
-      }
-
-      .cv--first {
-        break-after: page;
-      }
-
-      .cv--rest {
-        margin-top: 0;
-      }
-
-      .cv--first .summary {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 8;
-        overflow: hidden;
-      }
-
-      .item,
-      .block,
-      .content-section,
-      .header {
-        break-inside: avoid;
-      }
-
-      .rec-group,
-      .rec-card {
-        break-inside: avoid;
-      }
-
-      .edu-item {
-        break-inside: avoid;
-      }
-
-      .item {
-        background: rgba(248, 250, 252, 0.75);
-      }
-
-      .section-title {
-        break-after: avoid;
-      }
-
-      ul.bullets {
-        orphans: 3;
-        widows: 3;
-      }
+      @page { size: A4; margin: 12mm; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { background: #fff; }
+      .page { padding: 0; max-width: none; }
+      .cv { border: 0; border-radius: 0; }
+      .cv--first { break-after: page; }
+      .cv--rest { margin-top: 0; }
+      .item, .block, .content-section, .header { break-inside: avoid; }
+      .section-title { break-after: avoid; }
+      ul.bullets { orphans: 3; widows: 3; }
     }
   </style>
 </head>
@@ -525,7 +337,7 @@ export function generateCVHTML(data: CVData): string {
     <section class="cv cv--first">
       <aside class="sidebar">
         <div class="avatar-wrap">
-          ${data.photoDataUrl ? `<img class="avatar" src="${data.photoDataUrl}" alt="${data.photoAlt ?? ""}" />` : ""}
+          ${data.photoDataUrl ? `<div class="avatar" role="img" aria-label="${data.photoAlt ?? ""}" style="background-image:url(${data.photoDataUrl})"></div>` : ""}
         </div>
 
         <div class="divider"></div>
@@ -539,7 +351,7 @@ export function generateCVHTML(data: CVData): string {
             </div>
             <div class="meta-item">
               <div class="meta-label">${strings.phone}</div>
-              <div class="meta-value"><a href="tel:${data.phone}">${data.phone}</a></div>
+              <div class="meta-value"><a href="https://api.whatsapp.com/send?phone=${data.phone.replace(/\D/g, "")}">${data.phone}</a></div>
             </div>
             <div class="meta-item">
               <div class="meta-label">${strings.location}</div>
@@ -558,16 +370,12 @@ export function generateCVHTML(data: CVData): string {
           <h2 class="section-title">${data.skillsTitle}</h2>
           <div class="meta-item">
             <div class="meta-label">${strings.primary}</div>
-            <div class="tag-list">
-              ${data.skillsPrimary.map((s) => `<span class="tag">${s}</span>`).join("")}
-            </div>
+            <div class="tag-list">${data.skillsPrimary.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
           </div>
-          <div style="height: 12px"></div>
+          <div style="height:10px"></div>
           <div class="meta-item">
             <div class="meta-label">${strings.secondary}</div>
-            <div class="tag-list">
-              ${data.skillsSecondary.map((s) => `<span class="tag">${s}</span>`).join("")}
-            </div>
+            <div class="tag-list">${data.skillsSecondary.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
           </div>
         </div>
 
@@ -575,48 +383,42 @@ export function generateCVHTML(data: CVData): string {
 
         <div class="block">
           <h2 class="section-title">${strings.languages}</h2>
-          <div class="tag-list">
-            ${data.languages.map((s) => `<span class="tag">${s}</span>`).join("")}
-          </div>
+          <div class="tag-list">${data.languages.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
         </div>
 
-        ${
-          data.credentialsSections && data.credentialsSections.length > 0
-            ? `
+        ${credGroups.length > 0 ? `
         <div class="divider"></div>
-
         <div class="block">
           <h2 class="section-title">${data.credentialsTitle}</h2>
-          <div class="edu-list">
-            ${data.credentialsSections
-              .slice(0, 3)
-              .map(
-                (cred) => `
-            <div class="edu-item">
-              <div class="edu-title">${cred.title}</div>
-              <div class="edu-issuer">${cred.issuer}</div>
-              ${cred.period || cred.status ? `<div class="edu-meta">${cred.period || ""}${cred.period && cred.status ? " • " : ""}${cred.status || ""}</div>` : ""}
+          ${credGroups.map((g) => `
+          <div class="cred-group">
+            <div class="cred-group-label">${g.label}</div>
+            <div class="edu-list">
+              ${g.items.map((cred) => `
+              <div class="edu-item">
+                <div class="edu-header">
+                  ${cred.badgeDataUrl ? `<img class="edu-badge" src="${cred.badgeDataUrl}" alt="" />` : ""}
+                  <div class="edu-text">
+                    <div class="edu-title">${cred.title}</div>
+                    <div class="edu-issuer">${cred.issuer}</div>
+                    ${cred.status ? `<div class="edu-meta">${cred.status}</div>` : ""}
+                    ${cred.credlyUrl ? `<div class="edu-link"><a href="${cred.credlyUrl}" class="link">${strings.verifyCredly}</a></div>` : ""}
+                  </div>
+                </div>
+              </div>
+              `).join("")}
             </div>
-            `
-              )
-              .join("")}
           </div>
+          `).join("")}
         </div>
-        `
-            : ""
-        }
+        ` : ""}
       </aside>
 
       <main class="content">
         <header class="header">
-          <div>
-            <h1 class="name">${data.name}</h1>
-            <div class="role">${data.role}</div>
-            <div class="top-skills">
-              ${topSkills.map((s) => `<span class="chip">${s}</span>`).join("")}
-            </div>
-          </div>
-          <div></div>
+          <h1 class="name">${data.name}</h1>
+          <div class="role">${data.role}</div>
+          <div class="top-skills">${topSkills.map((s) => `<span class="chip">${s}</span>`).join("")}</div>
         </header>
 
         <section class="content-section">
@@ -624,56 +426,35 @@ export function generateCVHTML(data: CVData): string {
           <div class="summary">${data.about}</div>
         </section>
 
-        ${
-          data.highlights && data.highlights.length > 0
-            ? `
+        ${data.highlights && data.highlights.length > 0 ? `
         <section class="content-section">
           <h2 class="section-title">${data.highlightsTitle ?? strings.highlights}</h2>
-          ${data.highlights
-            .slice(0, 4)
-            .map(
-              (x) => `
-          <div class="meta-item" style="margin-top: 10px">
+          ${data.highlights.slice(0, 4).map((x) => `
+          <div class="meta-item" style="margin-top:8px">
             <div class="meta-label">${x.label}</div>
             <div class="meta-value">${x.value}</div>
           </div>
-          `
-            )
-            .join("")}
+          `).join("")}
         </section>
-        `
-            : ""
-        }
+        ` : ""}
 
-        ${
-          data.recommendationGroups && data.recommendationGroups.length > 0
-            ? `
+        ${data.recommendationGroups && data.recommendationGroups.length > 0 ? `
         <section class="content-section">
           <h2 class="section-title">${data.recommendationsTitle ?? strings.references}</h2>
-          ${data.recommendationGroups
-            .map(
-              (g) => `
+          ${data.recommendationGroups.map((g) => `
           <div class="rec-group">
             <div class="rec-group-title">${g.title}</div>
-            ${g.people
-              .map(
-                (p) => `
+            ${g.people.map((p) => `
             <div class="rec-card">
               <div class="rec-name">${p.name}</div>
               ${p.phone ? `<div class="rec-line">${p.phone}</div>` : ""}
               ${p.email ? `<div class="rec-line">${p.email}</div>` : ""}
             </div>
-            `
-              )
-              .join("")}
+            `).join("")}
           </div>
-          `
-            )
-            .join("")}
+          `).join("")}
         </section>
-        `
-            : ""
-        }
+        ` : ""}
       </main>
     </section>
 
@@ -681,9 +462,7 @@ export function generateCVHTML(data: CVData): string {
       <main class="content content--full">
         <section class="content-section">
           <h2 class="section-title">${data.experienceTitle}</h2>
-          ${data.experienceSections
-            .map(
-              (exp) => `
+          ${data.experienceSections.map((exp) => `
             <div class="item">
               <div class="item-head">
                 <div class="item-title">${exp.company}</div>
@@ -693,33 +472,21 @@ export function generateCVHTML(data: CVData): string {
               <ul class="bullets">
                 ${exp.highlights.map((h) => `<li>${h}</li>`).join("")}
               </ul>
-              ${
-                exp.subtopics
-                  ? exp.subtopics
-                      .map(
-                        (sub) => `
+              ${exp.subtopics ? exp.subtopics.map((sub) => `
                 <div class="subtopic">
                   <div class="subtopic-title">${sub.title}</div>
                   <ul class="bullets">
                     ${sub.items.map((item) => `<li>${item}</li>`).join("")}
                   </ul>
                 </div>
-              `
-                      )
-                      .join("")
-                  : ""
-              }
+              `).join("") : ""}
             </div>
-          `
-            )
-            .join("")}
+          `).join("")}
         </section>
 
         <section class="content-section">
           <h2 class="section-title">${data.projectsTitle}</h2>
-          ${data.projectsSections
-            .map(
-              (proj) => `
+          ${data.projectsSections.map((proj) => `
             <div class="item">
               <div class="project-title">${proj.title}</div>
               <div class="project-summary">${proj.summary}</div>
@@ -727,9 +494,7 @@ export function generateCVHTML(data: CVData): string {
                 ${proj.stack.map((tech) => `<span class="stack-tag">${tech}</span>`).join("")}
               </div>
             </div>
-          `
-            )
-            .join("")}
+          `).join("")}
         </section>
       </main>
     </section>
@@ -769,6 +534,29 @@ function waitForImages(doc: Document): Promise<void> {
   return Promise.all(pending).then(() => undefined);
 }
 
+type LinkRect = { href: string; x: number; y: number; w: number; h: number };
+
+function collectLinks(doc: Document, root: Element): LinkRect[] {
+  const rootRect = root.getBoundingClientRect();
+  const links: LinkRect[] = [];
+  const anchors = doc.querySelectorAll("a[href]");
+  anchors.forEach((el) => {
+    const a = el as HTMLAnchorElement;
+    const href = a.href;
+    if (!href || (!href.startsWith("http") && !href.startsWith("mailto:") && !href.startsWith("tel:"))) return;
+    const r = a.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) return;
+    links.push({
+      href,
+      x: r.left - rootRect.left,
+      y: r.top - rootRect.top,
+      w: r.width,
+      h: r.height,
+    });
+  });
+  return links;
+}
+
 export async function downloadPDF(html: string, filename: string): Promise<void> {
   const safeName = filename.toLowerCase().endsWith(".pdf") ? filename : `${filename}.pdf`;
 
@@ -777,7 +565,7 @@ export async function downloadPDF(html: string, filename: string): Promise<void>
   iframe.style.left = "-10000px";
   iframe.style.top = "0";
   iframe.style.width = "1024px";
-  iframe.style.height = "768px";
+  iframe.style.height = "auto";
   iframe.style.border = "0";
   document.body.appendChild(iframe);
 
@@ -789,29 +577,151 @@ export async function downloadPDF(html: string, filename: string): Promise<void>
     doc.write(html);
     doc.close();
 
-    await new Promise((r) => setTimeout(r, 50));
+    await new Promise((r) => setTimeout(r, 200));
     await (doc.fonts?.ready ?? Promise.resolve());
     await waitForImages(doc);
 
-    const win = iframe.contentWindow;
-    if (!win) throw new Error("No iframe window");
+    const pageRoot = doc.querySelector(".page") as HTMLElement;
+    if (!pageRoot) throw new Error("CV root not found");
 
-    await new Promise<void>((resolve) => {
-      let resolved = false;
-      const done = () => {
-        if (resolved) return;
-        resolved = true;
-        resolve();
-      };
+    const allLinks = collectLinks(doc, pageRoot);
 
-      win.addEventListener("afterprint", done, { once: true });
-      win.focus();
-      win.print();
-      window.setTimeout(done, 5000);
+    const canvas = await html2canvas(pageRoot, {
+      backgroundColor: "#ffffff",
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      windowWidth: 1024,
     });
+
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+    const marginMm = 5;
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const contentW = pageW - marginMm * 2;
+    const contentH = pageH - marginMm * 2;
+
+    const pxToMm = contentW / canvas.width;
+    const sliceMaxPx = Math.floor(contentH / pxToMm);
+
+    const breakPoints = findSafeBreaks(doc, pageRoot, canvas.width / pageRoot.clientWidth, sliceMaxPx, canvas.height);
+
+    let renderedPx = 0;
+    let pageIndex = 0;
+
+    for (const breakPx of breakPoints) {
+      const sliceH = breakPx - renderedPx;
+      if (sliceH <= 0) continue;
+
+      const sliceCanvas = document.createElement("canvas");
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = sliceH;
+      const ctx = sliceCanvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas context error");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, sliceCanvas.width, sliceH);
+      ctx.drawImage(canvas, 0, renderedPx, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+
+      const imgData = sliceCanvas.toDataURL("image/jpeg", 0.95);
+      const sliceHeightMm = sliceH * pxToMm;
+
+      if (pageIndex > 0) pdf.addPage();
+      pdf.addImage(imgData, "JPEG", marginMm, marginMm, contentW, sliceHeightMm, undefined, "FAST");
+
+      const canvasScale = canvas.width / pageRoot.clientWidth;
+      const sliceTopPx = renderedPx;
+      const sliceBottomPx = breakPx;
+
+      for (const link of allLinks) {
+        const linkTopPx = link.y * canvasScale;
+        const linkBottomPx = (link.y + link.h) * canvasScale;
+        if (linkBottomPx <= sliceTopPx || linkTopPx >= sliceBottomPx) continue;
+
+        const clippedTop = Math.max(linkTopPx, sliceTopPx);
+        const clippedBottom = Math.min(linkBottomPx, sliceBottomPx);
+
+        const xMm = marginMm + link.x * canvasScale * pxToMm;
+        const yMm = marginMm + (clippedTop - sliceTopPx) * pxToMm;
+        const wMm = link.w * canvasScale * pxToMm;
+        const hMm = (clippedBottom - clippedTop) * pxToMm;
+
+        pdf.link(xMm, yMm, wMm, hMm, { url: link.href });
+      }
+
+      renderedPx = breakPx;
+      pageIndex++;
+    }
+
+    pdf.save(safeName);
   } finally {
     document.body.removeChild(iframe);
   }
+}
+
+function findSafeBreaks(doc: Document, root: HTMLElement, domToCanvasScale: number, maxSlicePx: number, totalHeight: number): number[] {
+  const rootTop = root.getBoundingClientRect().top;
+
+  const forbidden = new Set<number>();
+  const sectionTitles = root.querySelectorAll(".section-title");
+  sectionTitles.forEach((title) => {
+    const titleRect = title.getBoundingClientRect();
+    const titleTopPx = Math.round((titleRect.top - rootTop) * domToCanvasScale);
+    const titleBottomPx = Math.round((titleRect.bottom - rootTop) * domToCanvasScale);
+    for (let px = titleTopPx; px <= titleBottomPx + 20; px++) {
+      forbidden.add(px);
+    }
+  });
+
+  const breakable = root.querySelectorAll(".item, .rec-card, .edu-item, .cred-group, .cv--rest");
+  const edges: number[] = [];
+  breakable.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    const topPx = Math.round((rect.top - rootTop) * domToCanvasScale);
+    if (!forbidden.has(topPx)) {
+      edges.push(topPx);
+    }
+  });
+  edges.sort((a, b) => a - b);
+  const unique = [...new Set(edges)];
+
+  const breaks: number[] = [];
+  let cursor = 0;
+
+  while (cursor < totalHeight) {
+    const ideal = cursor + maxSlicePx;
+    if (ideal >= totalHeight) {
+      breaks.push(totalHeight);
+      break;
+    }
+
+    let best = -1;
+    for (let i = unique.length - 1; i >= 0; i--) {
+      const edge = unique[i];
+      if (edge <= cursor + 10) continue;
+      if (edge <= ideal) {
+        best = edge;
+        break;
+      }
+    }
+
+    if (best <= cursor) {
+      for (const edge of unique) {
+        if (edge > ideal) {
+          best = edge;
+          break;
+        }
+      }
+    }
+
+    if (best <= cursor) {
+      best = ideal;
+    }
+
+    breaks.push(best);
+    cursor = best;
+  }
+
+  return breaks;
 }
 
 function docxP(
@@ -830,10 +740,10 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
           phone: "Telefone",
           location: "Local",
           linkedin: "LinkedIn",
-          primary: "Primárias",
-          secondary: "Secundárias",
+          primary: "Primarias",
+          secondary: "Secundarias",
           languages: "Idiomas",
-          references: "Referências",
+          references: "Referencias",
         }
       : {
           contact: "Contact",
@@ -896,7 +806,7 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
   children.push(docxP(data.credentialsTitle, HeadingLevel.HEADING_2));
   for (const cred of data.credentialsSections) {
     children.push(docxP(cred.title, HeadingLevel.HEADING_3));
-    children.push(docxP(`${cred.issuer}${cred.period ? ` | ${cred.period}` : ""}${cred.status ? ` | ${cred.status}` : ""}`));
+    children.push(docxP(`${cred.issuer}${cred.status ? ` | ${cred.status}` : ""}${cred.credlyUrl ? ` | ${cred.credlyUrl}` : ""}`));
   }
 
   if (data.recommendationGroups?.length) {

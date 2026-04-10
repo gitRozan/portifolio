@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Nicolas Belchior | SAP Fiori & BTP Developer",
-    "description": "Portfólio de Nicolas Belchior — Desenvolvedor SAP Full Stack (ABAP/RAP, Fiori/SAPUI5, SAP BTP, CAP, HANA Cloud, OData/CDS)."
+    "title": "Nicolas Belchior | Consultor SAP Fiori & BTP",
+    "description": "Nicolas Belchior — Consultor SAP Full Stack com 4 anos de experiência em Fiori/SAPUI5, ABAP/RAP e SAP BTP. Certificado SAP Fiori Application Developer."
   },
   "nav": {
     "about": "Sobre",
@@ -15,7 +15,7 @@
   },
   "hero": {
     "name": "Nicolas Belchior",
-    "role": "Desenvolvedor SAP Full Stack | Fiori/SAPUI5, ABAP/RAP e SAP BTP",
+    "role": "SAP Full Stack Developer | Fiori/SAPUI5, ABAP/RAP e SAP BTP",
     "ctaContact": "Fale comigo",
     "ctaDownload": "Baixar CV",
     "cvFormatPdf": "PDF",
@@ -25,35 +25,40 @@
     "cvGenerated": "CV Gerado (HTML)"
   },
   "about": {
-    "kicker": "ABAP RAP • SAP Fiori • SAP BTP • Entregas em produção",
-    "headline": "Desenvolvimento SAP com foco em entregar features estáveis, integradas e com boa experiência de uso.",
-    "body": "Desenvolvo em SAP Full Stack desde 2022: SAP Fiori/SAPUI5 no front-end e ABAP (RAP), CDS Views e serviços OData no back-end.\n\nAtuo em produção sustentando contratos OData estáveis, modelagem CDS consistente e performance que suporta o uso real do time — evolução contínua sem quebrar integrações ou degradar experiência.\n\nNo SAP BTP, arquitetei e implementei soluções com SAP CAP, SAP Integration Suite (iFlows) e SAP HANA Cloud em cenários greenfield. Já liderei entregas em SAPUI5 com suporte offline (HAT/Asset Manager) em operações de conectividade limitada.",
+    "kicker": "Consultor SAP · SAP Certified Fiori Application Developer · ABAP/RAP e BTP",
+    "headline": "Consultor SAP Full Stack com 4 anos de experiência em S/4HANA, Fiori e BTP.",
+    "body": "Consultor SAP Full Stack com 4 anos de atuação em projetos S/4HANA, BTP e Fiori. Trabalho no desenvolvimento e sustentação de aplicações ABAP (RAP), CDS Views, serviços OData e interfaces Fiori/SAPUI5, com foco em entregas estáveis e integradas ao contexto real do cliente.\n\nNo front-end, construo e evoluo aplicações Fiori/SAPUI5 (freestyle e templates Fiori) com aderência às Fiori Design Guidelines. No back-end, trabalho com ABAP (RAP) e CDS Views priorizando contratos OData previsíveis, performance e rastreabilidade.\n\nNo SAP BTP, atuei em soluções greenfield com SAP CAP, Integration Suite (iFlows) e HANA Cloud. Já liderei entregas com suporte offline (HAT/Asset Manager) para operações de campo com conectividade limitada.",
     "locationLabel": "Base",
-    "location": "São Paulo - REMOTO",
-    "photoAlt": "Foto profissional",
+    "location": "Minas Gerais · São Paulo · Remoto",
+    "photoAlt": "Foto profissional de Nicolas Belchior",
     "photoFallback": "NB",
     "photoLabel": "Retrato",
     "facts": {
-      "xpLabel": "Experiência (SAP)",
-      "xpValue": "2022 → hoje",
-      "focusLabel": "Foco principal",
-      "focusValue": "Fiori/UI5 • ABAP/RAP • Integração • Sustentação em produção",
+      "xpLabel": "Experiência SAP",
+      "xpValue": "4 anos (2022 → hoje)",
+      "focusLabel": "Especialização",
+      "focusValue": "Fiori/UI5 · ABAP/RAP · BTP · Sustentação",
       "stackLabel": "Core stack",
-      "stackValue": "SAP Fiori/SAPUI5 • ABAP/RAP • CDS • OData • SAP BTP (CAP, Integration Suite) • HANA Cloud",
-      "signalValue": "OData estável • iFlows em produção • RAP/CDS • Entregas sustentáveis"
+      "stackValue": "SAP Fiori/SAPUI5 · ABAP/RAP · CDS · OData · SAP BTP (CAP, Integration Suite) · HANA Cloud",
+      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais · São Paulo · Remoto"
     }
   },
   "experience": {
     "title": "Experiência",
-    "since": "Trajetória SAP (2022 — hoje)"
+    "since": "Consultor SAP desde 2022",
+    "present": "Presente",
+    "year": "ano",
+    "years": "anos",
+    "month": "mês",
+    "months": "meses"
   },
   "projects": {
     "title": "Projetos",
     "tabSap": "Ecossistema SAP",
     "tabWeb": "Web / Full Stack",
-    "viewProject": "Ver projeto",
-    "deepDive": "Detalhamento técnico",
-    "impact": "Impacto no negócio",
+    "viewProject": "Ver detalhes",
+    "deepDive": "Como foi construído",
+    "impact": "O que resolveu",
     "gallery": "Galeria",
     "badgeSap": "SAP",
     "badgeWeb": "WEB"
@@ -186,7 +191,7 @@
     "projects": {
       "cockpit-veiculos": {
         "title": "Cockpit de Gerenciamento de Veículos (ACCÇÃO)",
-        "summary": "Gestão de frotas com rastreio e integrações externas.",
+        "summary": "Visibilidade de frota em tempo próximo do real com validações automáticas e integração com Detran.",
         "technicalDeepDive": [
           "UI5 Freestyle com consumo de serviços OData",
           "Integração em BTP e persistência/consulta em HANA Cloud",
@@ -199,7 +204,7 @@
       },
       "integracao-ecommerce-domvs": {
         "title": "Integração E-commerce (Domvs IT)",
-        "summary": "Arquitetura de integração para conciliação financeira e saneamento de vendas duplicadas em plataformas externas.",
+        "summary": "Eliminou vendas duplicadas e automatizou conciliação financeira entre SAP e plataforma de e-commerce.",
         "technicalDeepDive": [
           "SAP CAP como camada de serviço e modelagem de dados",
           "SAP Integration Suite (iFlows) para orquestração e rastreabilidade ponta a ponta",
@@ -213,7 +218,7 @@
       },
       "sipal-otimizacao-agricola": {
         "title": "SIPAL Otimização Agrícola",
-        "summary": "Ferramentas para otimização do time de campo com foco em eficiência.",
+        "summary": "Modernizou processos agrícolas de campo com apps Fiori e dados consistentes via CDS/RAP.",
         "technicalDeepDive": [
           "Modelagem com CDS Views e exposição via RAP",
           "Camada ABAP para regras e validações",
@@ -226,7 +231,7 @@
       },
       "appgraos-brf": {
         "title": "AppGrãos (BRF)",
-        "summary": "Aplicativo híbrido com suporte offline para compra de commodities e cálculo de frete.",
+        "summary": "App híbrido com operação offline para compra de commodities e cálculo de frete — campo sem sinal incluso.",
         "technicalDeepDive": [
           "UI5 em HAT com estratégia de armazenamento offline",
           "Fluxos para cálculo de frete e validações",
@@ -239,7 +244,7 @@
       },
       "leiloes-agrobold": {
         "title": "Leilões AgroBold",
-        "summary": "Plataforma de leilão em tempo real com atualização contínua.",
+        "summary": "Plataforma de leilão com lances em tempo real via WebSocket — latência baixa para alta taxa de eventos.",
         "technicalDeepDive": [
           "Integração WebSocket para lances em tempo real",
           "Back-end em PHP para regras e persistência",
@@ -252,7 +257,7 @@
       },
       "leilao-cotas": {
         "title": "Leilão Cotas",
-        "summary": "App de gestão de investimentos com back-end serverless.",
+        "summary": "App mobile serverless para gestão de investimentos com escala automática e integração AWS.",
         "technicalDeepDive": [
           "Arquitetura serverless para escalar por demanda",
           "App móvel com UX focada em dados e segurança",
@@ -274,4 +279,3 @@
     "whatsapp": "WhatsApp"
   }
 }
-

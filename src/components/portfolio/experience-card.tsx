@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/cn";
+import { computeDuration } from "@/lib/duration";
 import type { Experience } from "@/content/portfolio";
 
 type Props = {
@@ -29,6 +30,17 @@ export function ExperienceCard({ experience, className }: Props) {
   const role = t(`content.experience.${experience.id}.role`);
   const start = t(`content.experience.${experience.id}.start`);
   const end = t(`content.experience.${experience.id}.end`);
+
+  const duration = useMemo(
+    () =>
+      computeDuration(experience.startYM, end, t("experience.present"), {
+        year: t("experience.year"),
+        years: t("experience.years"),
+        month: t("experience.month"),
+        months: t("experience.months"),
+      }),
+    [experience.startYM, end, t]
+  );
   const highlights = useMemo(() => {
     const key = `content.experience.${experience.id}.highlights`;
     const raw = "has" in t && typeof (t as unknown as { has: (k: string) => boolean }).has === "function" && !(t as unknown as { has: (k: string) => boolean }).has(key)
@@ -85,8 +97,9 @@ export function ExperienceCard({ experience, className }: Props) {
               <div className="truncate text-sm font-semibold tracking-tight">{experience.company}</div>
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">{role}</div>
             </div>
-            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              {start} — {end}
+            <div className="text-right text-xs font-medium text-slate-500 dark:text-slate-400">
+              <div>{start} — {end}</div>
+              {duration && <div className="text-[11px]">{duration}</div>}
             </div>
           </div>
           {highlights.length ? (

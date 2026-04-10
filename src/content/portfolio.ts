@@ -29,6 +29,7 @@ export type Credential = {
   status?: "inProgress" | "completed";
   proof?: CredentialProof;
   credlyUrl?: string;
+  badgeImageUrl?: string;
 };
 
 export const experiences: Experience[] = [
@@ -107,7 +108,7 @@ export const credentials: Credential[] = [
     id: "bsc-compsci",
     title: "Ciência da Computação",
     kind: "higherEducation",
-    issuer: "Ensino Superior",
+    issuer: "Universidade",
     status: "inProgress",
   },
   {
@@ -115,6 +116,7 @@ export const credentials: Credential[] = [
     title: "SAP BTP e Clean Core",
     kind: "course",
     issuer: "Ka Solution",
+    issueYM: "2025-10",
     proof: {
       type: "pdf",
       href: "/assets/certificados/CLEANCORE-BTP-INTEGRATION-SUITE-KASOLUTION-10-2025.pdf",
@@ -125,12 +127,14 @@ export const credentials: Credential[] = [
     title: "SAP Certified - SAP Fiori Application Developer",
     kind: "certification",
     issuer: "SAP",
+    issueYM: "2024-01",
     proof: {
       type: "pdf",
       href: "/assets/certificados/SAP2024Certification20260408-31-58uldt.pdf",
     },
     credlyUrl:
       "https://www.credly.com/badges/d91a7f87-8e0b-4445-af47-daac97fb2cec/linked_in?t=td6s60",
+    badgeImageUrl: "/assets/certificados/badge-cfiord.png",
   },
 ];
 

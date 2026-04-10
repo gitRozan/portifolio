@@ -91,9 +91,9 @@ export function AboutSection({ className }: { className?: string }) {
           <div className="grid gap-6 md:grid-cols-12 md:items-start">
             <div className="md:col-span-8">
               <div className="grid gap-3">
-                <div className="text-[11px] font-semibold tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                <p className="text-pretty text-base font-medium text-slate-700 dark:text-slate-200">
                   {t("about.headline")}
-                </div>
+                </p>
                 <div className="grid gap-3">
                   {paragraphs.map((p, i) => (
                     <p key={`${i}-${p}`} className="text-pretty text-sm text-slate-600 dark:text-slate-300 md:text-base">

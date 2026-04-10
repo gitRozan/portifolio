@@ -12,8 +12,8 @@ const siteUrl = "https://nicolasbelchior.com";
 const ogImage = `${siteUrl}/assets/profile.jpg`;
 
 export const metadata: Metadata = {
-  title: "Nicolas Belchior | SAP Fiori & BTP Developer",
-  description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
+  title: "Nicolas Belchior | Consultor SAP Fiori & BTP",
+  description: "Nicolas Belchior — Consultor SAP Full Stack com 4 anos em Fiori/SAPUI5, ABAP/RAP e SAP BTP. SAP Certified Fiori Application Developer.",
   metadataBase: new URL(siteUrl),
   icons: {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Nicolas Belchior | SAP Fiori & BTP Developer",
-    description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
+    title: "Nicolas Belchior | Consultor SAP Fiori & BTP",
+    description: "Nicolas Belchior — Consultor SAP Full Stack com 4 anos em Fiori/SAPUI5, ABAP/RAP e SAP BTP. SAP Certified Fiori Application Developer.",
     type: "website",
     url: `${siteUrl}/`,
     siteName: "Nicolas Belchior",
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nicolas Belchior | SAP Fiori & BTP Developer",
-    description: "Nicolas Belchior — SAP Full Stack Developer, especialista em Fiori e SAP BTP.",
+    title: "Nicolas Belchior | Consultor SAP Fiori & BTP",
+    description: "Nicolas Belchior — Consultor SAP Full Stack com 4 anos em Fiori/SAPUI5, ABAP/RAP e SAP BTP. SAP Certified Fiori Application Developer.",
     images: [ogImage],
   },
 };
@@ -54,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="pt-BR" className="dark" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

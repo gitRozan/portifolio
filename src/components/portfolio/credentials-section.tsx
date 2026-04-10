@@ -3,7 +3,9 @@
 import Image from "next/image";
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { isLocale } from "@/i18n/locales";
+import { formatYM } from "@/lib/format-ym";
 import { Award, GraduationCap, BadgeCheck, ExternalLink, FileText } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { credentials, type Credential, type CredentialKind } from "@/content/portfolio";
@@ -13,22 +15,6 @@ function kindIcon(kind: CredentialKind) {
   if (kind === "badge") return <BadgeCheck className="h-4 w-4 text-brand" />;
   if (kind === "certification") return <Award className="h-4 w-4 text-brand" />;
   return <GraduationCap className="h-4 w-4 text-brand" />;
-}
-
-function safeYM(ym: string) {
-  return /^\d{4}-\d{2}$/.test(ym) ? ym : "";
-}
-
-function formatYM(ym: string) {
-  const safe = safeYM(ym);
-  if (!safe) return "";
-  const [y, m] = safe.split("-");
-  const dt = new Date(Number(y), Number(m) - 1, 1);
-  try {
-    return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short" }).format(dt);
-  } catch {
-    return safe;
-  }
 }
 
 const HOVER_PREVIEW_DELAY_MS = 400;
@@ -50,8 +36,11 @@ function Card({
   canHoverPreview: boolean;
 }) {
   const t = useTranslations();
+  const currentLocale = useLocale();
+  const uiLocale = isLocale(currentLocale) ? currentLocale : "en";
   const cardRef = useRef<HTMLDivElement>(null);
-  const date = item.issueYM ? formatYM(item.issueYM) : "";
+  const issue = item.issueYM ? formatYM(item.issueYM, uiLocale) : "";
+  const validEnd = item.validUntilYM ? formatYM(item.validUntilYM, uiLocale) : "";
   const proof = item.proof?.href && item.proof.href.trim().length ? item.proof : null;
   const isPdf = proof?.type === "pdf";
   const credlyUrl = item.credlyUrl?.trim() || "";
@@ -90,7 +79,11 @@ function Card({
           <div className="text-xs font-semibold tracking-tight text-slate-500 dark:text-slate-400">
             {item.issuer}
             {item.status === "inProgress" ? ` • ${t("credentials.statusInProgress")}` : ""}
-            {date ? ` • ${date}` : ""}
+            {issue && validEnd
+              ? ` • ${issue} • ${t("credentials.validUntil", { date: validEnd })}`
+              : issue
+                ? ` • ${issue}`
+                : ""}
           </div>
         </div>
         </div>

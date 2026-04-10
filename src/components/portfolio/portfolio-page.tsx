@@ -23,6 +23,7 @@ import {
   getAssetAsDataUrl,
   type CVData,
 } from "@/lib/generate-cv";
+import { computeDuration } from "@/lib/duration";
 
 export function PortfolioPage() {
   const t = useTranslations();
@@ -131,10 +132,18 @@ export function PortfolioPage() {
               .filter((sub) => sub.title.length > 0 && sub.items.length > 0);
           }
         }
+        const expStart = t(`content.experience.${exp.id}.start`);
+        const expEnd = t(`content.experience.${exp.id}.end`);
+        const dur = computeDuration(exp.startYM, expEnd, t("experience.present"), {
+          year: t("experience.year"),
+          years: t("experience.years"),
+          month: t("experience.month"),
+          months: t("experience.months"),
+        });
         return {
           company: exp.company,
           role: t(`content.experience.${exp.id}.role`),
-          period: `${t(`content.experience.${exp.id}.start`)} - ${t(`content.experience.${exp.id}.end`)}`,
+          period: `${expStart} - ${expEnd}${dur ? ` (${dur})` : ""}`,
           highlights: toStringArray(t.raw(`content.experience.${exp.id}.highlights`)),
           subtopics,
         };
@@ -150,22 +159,35 @@ export function PortfolioPage() {
         stack: proj.stack,
       })),
       credentialsTitle: t("credentials.title"),
-      credentialsSections: credentials.map((cred) => ({
-        title: cred.title,
-        issuer: cred.issuer,
-        period: cred.issueYM,
-        status: cred.status === "inProgress" ? t("credentials.statusInProgress") : undefined,
-      })),
+      credentialsSections: await Promise.all(
+        credentials.map(async (cred) => ({
+          title: cred.title,
+          issuer: cred.issuer,
+          period: cred.issueYM,
+          status: cred.status === "inProgress" ? t("credentials.statusInProgress") : undefined,
+          credlyUrl: cred.credlyUrl,
+          kind: cred.kind,
+          badgeDataUrl: cred.badgeImageUrl
+            ? (await getAssetAsDataUrl(cred.badgeImageUrl)) ?? undefined
+            : undefined,
+        }))
+      ),
       recommendationsTitle,
       recommendationGroups,
     };
   };
 
+  const cvFileName = (ext: string) => {
+    const now = new Date();
+    const monthName = now.toLocaleString(locale === "pt" ? "pt-BR" : "en-US", { month: "long" });
+    const cap = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+    return `Nicolas Belchior _ SAP ABAP Fiori & BTP Developer - ${cap} ${now.getFullYear()}.${ext}`;
+  };
+
   const handleDownloadCV = async () => {
     const cvData = await getCvData();
     const html = generateCVHTML(cvData);
-    const fileName = `${t("hero.name").replace(/\s+/g, "_")}_CV_${new Date().toISOString().split("T")[0]}.pdf`;
-    await downloadPDF(html, fileName);
+    await downloadPDF(html, cvFileName("pdf"));
   };
 
   const handleDownloadDocx = async () => {
@@ -174,7 +196,7 @@ export function PortfolioPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${t("hero.name").replace(/\s+/g, "_")}_CV_${new Date().toISOString().split("T")[0]}.docx`;
+    a.download = cvFileName("docx");
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -544,14 +566,6 @@ export function PortfolioPage() {
               </ul>
             </div>
 
-            <div className="grid gap-2">
-              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t("projects.gallery")}</div>
-              <div className="grid grid-cols-3 gap-2">
-                <div className="aspect-[4/3] rounded-lg border border-slate-200/70 bg-slate-950/5 dark:border-slate-800 dark:bg-slate-100/10" />
-                <div className="aspect-[4/3] rounded-lg border border-slate-200/70 bg-slate-950/5 dark:border-slate-800 dark:bg-slate-100/10" />
-                <div className="aspect-[4/3] rounded-lg border border-slate-200/70 bg-slate-950/5 dark:border-slate-800 dark:bg-slate-100/10" />
-              </div>
-            </div>
           </div>
         ) : null}
       </Modal>

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Nicolas Belchior | SAP Fiori & BTP Developer",
-    "description": "Portfolio of Nicolas Belchior — SAP Full Stack Developer (ABAP/RAP, Fiori/SAPUI5, SAP BTP, CAP, HANA Cloud, OData/CDS)."
+    "title": "Nicolas Belchior | SAP Fiori & BTP Consultant",
+    "description": "Nicolas Belchior — SAP Full Stack Consultant with 4 years of experience in Fiori/SAPUI5, ABAP/RAP and SAP BTP. SAP Certified Fiori Application Developer."
   },
   "nav": {
     "about": "About",
@@ -25,35 +25,40 @@
     "cvGenerated": "Generated CV (HTML)"
   },
   "about": {
-    "kicker": "ABAP RAP • SAP Fiori • SAP BTP • Delivery in production",
-    "headline": "SAP development focused on stable delivery, solid integrations, and user-friendly execution.",
-    "body": "I have been developing in SAP Full Stack since 2022: SAP Fiori/SAPUI5 on the front end and ABAP (RAP), CDS Views, and OData services on the back end.\n\nI work in production sustaining stable OData contracts, consistent CDS modeling, and performance that supports real team usage — continuous evolution without breaking integrations or degrading experience.\n\nOn SAP BTP, I have architected and implemented solutions with SAP CAP, SAP Integration Suite (iFlows), and SAP HANA Cloud in greenfield scenarios. I have also led deliveries in SAPUI5 with offline support (HAT/Asset Manager) in operations with limited connectivity.",
+    "kicker": "SAP Consultant · SAP Certified Fiori Application Developer · ABAP/RAP and BTP",
+    "headline": "SAP Full Stack Consultant with 4 years of experience in S/4HANA, Fiori and BTP.",
+    "body": "SAP Full Stack Consultant with 4 years of experience on S/4HANA, BTP, and Fiori projects. I work on the development and support of ABAP (RAP), CDS Views, OData services, and Fiori/SAPUI5 interfaces, focused on stable deliveries aligned to the client's real operational context.\n\nOn the front end, I build and evolve Fiori/SAPUI5 applications (freestyle and templates) aligned with Fiori Design Guidelines. On the back end, I work with ABAP (RAP) and CDS Views prioritizing predictable OData contracts, performance, and traceability.\n\nOn SAP BTP, I have worked on greenfield solutions with SAP CAP, Integration Suite (iFlows), and HANA Cloud. I have led deliveries with offline support (HAT/Asset Manager) for field operations with limited connectivity.",
     "locationLabel": "Base",
-    "location": "São Paulo - REMOTE",
-    "photoAlt": "Professional photo",
+    "location": "Minas Gerais · São Paulo · Remote",
+    "photoAlt": "Professional photo of Nicolas Belchior",
     "photoFallback": "NB",
     "photoLabel": "Portrait",
     "facts": {
-      "xpLabel": "Experience (SAP)",
-      "xpValue": "2022 → now",
-      "focusLabel": "Primary focus",
-      "focusValue": "Fiori/UI5 • ABAP/RAP • Integration • Production support",
+      "xpLabel": "SAP Experience",
+      "xpValue": "4 years (2022 → now)",
+      "focusLabel": "Specialization",
+      "focusValue": "Fiori/UI5 · ABAP/RAP · BTP · Support",
       "stackLabel": "Core stack",
-      "stackValue": "SAP Fiori/SAPUI5 • ABAP/RAP • CDS • OData • SAP BTP (CAP, Integration Suite) • HANA Cloud",
-      "signalValue": "Stable OData • iFlows in production • RAP/CDS • Sustainable delivery"
+      "stackValue": "SAP Fiori/SAPUI5 · ABAP/RAP · CDS · OData · SAP BTP (CAP, Integration Suite) · HANA Cloud",
+      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais · São Paulo · Remote"
     }
   },
   "experience": {
     "title": "Experience",
-    "since": "SAP trajectory (2022 — present)"
+    "since": "SAP Consultant since 2022",
+    "present": "Present",
+    "year": "year",
+    "years": "years",
+    "month": "month",
+    "months": "months"
   },
   "projects": {
     "title": "Projects",
     "tabSap": "SAP Ecosystem",
     "tabWeb": "Web/Full Stack",
-    "viewProject": "View Project",
-    "deepDive": "Technical Deep Dive",
-    "impact": "Business Impact",
+    "viewProject": "View details",
+    "deepDive": "How it was built",
+    "impact": "What it solved",
     "gallery": "Gallery",
     "badgeSap": "SAP",
     "badgeWeb": "WEB"
@@ -186,7 +191,7 @@
     "projects": {
       "cockpit-veiculos": {
         "title": "Vehicle Management Cockpit (ACCÇÃO)",
-        "summary": "Fleet management with tracking and external integrations.",
+        "summary": "Near real-time fleet visibility with automatic validations and Detran integration.",
         "technicalDeepDive": [
           "UI5 Freestyle consuming OData services",
           "BTP integration and persistence/querying on HANA Cloud",
@@ -199,7 +204,7 @@
       },
       "integracao-ecommerce-domvs": {
         "title": "E-commerce Integration (Domvs IT)",
-        "summary": "Integration architecture for financial reconciliation and duplicate sales cleanup in external platforms.",
+        "summary": "Eliminated duplicate sales and automated financial reconciliation between SAP and e-commerce platform.",
         "technicalDeepDive": [
           "SAP CAP as a service layer and data modeling",
           "SAP Integration Suite (iFlows) for orchestration and end-to-end traceability",
@@ -213,7 +218,7 @@
       },
       "sipal-otimizacao-agricola": {
         "title": "SIPAL Agricultural Optimization",
-        "summary": "Tools to optimize the field team with a focus on efficiency.",
+        "summary": "Modernized field agricultural processes with Fiori apps and consistent data via CDS/RAP.",
         "technicalDeepDive": [
           "CDS Views modeling and exposure via RAP",
           "ABAP layer for rules and validations",
@@ -226,7 +231,7 @@
       },
       "appgraos-brf": {
         "title": "AppGrãos (BRF)",
-        "summary": "Hybrid app with offline support for commodity purchases and freight calculation.",
+        "summary": "Hybrid app with offline operation for commodity purchases and freight calculation — low signal included.",
         "technicalDeepDive": [
           "UI5 in HAT with an offline storage strategy",
           "Freight calculation flows and validations",
@@ -239,7 +244,7 @@
       },
       "leiloes-agrobold": {
         "title": "AgroBold Auctions",
-        "summary": "Real-time auction platform with continuous updates.",
+        "summary": "Real-time auction platform with WebSocket bids — low latency for high event throughput.",
         "technicalDeepDive": [
           "WebSocket integration for real-time bids",
           "PHP backend for rules and persistence",
@@ -252,7 +257,7 @@
       },
       "leilao-cotas": {
         "title": "Quota Auction",
-        "summary": "Investment management app with a serverless backend.",
+        "summary": "Serverless mobile app for investment quota management with auto-scaling and AWS integration.",
         "technicalDeepDive": [
           "Serverless architecture to scale on demand",
           "Mobile app UX focused on data and security",
@@ -274,4 +279,3 @@
     "whatsapp": "WhatsApp"
   }
 }
-

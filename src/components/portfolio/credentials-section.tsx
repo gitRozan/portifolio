@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
@@ -54,6 +55,7 @@ function Card({
   const proof = item.proof?.href && item.proof.href.trim().length ? item.proof : null;
   const isPdf = proof?.type === "pdf";
   const credlyUrl = item.credlyUrl?.trim() || "";
+  const badgeImageUrl = item.badgeImageUrl?.trim() || "";
 
   const handleMouseEnter = useCallback(() => {
     if (!isPdf || !canHoverPreview || !cardRef.current) return;
@@ -76,7 +78,13 @@ function Card({
       onKeyDown={(e) => isPdf && (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpenCertificate(item))}
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="grid gap-1">
+        <div className="flex items-start gap-3">
+          {badgeImageUrl ? (
+            <div className="overflow-hidden rounded-md border border-slate-200/70 bg-white/70 p-1 dark:border-slate-800 dark:bg-slate-950/30">
+              <Image src={badgeImageUrl} alt={item.title} width={44} height={44} className="h-11 w-11 rounded-sm object-contain" />
+            </div>
+          ) : null}
+          <div className="grid gap-1">
           <div className="text-[11px] font-semibold tracking-tight text-slate-500 dark:text-slate-400">{label}</div>
           <div className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">{item.title}</div>
           <div className="text-xs font-semibold tracking-tight text-slate-500 dark:text-slate-400">
@@ -84,6 +92,7 @@ function Card({
             {item.status === "inProgress" ? ` • ${t("credentials.statusInProgress")}` : ""}
             {date ? ` • ${date}` : ""}
           </div>
+        </div>
         </div>
         <div className="shrink-0">{kindIcon(item.kind)}</div>
       </div>
@@ -185,7 +194,7 @@ export function CredentialsSection({ className }: { className?: string }) {
     return byKind;
   }, []);
 
-  const kinds: CredentialKind[] = ["higherEducation", "course", "certification", "badge"];
+  const kinds: CredentialKind[] = ["certification", "higherEducation", "course", "badge"];
   const total = credentials.length;
 
   return (

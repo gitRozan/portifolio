@@ -401,6 +401,7 @@ export function generateCVHTML(data: CVData): string {
                   <div class="edu-text">
                     <div class="edu-title">${cred.title}</div>
                     <div class="edu-issuer">${cred.issuer}</div>
+                    ${cred.period ? `<div class="edu-meta">${cred.period}</div>` : ""}
                     ${cred.status ? `<div class="edu-meta">${cred.status}</div>` : ""}
                     ${cred.credlyUrl ? `<div class="edu-link"><a href="${cred.credlyUrl}" class="link">${strings.verifyCredly}</a></div>` : ""}
                   </div>
@@ -806,7 +807,11 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
   children.push(docxP(data.credentialsTitle, HeadingLevel.HEADING_2));
   for (const cred of data.credentialsSections) {
     children.push(docxP(cred.title, HeadingLevel.HEADING_3));
-    children.push(docxP(`${cred.issuer}${cred.status ? ` | ${cred.status}` : ""}${cred.credlyUrl ? ` | ${cred.credlyUrl}` : ""}`));
+    children.push(
+      docxP(
+        `${cred.issuer}${cred.period ? ` | ${cred.period}` : ""}${cred.status ? ` | ${cred.status}` : ""}${cred.credlyUrl ? ` | ${cred.credlyUrl}` : ""}`
+      )
+    );
   }
 
   if (data.recommendationGroups?.length) {

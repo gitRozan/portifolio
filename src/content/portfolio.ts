@@ -26,6 +26,7 @@ export type Credential = {
   kind: CredentialKind;
   issuer: string;
   issueYM?: string;
+  validUntilYM?: string;
   status?: "inProgress" | "completed";
   proof?: CredentialProof;
   credlyUrl?: string;
@@ -127,7 +128,8 @@ export const credentials: Credential[] = [
     title: "SAP Certified - SAP Fiori Application Developer",
     kind: "certification",
     issuer: "SAP",
-    issueYM: "2024-01",
+    issueYM: "2026-04",
+    validUntilYM: "2027-04",
     proof: {
       type: "pdf",
       href: "/assets/certificados/SAP2024Certification20260408-31-58uldt.pdf",

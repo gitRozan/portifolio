@@ -81,7 +81,8 @@
     "statusInProgress": "Em andamento",
     "proofExternal": "Abrir certificado",
     "proofPdf": "Abrir PDF",
-    "proofCredly": "Ver no Credly"
+    "proofCredly": "Ver no Credly",
+    "validUntil": "válida até {date}"
   },
   "content": {
     "experience": {

@@ -24,6 +24,7 @@ import {
   type CVData,
 } from "@/lib/generate-cv";
 import { computeDuration } from "@/lib/duration";
+import { formatYM } from "@/lib/format-ym";
 
 export function PortfolioPage() {
   const t = useTranslations();
@@ -163,7 +164,12 @@ export function PortfolioPage() {
         credentials.map(async (cred) => ({
           title: cred.title,
           issuer: cred.issuer,
-          period: cred.issueYM,
+          period:
+            cred.issueYM && cred.validUntilYM
+              ? `${formatYM(cred.issueYM, locale)} – ${formatYM(cred.validUntilYM, locale)}`
+              : cred.issueYM
+                ? formatYM(cred.issueYM, locale)
+                : undefined,
           status: cred.status === "inProgress" ? t("credentials.statusInProgress") : undefined,
           credlyUrl: cred.credlyUrl,
           kind: cred.kind,

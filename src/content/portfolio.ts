@@ -112,11 +112,14 @@ export const experiences: Experience[] = [
   },
 ];
 
+// Ordem SAP intencional: cases mais fortes primeiro (escala/impacto verificavel),
+// nao ordem cronologica. AppGraos e Domvs sao os dois cases com numero e resultado
+// de negocio explicito; Cockpit e SIPAL sao mais descritivos.
 export const projects: Project[] = [
   {
-    id: "cockpit-veiculos",
+    id: "appgraos-brf",
     category: "sap",
-    stack: ["SAPUI5 Freestyle", "OData", "SAP BTP", "HANA Cloud"],
+    stack: ["Hybrid App (HAT)", "SAPUI5", "Offline"],
   },
   {
     id: "integracao-ecommerce-domvs",
@@ -124,14 +127,14 @@ export const projects: Project[] = [
     stack: ["SAP CAP", "SAP Integration Suite (iFlows)", "SAP BTP", "HANA Cloud"],
   },
   {
+    id: "cockpit-veiculos",
+    category: "sap",
+    stack: ["SAPUI5 Freestyle", "OData", "SAP BTP", "HANA Cloud"],
+  },
+  {
     id: "sipal-otimizacao-agricola",
     category: "sap",
     stack: ["Fiori", "ABAP", "RAP", "CDS Views"],
-  },
-  {
-    id: "appgraos-brf",
-    category: "sap",
-    stack: ["Hybrid App (HAT)", "SAPUI5", "Offline"],
   },
   {
     id: "leiloes-agrobold",
@@ -156,22 +159,24 @@ export type SkillGroup = {
  * lista solta, entao cada termo daqui tambem aparece dentro de pelo menos um
  * bullet de experiencia. Nao adicionar termo que nao se sustente em entrevista.
  */
+// Ordem intencional: Fiori primeiro (main skill), depois ABAP. Sao os unicos
+// grupos garantidos visiveis sem rolagem no mobile, onde o grid vira 1 coluna.
 export const skillGroups: SkillGroup[] = [
   {
-    id: "platforms",
-    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Fiori Launchpad", "SAP Build Work Zone"],
+    id: "frontend",
+    items: ["SAP Fiori", "SAPUI5", "Fiori Elements", "Fiori Freestyle", "Fiori Design Guidelines", "CDS Annotations", "Metadata Extensions", "Value Help", "SAP Business Application Studio", "SAP Web IDE", "Hybrid App Toolkit (HAT)", "SAP Asset Manager"],
   },
   {
     id: "abapModern",
     items: ["ABAP", "ABAP Cloud", "ABAP OO", "RAP", "CDS Views", "Behavior Definition", "Behavior Implementation", "Draft", "Actions", "Determinations", "Validations", "Eclipse ADT"],
   },
   {
-    id: "abapClassic",
-    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC"],
+    id: "platforms",
+    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Fiori Launchpad", "SAP Build Work Zone"],
   },
   {
-    id: "frontend",
-    items: ["SAP Fiori", "SAPUI5", "Fiori Elements", "Fiori Freestyle", "Fiori Design Guidelines", "CDS Annotations", "Metadata Extensions", "Value Help", "SAP Business Application Studio", "SAP Web IDE", "Hybrid App Toolkit (HAT)", "SAP Asset Manager"],
+    id: "abapClassic",
+    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC"],
   },
   {
     id: "integration",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Nicolas Belchior | Desenvolvedor ABAP Fiori Senior",
-    "description": "Nicolas Belchior — Desenvolvedor ABAP Fiori Senior na EY. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer."
+    "description": "Nicolas Belchior, Desenvolvedor ABAP Fiori Senior na EY. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer."
   },
   "nav": {
     "about": "Sobre",
@@ -20,15 +20,15 @@
     "role": "Desenvolvedor ABAP Fiori Senior | RAP, BTP, CAP e Clean Core",
     "ctaContact": "Fale comigo",
     "ctaDownload": "Baixar CV",
-    "cvFormatWord": "Word (.docx) — recomendado para ATS",
-    "cvFormatPdf": "PDF — versão visual"
+    "cvFormatWord": "Versão DOCX",
+    "cvFormatPdf": "Versão PDF"
   },
   "about": {
     "kicker": "EY · SAP Certified Fiori Application Developer · Clean Core & ABAP Cloud",
     "headline": "Do GAP ao go-live: RAP, Fiori e BTP em projetos greenfield ECC e S/4HANA.",
-    "body": "Desenvolvedor ABAP Fiori Senior na EY, na fábrica de software de projetos greenfield ECC e S/4HANA, onde já entreguei mais de 20 GAPs do zero. Percorro o ciclo inteiro — análise de GAP, especificação técnica, sprint e entrega funcional — sem modificação do standard.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
+    "body": "Desenvolvedor ABAP Fiori Senior na EY, na fábrica de software de projetos greenfield ECC e S/4HANA, onde já entreguei mais de 20 GAPs do zero. Percorro o ciclo inteiro (análise de GAP, especificação técnica, sprint e entrega funcional) sem modificação do standard.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
     "locationLabel": "Base",
-    "location": "Minas Gerais, Brasil — disponível para São Paulo e remoto",
+    "location": "Minas Gerais, Brasil · 100% remoto",
     "photoAlt": "Foto profissional de Nicolas Belchior",
     "photoFallback": "NB",
     "photoLabel": "Retrato",
@@ -39,7 +39,7 @@
       "focusValue": "RAP · Fiori Freestyle · CAP · Clean Core",
       "stackLabel": "Core stack",
       "stackValue": "SAP ECC · S/4HANA · Fiori/SAPUI5 · ABAP/RAP · CDS · OData · SAP BTP (CAP, Integration Suite) · HANA Cloud",
-      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais, Brasil · Remoto"
+      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais, Brasil · 100% remoto"
     }
   },
   "experience": {
@@ -58,7 +58,6 @@
     "viewProject": "Ver detalhes",
     "deepDive": "Como foi construído",
     "impact": "O que resolveu",
-    "gallery": "Galeria",
     "badgeSap": "SAP",
     "badgeWeb": "WEB"
   },
@@ -96,7 +95,7 @@
         "start": "Abr 2026",
         "end": "Presente",
         "highlights": [
-          "Mais de 20 GAPs entregues do zero na fábrica de software da EY, em projetos greenfield ECC e S/4HANA — da análise à entrega funcional, dentro do calendário de sprints acordado com o cliente final.",
+          "Mais de 20 GAPs entregues do zero na fábrica de software da EY, em projetos greenfield ECC e S/4HANA, da análise à entrega funcional, dentro do calendário de sprints acordado com o cliente final.",
           "Modelagem RAP end-to-end em ABAP Cloud: CDS Views, Behavior Definition e Implementation, actions, determinations e validations, com Service Definition e Service Binding expondo OData V4.",
           "Elaboração de Especificações Técnicas (ET) e Testes Unitários Técnicos (TUT), com desenvolvimento em Eclipse ADT e transporte controlado via TASK/TR."
         ],
@@ -114,7 +113,7 @@
             "items": [
               "Objetos ABAP Cloud e serviços RAP com CDS Views, annotations e Metadata Extensions, priorizando contratos OData estáveis e desacoplamento entre camadas.",
               "Aplicações Fiori Elements e Freestyle sobre RAP, com draft handling, value help e ações customizadas, integradas ao back-end ECC/S/4HANA.",
-              "Extensibilidade side-by-side em SAP BTP com SAP CAP — sem modificação do standard, garantindo upgradeability sob Clean Core."
+              "Extensibilidade side-by-side em SAP BTP com SAP CAP, sem modificação do standard, garantindo upgradeability sob Clean Core."
             ]
           }
         ]
@@ -134,7 +133,7 @@
         ],
         "subtopics": [
           {
-            "title": "Cliente/Alocação: SIPAL — Otimização Agrícola",
+            "title": "Cliente/Alocação: SIPAL, Otimização Agrícola",
             "items": [
               "Apps SAPUI5/Fiori para gestão agrícola, com exposição de dados via CDS Views, RAP e SAP Gateway (SEGW).",
               "Serviços OData V2 e V4 com extensão de serviços standard, reduzindo acoplamento e retrabalho entre camadas.",
@@ -142,15 +141,15 @@
             ]
           },
           {
-            "title": "Cliente/Alocação: BRF — AppGrãos",
+            "title": "Cliente/Alocação: BRF, AppGrãos",
             "items": [
-              "App híbrido SAPUI5 (HAT) multicanal — web, mobile, online e offline — para compra de commodities, operando em campo sem sinal e sincronizando ao reconectar.",
+              "App híbrido SAPUI5 (HAT) multicanal, cobrindo web, mobile, online e offline, para compra de commodities, operando em campo sem sinal e sincronizando ao reconectar.",
               "Integração OData sobre base SAP com milhões de registros, com validação e rastreabilidade transacional em cada sincronização.",
               "Entrega e evolução de fluxos críticos (cálculo de frete, validações de contrato) executáveis pelo comprador direto no talhão."
             ]
           },
           {
-            "title": "São Salvador Alimentos (SSA) — Sustentação Técnica SAP (ABAP, Fiori e Asset Manager)",
+            "title": "São Salvador Alimentos (SSA): Sustentação Técnica SAP (ABAP, Fiori e Asset Manager)",
             "items": [
               "Sustentação ECC e S/4HANA em ABAP OO e procedural: correções em BAdIs, User Exits e Enhancement Points sobre módulos standard, sem quebrar upgradeability.",
               "Interfaces SAP ↔ sistemas externos via BAPI, RFC, IDoc e Web Services, com tratamento de erro e reprocessamento rastreável.",
@@ -196,7 +195,7 @@
             ]
           },
           {
-            "title": "Domvs IT — Estruturação da célula SAP e produtos greenfield em SAP BTP",
+            "title": "Domvs IT: Estruturação da célula SAP e produtos greenfield em SAP BTP",
             "items": [
               "Estruturação da célula SAP: prospecção técnica e definição de arquitetura para ECC, S/4HANA e SAP BTP.",
               "Produtos greenfield em SAP BTP com SAP CAP: CDS model, HDI container em SAP HANA Cloud e service handlers em Node.js, empacotados como MTA e publicados no Cloud Foundry com Approuter e XSUAA.",
@@ -228,13 +227,13 @@
         "title": "Cockpit de Gerenciamento de Veículos (ACCÇÃO)",
         "summary": "Visibilidade de frota em tempo próximo do real com validações automáticas e integração com Detran.",
         "technicalDeepDive": [
-          "UI5 Freestyle com consumo de serviços OData",
-          "Integração em BTP e persistência/consulta em HANA Cloud",
-          "Integração com Detran para validações e status"
+          "SAPUI5 Freestyle consumindo servicos OData expostos por SAP ECC/S-4HANA para dados de frota, motoristas e veiculos.",
+          "Persistencia e consulta em SAP HANA Cloud via SAP BTP, com orquestracao entre front-end Fiori e back-end SAP.",
+          "Integracao com Detran para validacao de status de veiculos em tempo proximo do real, com tratamento de erro por chamada."
         ],
         "businessImpact": [
-          "Visibilidade operacional em tempo próximo do real",
-          "Redução de esforço manual em conciliações e consultas"
+          "Visibilidade de frota em tempo proximo do real, sem consulta manual planilha a planilha.",
+          "Reducao de retrabalho em conciliacoes entre dados operacionais e status oficial do Detran."
         ]
       },
       "integracao-ecommerce-domvs": {
@@ -255,18 +254,18 @@
         "title": "SIPAL Otimização Agrícola",
         "summary": "Modernizou processos agrícolas de campo com apps Fiori e dados consistentes via CDS/RAP.",
         "technicalDeepDive": [
-          "Modelagem com CDS Views e exposição via RAP",
-          "Camada ABAP para regras e validações",
-          "Fiori com UX orientada a execução rápida"
+          "CDS Views e servicos RAP expostos via SAP Gateway (SEGW), com OData V2 e V4 conforme o consumidor.",
+          "Camada ABAP para regras de negocio e validacoes de campo antes da persistencia.",
+          "Apps Fiori com UX simplificada para uso por equipes de campo em conexao instavel."
         ],
         "businessImpact": [
-          "Processos de campo mais rápidos e padronizados",
-          "Melhor rastreabilidade de operações"
+          "Processos de campo padronizados entre equipes, reduzindo variacao de execucao por usuario.",
+          "Rastreabilidade de operacoes agricolas ponta a ponta, do lancamento a consulta."
         ]
       },
       "appgraos-brf": {
         "title": "AppGrãos (BRF)",
-        "summary": "App multicanal (web, mobile, online e offline) para compra de commodities sobre base SAP com milhões de registros — opera no talhão sem sinal.",
+        "summary": "App multicanal (web, mobile, online e offline) para compra de commodities sobre base SAP com milhões de registros, operando no talhão sem sinal.",
         "technicalDeepDive": [
           "SAPUI5 em HAT com store offline e sincronização ao reconectar",
           "OData sobre base SAP com milhões de registros, com validação transacional",
@@ -279,7 +278,7 @@
       },
       "leiloes-agrobold": {
         "title": "Leilões AgroBold",
-        "summary": "Plataforma de leilão com lances em tempo real via WebSocket — latência baixa para alta taxa de eventos.",
+        "summary": "Plataforma de leilão com lances em tempo real via WebSocket, com latência baixa para alta taxa de eventos.",
         "technicalDeepDive": [
           "Integração WebSocket para lances em tempo real",
           "Back-end em PHP para regras e persistência",
@@ -306,7 +305,7 @@
     },
     "references": {
       "maylon-zanardi": {
-        "context": "Tech Lead no projeto Freestyle — BRF AppGrãos (Sustentação AMS)"
+        "context": "Tech Lead no projeto Freestyle, BRF AppGrãos (Sustentação AMS)"
       },
       "mauricio-oliveira": {
         "context": "Tech Lead na fábrica (RAP, CDS, Fiori)"
@@ -331,9 +330,9 @@
       ],
       "groups": {
         "platforms": "Plataformas SAP",
-        "abapModern": "Back-end ABAP moderno",
+        "abapModern": "SAP ABAP",
         "abapClassic": "ABAP clássico / ECC",
-        "frontend": "Front-end SAP",
+        "frontend": "SAP Fiori",
         "integration": "Serviços e integração",
         "btpDev": "SAP BTP / CAP",
         "architecture": "Arquitetura e processo",

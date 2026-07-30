@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 
@@ -14,18 +14,55 @@ type Props = {
   children: ReactNode;
 };
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function Modal({ open, onClose, title, children }: Props) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     if (!open) return;
+
+    // Guarda quem abriu o modal pra devolver o foco ao fechar, e move o foco
+    // pro dialog imediatamente (senao o Tab continua no botao que disparou o
+    // clique, atras do backdrop).
+    triggerRef.current = document.activeElement as HTMLElement | null;
+    dialogRef.current?.focus();
+
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+
+      const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", onKeyDown);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = prevOverflow;
+      triggerRef.current?.focus();
     };
   }, [open, onClose]);
 
@@ -44,12 +81,15 @@ export function Modal({ open, onClose, title, children }: Props) {
             onClick={onClose}
           />
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={title}
+            tabIndex={-1}
             className={cn(
               "absolute left-1/2 top-1/2 w-[min(720px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2",
-              "rounded-md border border-slate-200/70 bg-white/60 text-card-fg shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60"
+              "rounded-md border border-slate-200/70 bg-white/60 text-card-fg shadow-soft backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/60",
+              "outline-none"
             )}
             initial={{ y: 12, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}

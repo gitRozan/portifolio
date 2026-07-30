@@ -286,6 +286,10 @@ export function generateCVHTML(data: CVData): string {
 
     .summary { font-size: 12px; color: var(--text); white-space: pre-line; line-height: 1.5; }
 
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+    .skill-group { min-width: 0; }
+    .skill-group .meta-label { margin-bottom: 5px; }
+
     .tag-list { display: flex; flex-wrap: wrap; gap: 5px; max-width: 100%; overflow: hidden; }
     .tag {
       display: inline-flex;
@@ -411,22 +415,6 @@ export function generateCVHTML(data: CVData): string {
         <div class="divider"></div>
 
         <div class="block">
-          <h2 class="section-title">${data.skillsTitle}</h2>
-          ${data.skillGroups
-            .map(
-              (g, i) => `
-          ${i > 0 ? '<div style="height:10px"></div>' : ""}
-          <div class="meta-item">
-            <div class="meta-label">${g.label}</div>
-            <div class="tag-list">${g.items.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
-          </div>`
-            )
-            .join("")}
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="block">
           <h2 class="section-title">${strings.languages}</h2>
           <div class="tag-list">${data.languages.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
         </div>
@@ -483,6 +471,21 @@ export function generateCVHTML(data: CVData): string {
           `).join("")}
         </section>
         ` : ""}
+
+        <section class="content-section">
+          <h2 class="section-title">${data.skillsTitle}</h2>
+          <div class="skills-grid">
+            ${data.skillGroups
+              .map(
+                (g) => `
+            <div class="skill-group">
+              <div class="meta-label">${g.label}</div>
+              <div class="tag-list">${g.items.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
+            </div>`
+              )
+              .join("")}
+          </div>
+        </section>
       </main>
     </section>
 

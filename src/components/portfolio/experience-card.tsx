@@ -98,7 +98,7 @@ export function ExperienceCard({ experience, className }: Props) {
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">{role}</div>
             </div>
             <div className="text-right text-xs font-medium text-slate-500 dark:text-slate-400">
-              <div>{start} — {end}</div>
+              <div>{start} – {end}</div>
               {duration && <div className="text-[11px]">{duration}</div>}
             </div>
           </div>

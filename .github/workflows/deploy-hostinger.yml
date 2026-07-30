@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install
@@ -51,8 +51,8 @@ jobs:
       - name: Configurar chave SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_HOST: ${{ vars.SSH_HOST || secrets.SSH_HOST }}
+          SSH_PORT: ${{ vars.SSH_PORT || secrets.SSH_PORT }}
         run: |
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
@@ -65,19 +65,40 @@ jobs:
       # ~/domains/ ou para o home apagaria os outros sites com --delete-after.
       - name: Validar REMOTE_PATH
         env:
-          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+          # vars tem prioridade: caminho nao e' segredo e aparece legivel no log.
+          REMOTE_PATH: ${{ vars.REMOTE_PATH || secrets.REMOTE_PATH }}
         run: |
+          if [ -z "$REMOTE_PATH" ]; then
+            echo "::error::REMOTE_PATH nao esta definido em Secrets nem em Variables."
+            exit 1
+          fi
+
+          echo "Diagnostico (sem expor o caminho completo):"
+          echo "  tamanho ............. ${#REMOTE_PATH} caracteres"
+          echo "  ultimos 14 chars .... '${REMOTE_PATH: -14}'"
+          case "$REMOTE_PATH" in
+            *public_html*) echo "  contem public_html .. sim" ;;
+            *) echo "  contem public_html .. NAO" ;;
+          esac
+          case "$REMOTE_PATH" in
+            */) echo "  termina com barra ... sim" ;;
+            *) echo "  termina com barra ... NAO   <-- causa mais comum" ;;
+          esac
+
           case "$REMOTE_PATH" in
             */public_html/) echo "REMOTE_PATH ok" ;;
-            *) echo "::error::REMOTE_PATH deve terminar em '/public_html/' (com barra final). Recebido algo diferente — abortando antes de tocar no servidor."; exit 1 ;;
+            *)
+              echo "::error::REMOTE_PATH precisa terminar exatamente em '/public_html/'. Esperado: /home/SEU_USUARIO/domains/SEU_DOMINIO/public_html/"
+              exit 1
+              ;;
           esac
 
       - name: Deploy via rsync
         env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+          SSH_HOST: ${{ vars.SSH_HOST || secrets.SSH_HOST }}
+          SSH_USER: ${{ vars.SSH_USER || secrets.SSH_USER }}
+          SSH_PORT: ${{ vars.SSH_PORT || secrets.SSH_PORT }}
+          REMOTE_PATH: ${{ vars.REMOTE_PATH || secrets.REMOTE_PATH }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
           if [ "$DRY_RUN" = "true" ]; then

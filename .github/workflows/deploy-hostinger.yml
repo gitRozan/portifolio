@@ -2,13 +2,24 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - ".gitignore"
+      - "LICENSE"
   workflow_dispatch:
 
+# Um deploy por vez. Sem isso, dois pushes seguidos abrem duas sessoes
+# simultaneas contra o mesmo host — foi parte do que disparou o alarme.
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: true
+
 jobs:
-  web-deploy:
+  deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,18 +36,55 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./out/
-          server-dir: ./
-          dangerous-clean-slate: true
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
+      - name: Sanity check do build
+        run: |
+          test -f out/index.html || { echo "::error::out/index.html nao existe — build falhou silenciosamente"; exit 1; }
+          test -f out/pt/index.html || { echo "::error::out/pt/index.html nao existe"; exit 1; }
+          test -f out/en/index.html || { echo "::error::out/en/index.html nao existe"; exit 1; }
+          echo "Arquivos a sincronizar: $(find out -type f | wc -l)"
 
+      - name: Configurar chave SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # Fixa a identidade do host em vez de desligar a verificacao.
+          ssh-keyscan -p "${SSH_PORT:-65002}" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+        run: |
+          # -z              comprime em transito
+          # --checksum      decide por hash, nao por mtime (build regenera mtime de tudo)
+          # --delete-after  transfere TUDO primeiro, so' entao remove orfaos.
+          #                 O padrao (--delete-before) apaga antes de enviar: se a
+          #                 conexao cair no meio, o site fica quebrado no ar.
+          # --no-perms
+          # --no-times      hospedagem compartilhada costuma recusar chmod/utime
+          rsync -rlvz \
+            --checksum \
+            --delete-after \
+            --no-perms --no-times --omit-dir-times \
+            --exclude '.git*' \
+            --exclude 'node_modules' \
+            --exclude '.well-known/' \
+            --exclude 'cgi-bin/' \
+            --exclude 'google*.html' \
+            --exclude '*.txt.verification' \
+            --human-readable \
+            --stats \
+            -e "ssh -p ${SSH_PORT:-65002} -o BatchMode=yes -o ConnectTimeout=20" \
+            out/ "$SSH_USER@$SSH_HOST:$REMOTE_PATH"
+
+      - name: Limpar credenciais
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519

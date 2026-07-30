@@ -5,12 +5,16 @@ export type CVLocale = "pt" | "en";
 export type CVCredentialSection = {
   title: string;
   issuer: string;
+  examCode?: string;
+  credentialId?: string;
   period?: string;
   status?: string;
   credlyUrl?: string;
   kind?: string;
   badgeDataUrl?: string;
 };
+
+export type CVSkillGroup = { label: string; items: string[] };
 
 export type CVData = {
   locale: CVLocale;
@@ -37,8 +41,7 @@ export type CVData = {
     }>;
   }>;
   skillsTitle: string;
-  skillsPrimary: string[];
-  skillsSecondary: string[];
+  skillGroups: CVSkillGroup[];
   languages: string[];
   projectsTitle: string;
   projectsSections: Array<{
@@ -126,7 +129,7 @@ function renderReferencesSectionHTML(data: CVData, strings: { references: string
 }
 
 export function generateCVHTML(data: CVData): string {
-  const topSkills = data.skillsPrimary.slice(0, 8);
+  const topSkills = data.skillGroups.flatMap((g) => g.items).slice(0, 8);
   const credGroups = groupCredentials(data.credentialsSections, data.locale);
   const strings =
     data.locale === "pt"
@@ -409,15 +412,16 @@ export function generateCVHTML(data: CVData): string {
 
         <div class="block">
           <h2 class="section-title">${data.skillsTitle}</h2>
+          ${data.skillGroups
+            .map(
+              (g, i) => `
+          ${i > 0 ? '<div style="height:10px"></div>' : ""}
           <div class="meta-item">
-            <div class="meta-label">${strings.primary}</div>
-            <div class="tag-list">${data.skillsPrimary.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
-          </div>
-          <div style="height:10px"></div>
-          <div class="meta-item">
-            <div class="meta-label">${strings.secondary}</div>
-            <div class="tag-list">${data.skillsSecondary.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
-          </div>
+            <div class="meta-label">${g.label}</div>
+            <div class="tag-list">${g.items.map((s) => `<span class="tag">${s}</span>`).join("")}</div>
+          </div>`
+            )
+            .join("")}
         </div>
 
         <div class="divider"></div>
@@ -821,14 +825,41 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
       .map((line) => docxP(line)),
     new Paragraph({ text: "" }),
 
-    docxP(strings.skills, HeadingLevel.HEADING_1),
-    docxP(`${strings.primary}: ${data.skillsPrimary.join(", ")}`),
-    docxP(`${strings.secondary}: ${data.skillsSecondary.join(", ")}`),
-    docxP(`${strings.languages}: ${data.languages.join(", ")}`),
-    new Paragraph({ text: "" }),
-
-    docxP(strings.experience, HeadingLevel.HEADING_1),
   ];
+
+  const educationItems = data.credentialsSections.filter((c) => c.kind === "higherEducation");
+  const otherCredentials = data.credentialsSections.filter((c) => c.kind !== "higherEducation");
+
+  const renderCredential = (cred: CVCredentialSection) => {
+    const heading = cred.examCode ? `${cred.title} (${cred.examCode})` : cred.title;
+    children.push(docxP(heading, HeadingLevel.HEADING_2));
+    const meta = [
+      cred.issuer,
+      cred.period,
+      cred.status,
+      cred.credentialId ? `ID: ${cred.credentialId}` : undefined,
+      cred.credlyUrl,
+    ]
+      .filter(Boolean)
+      .join(" | ");
+    if (meta) children.push(docxP(meta));
+  };
+
+  // Em SAP a certificacao e' criterio de triagem, nao rodape: vai logo apos o resumo.
+  if (otherCredentials.length) {
+    children.push(docxP(strings.certifications, HeadingLevel.HEADING_1));
+    otherCredentials.forEach(renderCredential);
+    children.push(new Paragraph({ text: "" }));
+  }
+
+  children.push(docxP(strings.skills, HeadingLevel.HEADING_1));
+  for (const group of data.skillGroups) {
+    children.push(docxP(`${group.label}: ${group.items.join(", ")}`));
+  }
+  children.push(docxP(`${strings.languages}: ${data.languages.join(", ")}`));
+  children.push(new Paragraph({ text: "" }));
+
+  children.push(docxP(strings.experience, HeadingLevel.HEADING_1));
 
   for (const exp of data.experienceSections) {
     children.push(docxP(`${exp.role} — ${exp.company}`, HeadingLevel.HEADING_2));
@@ -847,24 +878,9 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
     children.push(new Paragraph({ text: "" }));
   }
 
-  const educationItems = data.credentialsSections.filter((c) => c.kind === "higherEducation");
-  const otherCredentials = data.credentialsSections.filter((c) => c.kind !== "higherEducation");
-
-  const renderCredential = (cred: CVCredentialSection) => {
-    children.push(docxP(cred.title, HeadingLevel.HEADING_2));
-    const meta = [cred.issuer, cred.period, cred.status, cred.credlyUrl].filter(Boolean).join(" | ");
-    if (meta) children.push(docxP(meta));
-  };
-
   if (educationItems.length) {
     children.push(docxP(strings.education, HeadingLevel.HEADING_1));
     educationItems.forEach(renderCredential);
-    children.push(new Paragraph({ text: "" }));
-  }
-
-  if (otherCredentials.length) {
-    children.push(docxP(strings.certifications, HeadingLevel.HEADING_1));
-    otherCredentials.forEach(renderCredential);
     children.push(new Paragraph({ text: "" }));
   }
 

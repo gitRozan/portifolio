@@ -25,6 +25,10 @@ export type Credential = {
   title: string;
   kind: CredentialKind;
   issuer: string;
+  /** Codigo oficial do exame SAP (ex.: C_FIORD_2404). Recrutador SAP busca por codigo. */
+  examCode?: string;
+  /** ID publico da credencial, para verificacao. */
+  credentialId?: string;
   issueYM?: string;
   validUntilYM?: string;
   status?: "inProgress" | "completed";
@@ -141,10 +145,51 @@ export const projects: Project[] = [
   }
 ];
 
-export const skills = {
-  primary: ["SAP ECC", "S/4HANA", "SAP Fiori", "SAPUI5", "SAP BTP", "ABAP", "RAP", "CDS Views", "CAP", "HANA Cloud"],
-  secondary: ["React.js", "Vue.js", "Node.js", "PHP", "TypeScript"]
+export type SkillGroup = {
+  /** Chave em content.skills.groups.<id> nos arquivos de mensagem. */
+  id: string;
+  items: string[];
 };
+
+/**
+ * Taxonomia agrupada por dominio. ATS moderno pontua skill com contexto acima de
+ * lista solta, entao cada termo daqui tambem aparece dentro de pelo menos um
+ * bullet de experiencia. Nao adicionar termo que nao se sustente em entrevista.
+ */
+export const skillGroups: SkillGroup[] = [
+  {
+    id: "platforms",
+    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Fiori Launchpad", "SAP Build Work Zone"],
+  },
+  {
+    id: "abapModern",
+    items: ["ABAP", "ABAP Cloud", "ABAP OO", "RAP", "CDS Views", "Behavior Definition", "Behavior Implementation", "Draft", "Actions", "Determinations", "Validations", "Eclipse ADT"],
+  },
+  {
+    id: "abapClassic",
+    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC"],
+  },
+  {
+    id: "frontend",
+    items: ["SAP Fiori", "SAPUI5", "Fiori Elements", "Fiori Freestyle", "Fiori Design Guidelines", "CDS Annotations", "Metadata Extensions", "Value Help", "SAP Business Application Studio", "SAP Web IDE", "Hybrid App Toolkit (HAT)", "SAP Asset Manager"],
+  },
+  {
+    id: "integration",
+    items: ["OData V2", "OData V4", "SAP Gateway (SEGW)", "Service Definition & Binding", "SAP Integration Suite", "iFlows", "API Management", "Event Mesh", "Cloud Connector", "Destination Service", "XSUAA"],
+  },
+  {
+    id: "btpDev",
+    items: ["SAP CAP", "CDS Model", "HDI Container", "Node.js Service Handlers", "MTA", "Approuter"],
+  },
+  {
+    id: "architecture",
+    items: ["Clean Core", "Extensibilidade side-by-side", "SAP Activate", "Transportes (TASK/TR)", "Azure DevOps", "Git"],
+  },
+  {
+    id: "web",
+    items: ["JavaScript", "TypeScript", "React.js", "Vue.js", "Node.js", "PHP", "MySQL", "HTML/CSS"],
+  },
+];
 
 export const credentials: Credential[] = [
   {
@@ -170,6 +215,10 @@ export const credentials: Credential[] = [
     title: "SAP Certified - SAP Fiori Application Developer",
     kind: "certification",
     issuer: "SAP",
+    // TODO Nicolas: confirme o codigo do exame no seu portal SAP (provavelmente C_FIORD_2404)
+    // e preencha abaixo. Recrutador SAP filtra por codigo, nao so' por nome.
+    examCode: "C_FIORD",
+    credentialId: "d91a7f87-8e0b-4445-af47-daac97fb2cec",
     issueYM: "2026-04",
     validUntilYM: "2027-04",
     proof: {

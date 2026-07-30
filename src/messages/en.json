@@ -64,8 +64,6 @@
   },
   "skills": {
     "title": "Skills",
-    "primary": "Primary",
-    "secondary": "Secondary",
     "languages": "Languages"
   },
   "references": {
@@ -99,8 +97,8 @@
         "end": "Present",
         "highlights": [
           "20+ GAPs delivered from scratch at EY’s software factory, on greenfield ECC and S/4HANA projects — from analysis to functional delivery, within the sprint calendar agreed with the end client.",
-          "Production of complete technical documentation (ET, TUT and specification artifacts), organizing requirements and functional gaps before and throughout the development cycle.",
-          "Full stack SAP development with RAP, ABAP Cloud, Fiori Freestyle, SAP CAP and SAP BTP, strictly applying Clean Core principles and side-by-side extensibility."
+          "End-to-end RAP modeling in ABAP Cloud: CDS Views, Behavior Definition and Implementation, actions, determinations and validations, with Service Definition and Service Binding exposing OData V4.",
+          "Technical Specifications (ET) and Technical Unit Tests (TUT), developed in Eclipse ADT with controlled transports via TASK/TR."
         ],
         "subtopics": [
           {
@@ -114,9 +112,9 @@
           {
             "title": "Greenfield development and Clean Core architecture",
             "items": [
-              "Build of ABAP Cloud objects and RAP services with CDS Views and OData, prioritizing stable contracts and decoupling across layers.",
-              "Development of Fiori Freestyle applications and SAP CAP solutions on SAP BTP, integrated with the ECC/S/4HANA back end following extensibility standards.",
-              "Architecture decisions guided by Clean Core — no standard modification — ensuring upgradeability and adherence to SAP best practices."
+              "ABAP Cloud objects and RAP services with CDS Views, annotations and Metadata Extensions, prioritizing stable OData contracts and decoupling across layers.",
+              "Fiori Elements and Freestyle apps on top of RAP, with draft handling, value help and custom actions, integrated with the ECC/S/4HANA back end.",
+              "Side-by-side extensibility on SAP BTP with SAP CAP — no modification to standard, ensuring upgradeability under Clean Core."
             ]
           }
         ]
@@ -138,9 +136,9 @@
           {
             "title": "Client/Allocation: SIPAL — Agricultural Optimization",
             "items": [
-              "Development and optimization of SAPUI5/Fiori apps to modernize agricultural management processes.",
-              "Data exposure via CDS Views and RAP with robust OData services, reducing coupling and rework across layers.",
-              "UX and performance improvements focused on fast execution for field and back-office teams."
+              "SAPUI5/Fiori apps for agricultural management, exposing data through CDS Views, RAP and SAP Gateway (SEGW).",
+              "OData V2 and V4 services with standard service extensions, reducing coupling and rework across layers.",
+              "UX and performance tuning for fast execution by field and back-office teams."
             ]
           },
           {
@@ -154,11 +152,11 @@
           {
             "title": "São Salvador Alimentos (SSA) — SAP Technical Support (ABAP, Fiori and Asset Manager)",
             "items": [
-              "Provided support and continuous improvement for SAP solutions, focusing on reliability, traceability and delivery agility.",
-              "Resolved functional and technical tickets with fixes and enhancements in CDS Views, OData services and ABAP logic.",
-              "Maintained and evolved Fiori freestyle apps and custom extensions over standard SAP modules, aligning the system to client processes.",
-              "Worked with Eclipse ADT and transports via TASK/TR, maintaining delivery discipline and impact control.",
-              "Delivered SAP Asset Manager configurations and technical extensions to align the app with maintenance and asset management flows."
+              "ECC and S/4HANA support in object-oriented and procedural ABAP: fixes in BAdIs, User Exits and Enhancement Points on standard modules, without breaking upgradeability.",
+              "SAP ↔ external system interfaces via BAPI, RFC, IDoc and Web Services, with error handling and traceable reprocessing.",
+              "ALV reports, Module Pool, SmartForms/Adobe Forms and BDC data loads, plus fixes in CDS Views, OData services and ABAP logic.",
+              "Development in Eclipse ADT with transports via TASK/TR and impact control across DEV, QAS and PRD.",
+              "SAP Asset Manager: configuration and technical extensions aligned to maintenance and asset management flows."
             ]
           },
           {
@@ -174,9 +172,8 @@
         "start": "May 2021",
         "end": "Mar 2022",
         "highlights": [
-          "Developed and maintained MVC-based web systems for auctions, focused on operational flow and consistent UX.",
-          "Built integrations with external APIs (WhatsApp, Instagram, and others) and business rules connected to SQL/MySQL databases.",
-          "Delivered responsive, performant interfaces in Vue.js with stable back-end integration and continuous product evolution."
+          "MVC web systems for an auction platform in Vue.js and PHP, with real-time bidding over WebSocket.",
+          "Integrations with external APIs (WhatsApp, Instagram) and business rules on MySQL."
         ]
       },
       "ztg": {
@@ -184,10 +181,10 @@
         "start": "Mar 2022",
         "end": "Apr 2025",
         "highlights": [
-          "Developed SAPUI5 freestyle applications and Fiori templates for ECC and S/4HANA landscapes, aligned with Fiori Design Guidelines and focused on usability and performance.",
-          "Worked on SAP BTP (NEO) using Web IDE and SAP Business Application Studio (BAS), covering development, deployment, and support.",
-          "Integrated with SAP ECC and S/4HANA back ends via OData, keeping contracts clear and layers decoupled across UI, services, and data.",
-          "Delivered custom components/controls and contributed full stack in JavaScript/Node.js and front-end (React/HTML/CSS) when required by the project."
+          "SAPUI5 Freestyle and Fiori Elements applications for ECC and S/4HANA, aligned with Fiori Design Guidelines and deployed to the SAP Fiori Launchpad (FLP).",
+          "SAP BTP (Neo) with SAP Web IDE and Business Application Studio (BAS), covering development, deployment and support.",
+          "Back-end integrations via SAP Gateway (SEGW) and OData V2, with clear contracts and decoupling across UI, services and data.",
+          "Custom SAPUI5 components and controls, with full stack contributions in JavaScript/TypeScript and Node.js."
         ],
         "subtopics": [
           {
@@ -201,9 +198,9 @@
           {
             "title": "Domvs IT — Building the SAP cell and greenfield products on SAP BTP",
             "items": [
-              "Strategic contribution to structuring the initial SAP cell, including technical prospecting and solution architecture across ECC, S/4HANA and BTP.",
-              "Built greenfield products on SAP BTP with SAP CAP as the core layer, delivered through SAP Business Application Studio (BAS).",
-              "Integration with ECC/S/4HANA landscapes via OData and iFlows, applying Clean Core, data modeling on SAP HANA Cloud and decisions targeting decoupling and scalability."
+              "Structured the SAP practice: technical prospecting and solution architecture across ECC, S/4HANA and SAP BTP.",
+              "Greenfield products on SAP BTP with SAP CAP: CDS model, HDI container on SAP HANA Cloud and Node.js service handlers, packaged as MTA and deployed to Cloud Foundry with Approuter and XSUAA.",
+              "Integration with ECC/S/4HANA landscapes via SAP Integration Suite (iFlows), API Management, Event Mesh, Destination Service and Cloud Connector, under Clean Core."
             ]
           }
         ]
@@ -213,9 +210,8 @@
         "start": "Mar 2020",
         "end": "Apr 2021",
         "highlights": [
-          "Developed and maintained systems for bars, restaurants, and local businesses (order tabs, NFC-e issuance, and fiscal routines).",
-          "Built fiscal and management reports (e.g., DRE and Sintegra), focused on data consistency and decision support.",
-          "Delivered client-specific customizations, technical support, and small integrations on top of MySQL, with web deliveries (HTML/CSS/JavaScript/React/Vue) as needed."
+          "Management/ERP systems for local retail (order tabs, NFC-e, tax routines) with JavaScript, React, Vue and MySQL.",
+          "Tax and management reports (DRE, Sintegra) and per-client customizations."
         ]
       },
       "alastra": {
@@ -223,8 +219,7 @@
         "start": "Jan 2020",
         "end": "Feb 2020",
         "highlights": [
-          "Implemented targeted layout and usability improvements with HTML/CSS/JavaScript, prioritizing visual clarity and UI consistency.",
-          "Supported the team with focused front-end deliveries."
+          "Layout and usability improvements with HTML/CSS/JavaScript (volunteer work)."
         ]
       }
     },
@@ -322,7 +317,17 @@
         "Portuguese (Native)",
         "English (Advanced)",
         "Spanish (Intermediate)"
-      ]
+      ],
+      "groups": {
+        "platforms": "SAP Platforms",
+        "abapModern": "Modern ABAP Back End",
+        "abapClassic": "Classic ABAP / ECC",
+        "frontend": "SAP Front End",
+        "integration": "Services and Integration",
+        "btpDev": "SAP BTP / CAP",
+        "architecture": "Architecture and Process",
+        "web": "Web / Full Stack"
+      }
     },
     "credentials": {
       "bsc-compsci": {

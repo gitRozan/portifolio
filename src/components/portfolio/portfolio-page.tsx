@@ -10,7 +10,7 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { TechBadge } from "@/components/ui/tech-badge";
-import { experiences, projects, skills, credentials, buildReferenceGroupsForCV, references, type Project, type ProjectCategory } from "@/content/portfolio";
+import { experiences, projects, skillGroups, credentials, buildReferenceGroupsForCV, references, type Project, type ProjectCategory } from "@/content/portfolio";
 import { ExperienceCard } from "@/components/portfolio/experience-card";
 import { ReferencesSection } from "@/components/portfolio/references-section";
 import { ProjectCard } from "@/components/portfolio/project-card";
@@ -92,6 +92,11 @@ export function PortfolioPage() {
     return t.has(key) ? t(key) : fallback;
   };
 
+  const skillGroupLabel = (id: string) => {
+    const key = `content.skills.groups.${id}` as const;
+    return t.has(key) ? t(key) : id;
+  };
+
   const getCvData = async (): Promise<CVData> => {
     const photoDataUrl = await getAssetAsDataUrl("/assets/profile.jpg");
     const highlightsTitle = locale === "pt" ? "Destaques" : "Highlights";
@@ -157,8 +162,7 @@ export function PortfolioPage() {
         };
       }),
       skillsTitle: t("skills.title"),
-      skillsPrimary: skills.primary,
-      skillsSecondary: skills.secondary,
+      skillGroups: skillGroups.map((g) => ({ label: skillGroupLabel(g.id), items: g.items })),
       languages: toStringArray(t.raw("content.skills.languages")),
       projectsTitle: t("projects.title"),
       projectsSections: projects.map((proj) => ({
@@ -171,6 +175,8 @@ export function PortfolioPage() {
         credentials.map(async (cred) => ({
           title: credentialTitle(cred.id, cred.title),
           issuer: cred.issuer,
+          examCode: cred.examCode,
+          credentialId: cred.credentialId,
           period:
             cred.issueYM && cred.validUntilYM
               ? `${formatYM(cred.issueYM, locale)} – ${formatYM(cred.validUntilYM, locale)}`
@@ -469,33 +475,24 @@ export function PortfolioPage() {
             <h2 id="skills-title" className="text-sm font-semibold tracking-tight">
               {t("skills.title")}
             </h2>
-            <div className="mt-5 grid gap-6 md:grid-cols-3">
-              <div>
-                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t("skills.primary")}</div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {skills.primary.map((s) => (
-                    <TechBadge key={s} label={s} />
-                  ))}
+            <div className="mt-5 grid gap-5 md:grid-cols-2">
+              {skillGroups.map((g) => (
+                <div key={g.id}>
+                  <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    {skillGroupLabel(g.id)}
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {g.items.map((s) => (
+                      <TechBadge key={s} label={s} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t("skills.secondary")}</div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {skills.secondary.map((s) => (
-                    <TechBadge key={s} label={s} />
-                  ))}
-                </div>
-              </div>
+              ))}
               <div>
                 <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t("skills.languages")}</div>
-                <div className="mt-3 grid gap-2">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {toStringArray(t.raw("content.skills.languages")).map((s) => (
-                    <div
-                      key={s}
-                      className="rounded-md border border-slate-200/70 bg-white/50 px-3 py-2 text-xs font-medium text-slate-700 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200"
-                    >
-                      {s}
-                    </div>
+                    <TechBadge key={s} label={s} />
                   ))}
                 </div>
               </div>

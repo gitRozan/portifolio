@@ -10,8 +10,9 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { TechBadge } from "@/components/ui/tech-badge";
-import { experiences, projects, skills, credentials, type Project, type ProjectCategory } from "@/content/portfolio";
+import { experiences, projects, skills, credentials, buildReferenceGroupsForCV, references, type Project, type ProjectCategory } from "@/content/portfolio";
 import { ExperienceCard } from "@/components/portfolio/experience-card";
+import { ReferencesSection } from "@/components/portfolio/references-section";
 import { ProjectCard } from "@/components/portfolio/project-card";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { CredentialsSection } from "@/components/portfolio/credentials-section";
@@ -76,6 +77,7 @@ export function PortfolioPage() {
     { id: "projects", label: t("nav.projects") },
     { id: "credentials", label: t("nav.credentials"), shortLabel: t("nav.credentialsShort") },
     { id: "skills", label: t("nav.skills") },
+    { id: "references", label: t("nav.references"), shortLabel: t("nav.referencesShort") },
     { id: "contact", label: t("nav.contact") },
   ];
 
@@ -87,22 +89,21 @@ export function PortfolioPage() {
   const getCvData = async (): Promise<CVData> => {
     const photoDataUrl = await getAssetAsDataUrl("/assets/profile.jpg");
     const highlightsTitle = locale === "pt" ? "Destaques" : "Highlights";
-    const recommendationsTitle = locale === "pt" ? "Referências" : "References";
+    const recommendationsTitle = t("references.title");
     const highlights = [
       { label: t("about.facts.xpLabel"), value: t("about.facts.xpValue") },
       { label: t("about.facts.focusLabel"), value: t("about.facts.focusValue") },
       { label: t("about.facts.stackLabel"), value: t("about.facts.stackValue") },
     ];
-    const recommendationGroups = [
-      {
-        title: "SAPUI5/FIORI/BTP",
-        people: [
-          { name: "Maylon de Oliveira Zanardi", phone: "+55 041 99980-8928", email: "maylonzanardi@hotmail.com" },
-          { name: "Mauricio Eduardo de Oliveira Filho", phone: "+55 041 99971-4773", email: "meofi1993@gmail.com" },
-          { name: "João Henrique Moreira Gabardo", phone: "+55 041 99884-5186", email: "joaohmgabardo@gmail.com" },
-        ],
-      },
-    ];
+    const recommendationGroups = buildReferenceGroupsForCV(
+      references,
+      Object.fromEntries(
+        references.map((ref) => {
+          const key = `content.references.${ref.id}.context` as const;
+          return [ref.id, t.has(key) ? t(key) : undefined] as const;
+        })
+      )
+    );
 
     return {
       locale,
@@ -495,6 +496,8 @@ export function PortfolioPage() {
               </div>
             </div>
           </section>
+
+          <ReferencesSection />
 
           <footer
             id="contact"

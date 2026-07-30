@@ -52,11 +52,16 @@ export type CVData = {
   credentialsSections: CVCredentialSection[];
   recommendationsTitle?: string;
   recommendationGroups?: Array<{
-    title: string;
+    title?: string;
     people: Array<{
       name: string;
+      role?: string;
+      company?: string;
+      context?: string;
+      location?: string;
       phone?: string;
       email?: string;
+      linkedin?: string;
     }>;
   }>;
 };
@@ -83,6 +88,48 @@ function groupCredentials(creds: CVCredentialSection[], locale: CVLocale) {
   }
 
   return groups;
+}
+
+function formatLinkedInLabel(url: string) {
+  return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+}
+
+function formatLinkedInHref(url: string) {
+  return url.startsWith("http") ? url : `https://${url}`;
+}
+
+function renderReferencePersonHTML(person: NonNullable<CVData["recommendationGroups"]>[number]["people"][number]) {
+  const roleLine = [person.role, person.company].filter(Boolean).join(" · ");
+  const waHref = person.phone ? `https://api.whatsapp.com/send?phone=${person.phone.replace(/\D/g, "")}` : "";
+
+  return `
+            <div class="rec-card">
+              <div class="rec-name">${person.name}</div>
+              ${roleLine ? `<div class="rec-line">${roleLine}</div>` : ""}
+              ${person.context ? `<div class="rec-line rec-context">${person.context}</div>` : ""}
+              ${person.location ? `<div class="rec-line">${person.location}</div>` : ""}
+              ${person.phone ? `<div class="rec-line"><a href="${waHref}" class="link">${person.phone}</a></div>` : ""}
+              ${person.email ? `<div class="rec-line">${person.email}</div>` : ""}
+              ${person.linkedin ? `<div class="rec-line"><a href="${formatLinkedInHref(person.linkedin)}" class="link">${formatLinkedInLabel(person.linkedin)}</a></div>` : ""}
+            </div>`;
+}
+
+function renderReferencesSectionHTML(data: CVData, strings: { references: string }) {
+  if (!data.recommendationGroups?.length) return "";
+
+  return `
+        <section class="content-section">
+          <h2 class="section-title">${data.recommendationsTitle ?? strings.references}</h2>
+          ${data.recommendationGroups
+            .map(
+              (g) => `
+          <div class="rec-group">
+            ${g.title ? `<div class="rec-group-title">${g.title}</div>` : ""}
+            ${g.people.map((p) => renderReferencePersonHTML(p)).join("")}
+          </div>`
+            )
+            .join("")}
+        </section>`;
 }
 
 export function generateCVHTML(data: CVData): string {
@@ -290,6 +337,7 @@ export function generateCVHTML(data: CVData): string {
     .rec-card + .rec-card { margin-top: 8px; }
     .rec-name { font-size: 11.5px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
     .rec-line { font-size: 10.5px; font-weight: 600; color: var(--text); line-height: 1.3; overflow-wrap: anywhere; }
+    .rec-context { color: var(--muted); font-weight: 600; }
 
     .content-section { margin-top: 16px; }
     .item {
@@ -438,24 +486,6 @@ export function generateCVHTML(data: CVData): string {
           `).join("")}
         </section>
         ` : ""}
-
-        ${data.recommendationGroups && data.recommendationGroups.length > 0 ? `
-        <section class="content-section">
-          <h2 class="section-title">${data.recommendationsTitle ?? strings.references}</h2>
-          ${data.recommendationGroups.map((g) => `
-          <div class="rec-group">
-            <div class="rec-group-title">${g.title}</div>
-            ${g.people.map((p) => `
-            <div class="rec-card">
-              <div class="rec-name">${p.name}</div>
-              ${p.phone ? `<div class="rec-line">${p.phone}</div>` : ""}
-              ${p.email ? `<div class="rec-line">${p.email}</div>` : ""}
-            </div>
-            `).join("")}
-          </div>
-          `).join("")}
-        </section>
-        ` : ""}
       </main>
     </section>
 
@@ -497,6 +527,8 @@ export function generateCVHTML(data: CVData): string {
             </div>
           `).join("")}
         </section>
+
+        ${renderReferencesSectionHTML(data, strings)}
       </main>
     </section>
   </div>
@@ -818,11 +850,20 @@ export async function generateCVDocx(data: CVData): Promise<Blob> {
     children.push(new Paragraph({ text: "" }));
     children.push(docxP(data.recommendationsTitle ?? strings.references, HeadingLevel.HEADING_2));
     for (const g of data.recommendationGroups) {
-      children.push(docxP(g.title, HeadingLevel.HEADING_3));
+      if (g.title) children.push(docxP(g.title, HeadingLevel.HEADING_3));
       for (const person of g.people) {
-        children.push(docxP(person.name));
-        if (person.phone) children.push(docxP(person.phone));
+        children.push(docxP(person.name, HeadingLevel.HEADING_3));
+        const roleLine = [person.role, person.company].filter(Boolean).join(" · ");
+        if (roleLine) children.push(docxP(roleLine));
+        if (person.context) children.push(docxP(person.context));
+        if (person.location) children.push(docxP(person.location));
+        if (person.phone) {
+          children.push(docxP(person.phone));
+          children.push(docxP(`WhatsApp: https://api.whatsapp.com/send?phone=${person.phone.replace(/\D/g, "")}`));
+        }
         if (person.email) children.push(docxP(person.email));
+        if (person.linkedin) children.push(docxP(formatLinkedInLabel(person.linkedin)));
+        children.push(new Paragraph({ text: "" }));
       }
     }
   }

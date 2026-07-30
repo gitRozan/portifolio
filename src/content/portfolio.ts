@@ -33,7 +33,56 @@ export type Credential = {
   badgeImageUrl?: string;
 };
 
+export type Reference = {
+  id: string;
+  name: string;
+  role: string;
+  company?: string;
+  location: string;
+  phone: string;
+  linkedin: string;
+};
+
+export type CVReferencePerson = {
+  name: string;
+  role?: string;
+  company?: string;
+  context?: string;
+  location?: string;
+  phone?: string;
+  linkedin?: string;
+};
+
+export function buildReferenceGroupsForCV(
+  people: Reference[],
+  contexts: Record<string, string | undefined> = {}
+): Array<{ people: CVReferencePerson[] }> {
+  return [
+    {
+      people: people.map(({ id, name, role, company, location, phone, linkedin }) => ({
+        name,
+        role,
+        company,
+        context: contexts[id],
+        location,
+        phone,
+        linkedin,
+      })),
+    },
+  ];
+}
+
+export function whatsappUrl(phone: string) {
+  return `https://api.whatsapp.com/send?phone=${phone.replace(/\D/g, "")}`;
+}
+
 export const experiences: Experience[] = [
+  {
+    id: "ey",
+    company: "EY (Ernst & Young)",
+    logoUrl: "/assets/logos/ey.svg",
+    startYM: "2026-04",
+  },
   {
     id: "spro",
     company: "SPRO IT Solutions",
@@ -100,7 +149,7 @@ export const projects: Project[] = [
 ];
 
 export const skills = {
-  primary: ["SAP Fiori", "SAPUI5", "SAP BTP", "ABAP", "RAP", "CDS Views", "CAP", "HANA Cloud"],
+  primary: ["SAP ECC", "S/4HANA", "SAP Fiori", "SAPUI5", "SAP BTP", "ABAP", "RAP", "CDS Views", "CAP", "HANA Cloud"],
   secondary: ["React.js", "Vue.js", "Node.js", "PHP", "TypeScript"]
 };
 
@@ -140,4 +189,33 @@ export const credentials: Credential[] = [
   },
 ];
 
+export const references: Reference[] = [
+  {
+    id: "maylon-zanardi",
+    name: "Maylon de Oliveira Zanardi",
+    role: "Tech Lead",
+    company: "SPRO",
+    location: "Curitiba, PR",
+    phone: "+55 41 9890-8928",
+    linkedin: "https://www.linkedin.com/in/maylonzanardi/",
+  },
+  {
+    id: "joao-gabardo",
+    name: "João Henrique Gabardo",
+    role: "Tech Lead",
+    company: "ACCAO",
+    location: "Curitiba, PR",
+    phone: "+55 41 9884-5186",
+    linkedin: "https://www.linkedin.com/in/joaohmgabardo/",
+  },
+  {
+    id: "mauricio-oliveira",
+    name: "Mauricio Oliveira",
+    role: "Tech Lead",
+    company: "SPRO",
+    location: "Curitiba, PR",
+    phone: "+55 41 9971-4773",
+    linkedin: "https://www.linkedin.com/in/mauriciofilho93/",
+  },
+];
 

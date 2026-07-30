@@ -1,8 +1,8 @@
 "use client";
 
-import { Briefcase, ExternalLink, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Briefcase, ExternalLink, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { references, whatsappUrl } from "@/content/portfolio";
+import { references } from "@/content/portfolio";
 
 function linkedInLabel(url: string) {
   return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
@@ -26,7 +26,6 @@ export function ReferencesSection() {
           const roleLine = [person.role, person.company].filter(Boolean).join(" · ");
           const contextKey = `content.references.${person.id}.context` as const;
           const context = tRoot.has(contextKey) ? tRoot(contextKey) : null;
-          const waUrl = whatsappUrl(person.phone);
 
           return (
             <article
@@ -60,31 +59,6 @@ export function ReferencesSection() {
                 </div>
 
                 <div className="flex items-start gap-2.5">
-                  <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" aria-hidden />
-                  <div>
-                    <dt className="sr-only">{t("phone")}</dt>
-                    <dd className="font-medium text-slate-600 dark:text-slate-300">{person.phone}</dd>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2.5">
-                  <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" aria-hidden />
-                  <div>
-                    <dt className="sr-only">{t("openWhatsapp")}</dt>
-                    <dd>
-                      <a
-                        href={waUrl}
-                        className="inline-flex items-center gap-1 font-medium text-brand transition-colors hover:text-brand/80"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {t("openWhatsapp")}
-                      </a>
-                    </dd>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2.5">
                   <ExternalLink className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" aria-hidden />
                   <div>
                     <dt className="sr-only">{t("linkedin")}</dt>
@@ -105,6 +79,7 @@ export function ReferencesSection() {
           );
         })}
       </div>
+      <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">{t("onRequest")}</p>
     </section>
   );
 }

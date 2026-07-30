@@ -39,7 +39,6 @@ export type Reference = {
   role: string;
   company?: string;
   location: string;
-  phone: string;
   linkedin: string;
 };
 
@@ -49,7 +48,6 @@ export type CVReferencePerson = {
   company?: string;
   context?: string;
   location?: string;
-  phone?: string;
   linkedin?: string;
 };
 
@@ -59,21 +57,16 @@ export function buildReferenceGroupsForCV(
 ): Array<{ people: CVReferencePerson[] }> {
   return [
     {
-      people: people.map(({ id, name, role, company, location, phone, linkedin }) => ({
+      people: people.map(({ id, name, role, company, location, linkedin }) => ({
         name,
         role,
         company,
         context: contexts[id],
         location,
-        phone,
         linkedin,
       })),
     },
   ];
-}
-
-export function whatsappUrl(phone: string) {
-  return `https://api.whatsapp.com/send?phone=${phone.replace(/\D/g, "")}`;
 }
 
 export const experiences: Experience[] = [
@@ -158,7 +151,7 @@ export const credentials: Credential[] = [
     id: "bsc-compsci",
     title: "Ciência da Computação",
     kind: "higherEducation",
-    issuer: "Universidade",
+    issuer: "Universidade São Judas Tadeu",
     status: "inProgress",
   },
   {
@@ -196,7 +189,6 @@ export const references: Reference[] = [
     role: "Tech Lead",
     company: "SPRO",
     location: "Curitiba, PR",
-    phone: "+55 41 9890-8928",
     linkedin: "https://www.linkedin.com/in/maylonzanardi/",
   },
   {
@@ -205,7 +197,6 @@ export const references: Reference[] = [
     role: "Tech Lead",
     company: "ACCAO",
     location: "Curitiba, PR",
-    phone: "+55 41 9884-5186",
     linkedin: "https://www.linkedin.com/in/joaohmgabardo/",
   },
   {
@@ -214,7 +205,6 @@ export const references: Reference[] = [
     role: "Tech Lead",
     company: "SPRO",
     location: "Curitiba, PR",
-    phone: "+55 41 9971-4773",
     linkedin: "https://www.linkedin.com/in/mauriciofilho93/",
   },
 ];

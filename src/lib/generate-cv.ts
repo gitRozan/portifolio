@@ -1,6 +1,4 @@
 import { Document as DocxDocument, Packer, Paragraph, HeadingLevel } from "docx";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 
 export type CVLocale = "pt" | "en";
 
@@ -59,8 +57,6 @@ export type CVData = {
       company?: string;
       context?: string;
       location?: string;
-      phone?: string;
-      email?: string;
       linkedin?: string;
     }>;
   }>;
@@ -100,7 +96,6 @@ function formatLinkedInHref(url: string) {
 
 function renderReferencePersonHTML(person: NonNullable<CVData["recommendationGroups"]>[number]["people"][number]) {
   const roleLine = [person.role, person.company].filter(Boolean).join(" · ");
-  const waHref = person.phone ? `https://api.whatsapp.com/send?phone=${person.phone.replace(/\D/g, "")}` : "";
 
   return `
             <div class="rec-card">
@@ -108,8 +103,6 @@ function renderReferencePersonHTML(person: NonNullable<CVData["recommendationGro
               ${roleLine ? `<div class="rec-line">${roleLine}</div>` : ""}
               ${person.context ? `<div class="rec-line rec-context">${person.context}</div>` : ""}
               ${person.location ? `<div class="rec-line">${person.location}</div>` : ""}
-              ${person.phone ? `<div class="rec-line"><a href="${waHref}" class="link">${person.phone}</a></div>` : ""}
-              ${person.email ? `<div class="rec-line">${person.email}</div>` : ""}
               ${person.linkedin ? `<div class="rec-line"><a href="${formatLinkedInHref(person.linkedin)}" class="link">${formatLinkedInLabel(person.linkedin)}</a></div>` : ""}
             </div>`;
 }
@@ -139,18 +132,18 @@ export function generateCVHTML(data: CVData): string {
     data.locale === "pt"
       ? {
           lang: "pt-BR",
-          docTitle: "Curriculo",
+          docTitle: "Currículo",
           contact: "Contato",
           email: "Email",
           phone: "Telefone",
           location: "Local",
           linkedin: "LinkedIn",
-          primary: "Primarias",
-          secondary: "Secundarias",
+          primary: "Primárias",
+          secondary: "Secundárias",
           languages: "Idiomas",
           about: "Sobre",
           highlights: "Destaques",
-          references: "Referencias",
+          references: "Referências",
           verifyCredly: "Verificar no Credly",
         }
       : {
@@ -593,6 +586,12 @@ function collectLinks(doc: Document, root: Element): LinkRect[] {
 export async function downloadPDF(html: string, filename: string): Promise<void> {
   const safeName = filename.toLowerCase().endsWith(".pdf") ? filename : `${filename}.pdf`;
 
+  // Fora do bundle inicial: so' carrega quando o usuario clica em baixar PDF.
+  const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+    import("html2canvas"),
+    import("jspdf"),
+  ]);
+
   const iframe = document.createElement("iframe");
   iframe.style.position = "fixed";
   iframe.style.left = "-10000px";
@@ -764,111 +763,139 @@ function docxP(
   return new Paragraph(heading ? { text, heading } : { text });
 }
 
+/**
+ * DOCX otimizado para ATS (Gupy, SuccessFactors, Workday, Greenhouse):
+ * - coluna unica, sem tabelas, sem caixas de texto, sem header/footer
+ * - contato imediatamente abaixo do nome, em linha unica delimitada por "|"
+ * - secoes com nomes canonicos (Resumo, Competencias, Experiencia, Formacao, Certificacoes)
+ * - hierarquia Heading 1/2/3 nativa do Word + bullets nativos
+ * - sem dados pessoais de terceiros
+ */
 export async function generateCVDocx(data: CVData): Promise<Blob> {
   const strings =
     data.locale === "pt"
       ? {
-          contact: "Contato",
-          email: "Email",
-          phone: "Telefone",
-          location: "Local",
-          linkedin: "LinkedIn",
-          primary: "Primarias",
-          secondary: "Secundarias",
+          summary: "Resumo Profissional",
+          skills: "Competências Técnicas",
+          primary: "SAP",
+          secondary: "Web / Full Stack",
           languages: "Idiomas",
-          references: "Referencias",
+          experience: "Experiência Profissional",
+          education: "Formação Acadêmica",
+          certifications: "Certificações e Cursos",
+          projects: "Projetos Relevantes",
+          references: "Referências",
+          stack: "Stack",
+          onRequest: "Contatos diretos disponíveis mediante solicitação.",
         }
       : {
-          contact: "Contact",
-          email: "Email",
-          phone: "Phone",
-          location: "Location",
-          linkedin: "LinkedIn",
-          primary: "Primary",
-          secondary: "Secondary",
+          summary: "Professional Summary",
+          skills: "Technical Skills",
+          primary: "SAP",
+          secondary: "Web / Full Stack",
           languages: "Languages",
+          experience: "Professional Experience",
+          education: "Education",
+          certifications: "Certifications and Courses",
+          projects: "Selected Projects",
           references: "References",
+          stack: "Stack",
+          onRequest: "Direct contact details available upon request.",
         };
+
+  const contactLine = [data.email, data.phone, data.linkedin, data.location]
+    .filter(Boolean)
+    .join(" | ");
 
   const children: Paragraph[] = [
     docxP(data.name, HeadingLevel.TITLE),
     docxP(data.role),
+    docxP(contactLine),
     new Paragraph({ text: "" }),
-    docxP(data.about),
+
+    docxP(strings.summary, HeadingLevel.HEADING_1),
+    ...data.about
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => docxP(line)),
     new Paragraph({ text: "" }),
-    docxP(strings.contact, HeadingLevel.HEADING_2),
-    docxP(`${strings.email}: ${data.email}`),
-    docxP(`${strings.phone}: ${data.phone}`),
-    docxP(`${strings.location}: ${data.location}`),
-    docxP(`${strings.linkedin}: ${data.linkedin}`),
+
+    docxP(strings.skills, HeadingLevel.HEADING_1),
+    docxP(`${strings.primary}: ${data.skillsPrimary.join(", ")}`),
+    docxP(`${strings.secondary}: ${data.skillsSecondary.join(", ")}`),
+    docxP(`${strings.languages}: ${data.languages.join(", ")}`),
     new Paragraph({ text: "" }),
-    docxP(data.experienceTitle, HeadingLevel.HEADING_2),
+
+    docxP(strings.experience, HeadingLevel.HEADING_1),
   ];
 
   for (const exp of data.experienceSections) {
-    children.push(docxP(exp.company, HeadingLevel.HEADING_3));
-    children.push(docxP(`${exp.role} | ${exp.period}`));
+    children.push(docxP(`${exp.role} — ${exp.company}`, HeadingLevel.HEADING_2));
+    children.push(docxP(exp.period));
     for (const h of exp.highlights) {
       children.push(new Paragraph({ text: h, bullet: { level: 0 } }));
     }
     if (exp.subtopics?.length) {
       for (const sub of exp.subtopics) {
-        children.push(docxP(sub.title, HeadingLevel.HEADING_4));
+        children.push(docxP(sub.title, HeadingLevel.HEADING_3));
         for (const item of sub.items) {
-          children.push(new Paragraph({ text: item, bullet: { level: 1 } }));
+          children.push(new Paragraph({ text: item, bullet: { level: 0 } }));
         }
       }
     }
     children.push(new Paragraph({ text: "" }));
   }
 
-  children.push(docxP(data.skillsTitle, HeadingLevel.HEADING_2));
-  children.push(docxP(`${strings.primary}: ${data.skillsPrimary.join(", ")}`));
-  children.push(docxP(`${strings.secondary}: ${data.skillsSecondary.join(", ")}`));
-  children.push(docxP(`${strings.languages}: ${data.languages.join(", ")}`));
-  children.push(new Paragraph({ text: "" }));
-  children.push(docxP(data.projectsTitle, HeadingLevel.HEADING_2));
+  const educationItems = data.credentialsSections.filter((c) => c.kind === "higherEducation");
+  const otherCredentials = data.credentialsSections.filter((c) => c.kind !== "higherEducation");
 
-  for (const proj of data.projectsSections) {
-    children.push(docxP(proj.title, HeadingLevel.HEADING_3));
-    children.push(docxP(proj.summary));
-    children.push(docxP(proj.stack.join(", ")));
+  const renderCredential = (cred: CVCredentialSection) => {
+    children.push(docxP(cred.title, HeadingLevel.HEADING_2));
+    const meta = [cred.issuer, cred.period, cred.status, cred.credlyUrl].filter(Boolean).join(" | ");
+    if (meta) children.push(docxP(meta));
+  };
+
+  if (educationItems.length) {
+    children.push(docxP(strings.education, HeadingLevel.HEADING_1));
+    educationItems.forEach(renderCredential);
     children.push(new Paragraph({ text: "" }));
   }
 
-  children.push(docxP(data.credentialsTitle, HeadingLevel.HEADING_2));
-  for (const cred of data.credentialsSections) {
-    children.push(docxP(cred.title, HeadingLevel.HEADING_3));
-    children.push(
-      docxP(
-        `${cred.issuer}${cred.period ? ` | ${cred.period}` : ""}${cred.status ? ` | ${cred.status}` : ""}${cred.credlyUrl ? ` | ${cred.credlyUrl}` : ""}`
-      )
-    );
+  if (otherCredentials.length) {
+    children.push(docxP(strings.certifications, HeadingLevel.HEADING_1));
+    otherCredentials.forEach(renderCredential);
+    children.push(new Paragraph({ text: "" }));
   }
+
+  children.push(docxP(strings.projects, HeadingLevel.HEADING_1));
+  for (const proj of data.projectsSections) {
+    children.push(docxP(proj.title, HeadingLevel.HEADING_2));
+    children.push(docxP(proj.summary));
+    children.push(docxP(`${strings.stack}: ${proj.stack.join(", ")}`));
+  }
+  children.push(new Paragraph({ text: "" }));
 
   if (data.recommendationGroups?.length) {
-    children.push(new Paragraph({ text: "" }));
-    children.push(docxP(data.recommendationsTitle ?? strings.references, HeadingLevel.HEADING_2));
+    children.push(docxP(strings.references, HeadingLevel.HEADING_1));
     for (const g of data.recommendationGroups) {
-      if (g.title) children.push(docxP(g.title, HeadingLevel.HEADING_3));
       for (const person of g.people) {
-        children.push(docxP(person.name, HeadingLevel.HEADING_3));
-        const roleLine = [person.role, person.company].filter(Boolean).join(" · ");
-        if (roleLine) children.push(docxP(roleLine));
-        if (person.context) children.push(docxP(person.context));
-        if (person.location) children.push(docxP(person.location));
-        if (person.phone) {
-          children.push(docxP(person.phone));
-          children.push(docxP(`WhatsApp: https://api.whatsapp.com/send?phone=${person.phone.replace(/\D/g, "")}`));
-        }
-        if (person.email) children.push(docxP(person.email));
+        children.push(docxP(person.name, HeadingLevel.HEADING_2));
+        const roleLine = [person.role, person.company].filter(Boolean).join(" | ");
+        const detail = [roleLine, person.context, person.location]
+          .filter(Boolean)
+          .join(" — ");
+        if (detail) children.push(docxP(detail));
         if (person.linkedin) children.push(docxP(formatLinkedInLabel(person.linkedin)));
-        children.push(new Paragraph({ text: "" }));
       }
     }
+    children.push(docxP(strings.onRequest));
   }
 
   const doc = new DocxDocument({
+    title: `${data.name} - ${data.role}`,
+    description: data.role,
+    creator: data.name,
     sections: [{ children }],
   });
 

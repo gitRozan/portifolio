@@ -86,6 +86,12 @@ export function PortfolioPage() {
   const toStringArray = (value: unknown) =>
     Array.isArray(value) ? value.filter((x): x is string => typeof x === "string") : [];
 
+  // Titulos de credencial vivem em pt.json/en.json; portfolio.ts guarda apenas o fallback.
+  const credentialTitle = (id: string, fallback: string) => {
+    const key = `content.credentials.${id}.title` as const;
+    return t.has(key) ? t(key) : fallback;
+  };
+
   const getCvData = async (): Promise<CVData> => {
     const photoDataUrl = await getAssetAsDataUrl("/assets/profile.jpg");
     const highlightsTitle = locale === "pt" ? "Destaques" : "Highlights";
@@ -163,7 +169,7 @@ export function PortfolioPage() {
       credentialsTitle: t("credentials.title"),
       credentialsSections: await Promise.all(
         credentials.map(async (cred) => ({
-          title: cred.title,
+          title: credentialTitle(cred.id, cred.title),
           issuer: cred.issuer,
           period:
             cred.issueYM && cred.validUntilYM
@@ -184,12 +190,11 @@ export function PortfolioPage() {
     };
   };
 
-  const cvFileName = (ext: string) => {
-    const now = new Date();
-    const monthName = now.toLocaleString(locale === "pt" ? "pt-BR" : "en-US", { month: "long" });
-    const cap = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-    return `Nicolas Belchior _ SAP ABAP Fiori & BTP Developer - ${cap} ${now.getFullYear()}.${ext}`;
-  };
+  // ATS-safe: sem "&", sem espacos, sem acentos, sem data (nome nao envelhece).
+  const cvFileName = (ext: string) =>
+    locale === "pt"
+      ? `Nicolas_Belchior_Desenvolvedor_ABAP_Fiori_Senior.${ext}`
+      : `Nicolas_Belchior_Senior_ABAP_Fiori_Developer.${ext}`;
 
   const handleDownloadCV = async () => {
     const cvData = await getCvData();
@@ -263,21 +268,21 @@ export function PortfolioPage() {
                       type="button"
                       className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm font-medium text-fg hover:bg-slate-100 dark:hover:bg-slate-800"
                       onClick={() => {
-                        handleDownloadCV();
-                        setCvDropdownOpen(false);
-                      }}
-                    >
-                      {t("hero.cvFormatPdf")}
-                    </button>
-                    <button
-                      type="button"
-                      className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm font-medium text-fg hover:bg-slate-100 dark:hover:bg-slate-800"
-                      onClick={() => {
                         handleDownloadDocx();
                         setCvDropdownOpen(false);
                       }}
                     >
                       {t("hero.cvFormatWord")}
+                    </button>
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-sm font-medium text-fg hover:bg-slate-100 dark:hover:bg-slate-800"
+                      onClick={() => {
+                        handleDownloadCV();
+                        setCvDropdownOpen(false);
+                      }}
+                    >
+                      {t("hero.cvFormatPdf")}
                     </button>
                   </div>
                 ) : null}
@@ -349,23 +354,23 @@ export function PortfolioPage() {
                     variant="secondary"
                     className="cursor-pointer gap-2"
                     onClick={() => {
-                      handleDownloadCV();
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    <Download className="h-4 w-4 shrink-0" />
-                    {t("hero.ctaDownload")} ({t("hero.cvFormatPdf")})
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    className="cursor-pointer gap-2 justify-start"
-                    onClick={() => {
                       handleDownloadDocx();
                       setMobileMenuOpen(false);
                     }}
                   >
                     <Download className="h-4 w-4 shrink-0" />
-                    {t("hero.ctaDownload")} ({t("hero.cvFormatWord")})
+                    {t("hero.cvFormatWord")}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="cursor-pointer gap-2 justify-start"
+                    onClick={() => {
+                      handleDownloadCV();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Download className="h-4 w-4 shrink-0" />
+                    {t("hero.cvFormatPdf")}
                   </Button>
 
                   <a href="#contact">

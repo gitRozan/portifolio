@@ -20,18 +20,15 @@
     "role": "Desenvolvedor ABAP Fiori Senior | RAP, BTP, CAP e Clean Core",
     "ctaContact": "Fale comigo",
     "ctaDownload": "Baixar CV",
-    "cvFormatPdf": "PDF",
-    "cvFormatWord": "Word (.docx)",
-    "cvSimple": "CV simples (PDF)",
-    "cvVisual": "CV visual (PDF)",
-    "cvGenerated": "CV Gerado (HTML)"
+    "cvFormatWord": "Word (.docx) — recomendado para ATS",
+    "cvFormatPdf": "PDF — versão visual"
   },
   "about": {
     "kicker": "EY · SAP Certified Fiori Application Developer · Clean Core & ABAP Cloud",
-    "headline": "Do GAP ao go-live: soluções SAP full stack que entregam valor de negócio.",
-    "body": "Desenvolvedor ABAP Fiori Senior na EY, atuando na fábrica de software em projetos greenfield ECC e S/4HANA. Percorro todo o ciclo — análise de GAPs, documentação técnica, sprints e entrega funcional — com foco em prazo, qualidade e aderência ao Clean Core.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
+    "headline": "Do GAP ao go-live: RAP, Fiori e BTP em projetos greenfield ECC e S/4HANA.",
+    "body": "Desenvolvedor ABAP Fiori Senior na EY, na fábrica de software de projetos greenfield ECC e S/4HANA, onde já entreguei mais de 20 GAPs do zero. Percorro o ciclo inteiro — análise de GAP, especificação técnica, sprint e entrega funcional — sem modificação do standard.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
     "locationLabel": "Base",
-    "location": "Minas Gerais · São Paulo · Remoto",
+    "location": "Minas Gerais, Brasil — disponível para São Paulo e remoto",
     "photoAlt": "Foto profissional de Nicolas Belchior",
     "photoFallback": "NB",
     "photoLabel": "Retrato",
@@ -42,7 +39,7 @@
       "focusValue": "RAP · Fiori Freestyle · CAP · Clean Core",
       "stackLabel": "Core stack",
       "stackValue": "SAP ECC · S/4HANA · Fiori/SAPUI5 · ABAP/RAP · CDS · OData · SAP BTP (CAP, Integration Suite) · HANA Cloud",
-      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais · São Paulo · Remoto"
+      "signalValue": "SAP Certified Fiori Application Developer · Minas Gerais, Brasil · Remoto"
     }
   },
   "experience": {
@@ -76,9 +73,8 @@
     "role": "Cargo",
     "company": "Empresa",
     "location": "Localização",
-    "phone": "Telefone",
     "linkedin": "LinkedIn",
-    "openWhatsapp": "Abrir WhatsApp"
+    "onRequest": "Contatos diretos disponíveis mediante solicitação."
   },
   "credentials": {
     "title": "Educação & Qualificações",
@@ -102,7 +98,7 @@
         "start": "Abr 2026",
         "end": "Presente",
         "highlights": [
-          "Atuação na fábrica de software da EY em projetos greenfield ECC e S/4HANA, com desenvolvimento do zero — da análise de GAPs à entrega funcional — seguindo o calendário de sprints e os prazos acordados com o cliente final.",
+          "Mais de 20 GAPs entregues do zero na fábrica de software da EY, em projetos greenfield ECC e S/4HANA — da análise à entrega funcional, dentro do calendário de sprints acordado com o cliente final.",
           "Elaboração de documentação técnica completa (ET, TUT e artefatos de especificação), organizando requisitos e lacunas funcionais antes e durante o ciclo de desenvolvimento.",
           "Desenvolvimento full stack SAP com RAP, ABAP Cloud, Fiori Freestyle, SAP CAP e SAP BTP, aplicando rigorosamente os princípios Clean Core e extensibilidade side-by-side."
         ],
@@ -112,7 +108,7 @@
             "items": [
               "Análise e organização de GAPs funcionais e técnicos, traduzindo necessidades de negócio em escopo de desenvolvimento priorizado por sprint.",
               "Produção de Especificações Técnicas (ET) e Testes Unitários Técnicos (TUT), mantendo rastreabilidade entre requisito, implementação e validação.",
-              "Acompanhamento rigoroso do cronograma de sprints, com dedicação adicional quando necessário para cumprir marcos e entregas solicitadas pelo cliente."
+              "Rastreabilidade ponta a ponta entre ET, TUT e transporte (TR), mantendo o ciclo de sprint auditável pelo cliente final."
             ]
           },
           {
@@ -132,12 +128,11 @@
         "highlights": [
           "Desenvolvimento e suporte de soluções SAP personalizadas e standard em ambientes ECC e S/4HANA, utilizando SAP Fiori UI5 Freestyle, JavaScript, SAP BTP, Azure DevOps, Web IDE, SAP Business Application Studio e SAP Mobile Hybrid.",
           "Desenvolvimento e manutenção de aplicações SAP Fiori UI5 Freestyle, garantindo aderência às Fiori Design Guidelines da SAP (SAP BAS, VS Code e Web IDE).",
-          "Utilização de CDS Views, SAP RAP e Fiori Elements para criar soluções eficientes e de alta qualidade.",
-          "Participação em projetos de suporte AMS, com identificação de problemas e implementação de correções eficazes nas aplicações.",
-          "Envolvimento em projetos de melhorias, trazendo inovações e otimizações às soluções existentes.",
-          "Contribuição em projeto de implementação SAP como desenvolvedor front-end focal em Freestyle (metodologia SAP Activate).",
-          "Implementação de aplicações híbridas (Elements/Freestyle), aproveitando o melhor de ambas as abordagens para atender às necessidades dos clientes.",
-          "Utilização de Azure DevOps para gerenciar o ciclo de vida do desenvolvimento e entrega dos projetos."
+          "Modelagem de CDS Views e serviços RAP consumidos por aplicações Fiori Elements em produção nos clientes SIPAL, BRF e São Salvador Alimentos.",
+          "Atuação em sustentação AMS: diagnóstico de incidentes em CDS, OData e lógica ABAP, com correção e transporte controlado até produção.",
+          "Desenvolvedor front-end focal em Freestyle no projeto de implementação sob metodologia SAP Activate.",
+          "Aplicações híbridas Fiori Elements + extensões Freestyle: template padrão nas telas de listagem, código customizado apenas nos fluxos de exceção.",
+          "Gestão do ciclo de desenvolvimento em Azure DevOps, do backlog ao transporte."
         ],
         "subtopics": [
           {
@@ -151,9 +146,9 @@
           {
             "title": "Cliente/Alocação: BRF — AppGrãos",
             "items": [
-              "Aplicação híbrida SAPUI5 com suporte offline e sincronização, viabilizando operação em cenários de baixa conectividade.",
-              "Modelagem de dados e integração com back-end SAP via OData, com foco em consistência, validação e rastreabilidade.",
-              "Entrega e evolução de fluxos críticos (ex.: cálculo de frete e validações) com UX orientada a produtividade em campo."
+              "App híbrido SAPUI5 (HAT) multicanal — web, mobile, online e offline — para compra de commodities, operando em campo sem sinal e sincronizando ao reconectar.",
+              "Integração OData sobre base SAP com milhões de registros, com validação e rastreabilidade transacional em cada sincronização.",
+              "Entrega e evolução de fluxos críticos (cálculo de frete, validações de contrato) executáveis pelo comprador direto no talhão."
             ]
           },
           {
@@ -276,15 +271,15 @@
       },
       "appgraos-brf": {
         "title": "AppGrãos (BRF)",
-        "summary": "App híbrido com operação offline para compra de commodities e cálculo de frete — campo sem sinal incluso.",
+        "summary": "App multicanal (web, mobile, online e offline) para compra de commodities sobre base SAP com milhões de registros — opera no talhão sem sinal.",
         "technicalDeepDive": [
-          "UI5 em HAT com estratégia de armazenamento offline",
-          "Fluxos para cálculo de frete e validações",
-          "Sincronização quando conectado"
+          "SAPUI5 em HAT com store offline e sincronização ao reconectar",
+          "OData sobre base SAP com milhões de registros, com validação transacional",
+          "Fluxos de cálculo de frete e validação de contrato executáveis offline"
         ],
         "businessImpact": [
-          "Operação viável em ambientes com conectividade limitada",
-          "Mais agilidade na tomada de decisão em campo"
+          "Um único app cobre web, mobile e campo sem conectividade",
+          "Decisão de compra fechada no talhão, sem retorno ao escritório"
         ]
       },
       "leiloes-agrobold": {
@@ -321,6 +316,11 @@
       "mauricio-oliveira": {
         "context": "Tech Lead na fábrica (RAP, CDS, Fiori)"
       }
+    },
+    "credentials": {
+      "bsc-compsci": { "title": "Bacharelado em Ciência da Computação" },
+      "ka-btp-clean-core": { "title": "SAP BTP, Integration Suite e Clean Core" },
+      "sap-certified-fiori-application-developer": { "title": "SAP Certified - SAP Fiori Application Developer" }
     },
     "skills": {
       "languages": ["Português (Nativo)", "Inglês (Avançado)", "Espanhol (Intermediário)"]

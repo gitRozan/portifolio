@@ -11,6 +11,15 @@ import { cn } from "@/lib/cn";
 import { credentials, type Credential, type CredentialKind } from "@/content/portfolio";
 import { Modal } from "@/components/ui/modal";
 
+// Titulos de credencial vivem em pt.json/en.json; portfolio.ts guarda apenas o fallback.
+function useCredentialTitle() {
+  const t = useTranslations();
+  return (cred: Credential) => {
+    const key = `content.credentials.${cred.id}.title` as const;
+    return t.has(key) ? t(key) : cred.title;
+  };
+}
+
 function kindIcon(kind: CredentialKind) {
   if (kind === "badge") return <BadgeCheck className="h-4 w-4 text-brand" />;
   if (kind === "certification") return <Award className="h-4 w-4 text-brand" />;
@@ -36,6 +45,8 @@ function Card({
   canHoverPreview: boolean;
 }) {
   const t = useTranslations();
+  const credentialTitle = useCredentialTitle();
+  const title = credentialTitle(item);
   const currentLocale = useLocale();
   const uiLocale = isLocale(currentLocale) ? currentLocale : "en";
   const cardRef = useRef<HTMLDivElement>(null);
@@ -70,12 +81,12 @@ function Card({
         <div className="flex items-start gap-3">
           {badgeImageUrl ? (
             <div className="overflow-hidden rounded-md border border-slate-200/70 bg-white/70 p-1 dark:border-slate-800 dark:bg-slate-950/30">
-              <Image src={badgeImageUrl} alt={item.title} width={44} height={44} className="h-11 w-11 rounded-sm object-contain" />
+              <Image src={badgeImageUrl} alt={title} width={44} height={44} className="h-11 w-11 rounded-sm object-contain" />
             </div>
           ) : null}
           <div className="grid gap-1">
           <div className="text-[11px] font-semibold tracking-tight text-slate-500 dark:text-slate-400">{label}</div>
-          <div className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">{item.title}</div>
+          <div className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">{title}</div>
           <div className="text-xs font-semibold tracking-tight text-slate-500 dark:text-slate-400">
             {item.issuer}
             {item.status === "inProgress" ? ` • ${t("credentials.statusInProgress")}` : ""}
@@ -130,6 +141,7 @@ type HoverPreviewState = { cred: Credential; rect: DOMRect } | null;
 
 export function CredentialsSection({ className }: { className?: string }) {
   const t = useTranslations();
+  const credentialTitle = useCredentialTitle();
   const [modalCredential, setModalCredential] = useState<Credential | null>(null);
   const [hoverPreview, setHoverPreview] = useState<HoverPreviewState>(null);
   const [canHoverPreview, setCanHoverPreview] = useState(false);
@@ -246,10 +258,10 @@ export function CredentialsSection({ className }: { className?: string }) {
         <Modal
           open={!!modalCredential}
           onClose={() => setModalCredential(null)}
-          title={modalCredential.title}
+          title={credentialTitle(modalCredential)}
         >
           <iframe
-            title={modalCredential.title}
+            title={credentialTitle(modalCredential)}
             src={modalCredential.proof.href}
             className="h-[min(75vh,720px)] w-full rounded border-0 border-slate-200/70 dark:border-slate-700"
           />
@@ -281,10 +293,10 @@ export function CredentialsSection({ className }: { className?: string }) {
             onMouseLeave={() => setHoverPreview(null)}
           >
             <div className="border-b border-slate-200/70 px-3 py-2 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200">
-              {hoverPreview.cred.title}
+              {credentialTitle(hoverPreview.cred)}
             </div>
             <iframe
-              title={hoverPreview.cred.title}
+              title={credentialTitle(hoverPreview.cred)}
               src={hoverPreview.cred.proof.href}
               className="h-[min(420px,60vh)] w-full border-0"
             />

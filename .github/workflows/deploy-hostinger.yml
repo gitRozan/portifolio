@@ -8,6 +8,11 @@ on:
       - ".gitignore"
       - "LICENSE"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Simular: mostra o que seria enviado e apagado, sem alterar nada no servidor"
+        type: boolean
+        default: false
 
 # Um deploy por vez. Sem isso, dois pushes seguidos abrem duas sessoes
 # simultaneas contra o mesmo host — foi parte do que disparou o alarme.
@@ -56,13 +61,31 @@ jobs:
           ssh-keyscan -p "${SSH_PORT:-65002}" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
           chmod 644 ~/.ssh/known_hosts
 
+      # Trava de seguranca: a conta hospeda varios dominios. Apontar o rsync para
+      # ~/domains/ ou para o home apagaria os outros sites com --delete-after.
+      - name: Validar REMOTE_PATH
+        env:
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+        run: |
+          case "$REMOTE_PATH" in
+            */public_html/) echo "REMOTE_PATH ok" ;;
+            *) echo "::error::REMOTE_PATH deve terminar em '/public_html/' (com barra final). Recebido algo diferente — abortando antes de tocar no servidor."; exit 1 ;;
+          esac
+
       - name: Deploy via rsync
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            DRY="--dry-run"
+            echo "::notice::MODO SIMULACAO — nada sera alterado no servidor"
+          else
+            DRY=""
+          fi
           # -z              comprime em transito
           # --checksum      decide por hash, nao por mtime (build regenera mtime de tudo)
           # --delete-after  transfere TUDO primeiro, so' entao remove orfaos.
@@ -70,7 +93,7 @@ jobs:
           #                 conexao cair no meio, o site fica quebrado no ar.
           # --no-perms
           # --no-times      hospedagem compartilhada costuma recusar chmod/utime
-          rsync -rlvz \
+          rsync -rlvz $DRY \
             --checksum \
             --delete-after \
             --no-perms --no-times --omit-dir-times \

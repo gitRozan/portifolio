@@ -88,7 +88,33 @@ O padrão do rsync é `--delete-before`: apaga os órfãos **antes** de transfer
 
 `--delete-after` transfere tudo primeiro e só então remove órfãos. Falha no meio deixa o site anterior intacto.
 
+## Esta conta hospeda múltiplos domínios
+
+```
+~/domains/chamados.nicolasbelchior.com/public_html
+~/domains/nicolasbelchior.com/public_html            <- alvo do deploy
+~/domains/portaldoaluno.nicolasbelchior.com/public_html
+```
+
+`REMOTE_PATH` apontado para `~/domains/` ou para o home **apagaria os outros dois sites**. Por isso o workflow tem o step `Validar REMOTE_PATH`, que aborta antes de abrir conexão se o caminho não terminar em `/public_html/`.
+
+Valor correto:
+
+```
+/home/u356682540/domains/nicolasbelchior.com/public_html/
+```
+
 ## Rode o dry-run antes do primeiro deploy
+
+**Pela interface do GitHub** (não precisa de rsync local):
+
+Actions → *Deploy to Hostinger* → **Run workflow** → marque **"Simular"** → Run.
+
+O log mostra exatamente o que seria enviado e apagado, sem tocar no servidor. Leia cada linha `deleting `. Se aparecer algo que precisa ficar, adicione ao `--exclude` do workflow e simule de novo.
+
+Só depois rode sem a marcação.
+
+### Alternativa por linha de comando (precisa de WSL ou Git Bash com rsync)
 
 ```bash
 npm run build

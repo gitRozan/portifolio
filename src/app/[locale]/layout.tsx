@@ -76,7 +76,7 @@ function personJsonLd(locale: Locale) {
     image: `${siteUrl}/assets/profile.jpg`,
     email: "mailto:dev@nicolasbelchior.com",
     jobTitle: locale === "pt" ? "Desenvolvedor ABAP Fiori Senior" : "Senior ABAP Fiori Developer",
-    worksFor: { "@type": "Organization", name: "EY (Ernst & Young)" },
+    worksFor: { "@type": "Organization", name: "SPRO IT Solutions" },
     alumniOf: { "@type": "CollegeOrUniversity", name: "Universidade São Judas Tadeu" },
     address: { "@type": "PostalAddress", addressRegion: "MG", addressCountry: "BR" },
     sameAs: [

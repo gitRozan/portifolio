@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Nicolas Belchior | Desenvolvedor ABAP Fiori Senior",
-    "description": "Nicolas Belchior, Desenvolvedor ABAP Fiori Senior na EY. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer."
+    "description": "Nicolas Belchior, Consultor SAP Full Stack na SPRO. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer e ABAP Cloud."
   },
   "nav": {
     "about": "Sobre",
@@ -24,9 +24,9 @@
     "cvFormatPdf": "Versão PDF"
   },
   "about": {
-    "kicker": "EY · SAP Certified Fiori Application Developer · Clean Core & ABAP Cloud",
-    "headline": "Do GAP ao go-live: RAP, Fiori e BTP em projetos greenfield ECC e S/4HANA.",
-    "body": "Desenvolvedor ABAP Fiori Senior na EY, na fábrica de software de projetos greenfield ECC e S/4HANA, onde já entreguei mais de 20 GAPs do zero. Percorro o ciclo inteiro (análise de GAP, especificação técnica, sprint e entrega funcional) sem modificação do standard.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
+    "kicker": "SPRO · SAP Certified Fiori Application Developer · SAP Certified ABAP Cloud",
+    "headline": "Do GAP ao go-live: RAP, Fiori e BTP em projetos ECC e S/4HANA.",
+    "body": "Consultor SAP Full Stack na SPRO IT Solutions, atuando em desenvolvimento e sustentação de soluções ECC e S/4HANA. Percorro o ciclo de entrega (análise, especificação técnica, sprint e entrega funcional) sem modificação do standard.\n\nNo front-end, construo experiências Fiori/SAPUI5 (freestyle e templates) alinhadas às Design Guidelines. No back-end, modello com RAP, ABAP Cloud e CDS Views, priorizando contratos OData sólidos, performance e rastreabilidade.\n\nNo SAP BTP, entrego soluções com CAP, Integration Suite e HANA Cloud. Já conduzi projetos com operação offline (HAT/Asset Manager) e sustentação de produção em ambientes ECC e S/4HANA.",
     "locationLabel": "Base",
     "location": "Minas Gerais, Brasil · 100% remoto",
     "photoAlt": "Foto profissional de Nicolas Belchior",
@@ -34,7 +34,7 @@
     "photoLabel": "Retrato",
     "facts": {
       "xpLabel": "Atuação",
-      "xpValue": "Greenfield · Sustentação · Fábrica de software",
+      "xpValue": "Implementação · Sustentação · AMS",
       "focusLabel": "Especialização",
       "focusValue": "RAP · Fiori Freestyle · CAP · Clean Core",
       "stackLabel": "Core stack",
@@ -90,38 +90,10 @@
   },
   "content": {
     "experience": {
-      "ey": {
-        "role": "Desenvolvedor ABAP Fiori Senior (RAP, BTP, Freestyle, CAP, ABAP Cloud)",
-        "start": "Abr 2026",
-        "end": "Presente",
-        "highlights": [
-          "Mais de 20 GAPs entregues do zero na fábrica de software da EY, em projetos greenfield ECC e S/4HANA, da análise à entrega funcional, dentro do calendário de sprints acordado com o cliente final.",
-          "Modelagem RAP end-to-end em ABAP Cloud: CDS Views, Behavior Definition e Implementation, actions, determinations e validations, com Service Definition e Service Binding expondo OData V4.",
-          "Elaboração de Especificações Técnicas (ET) e Testes Unitários Técnicos (TUT), com desenvolvimento em Eclipse ADT e transporte controlado via TASK/TR."
-        ],
-        "subtopics": [
-          {
-            "title": "Discovery, GAPs e governança de entrega",
-            "items": [
-              "Análise e organização de GAPs funcionais e técnicos, traduzindo necessidades de negócio em escopo de desenvolvimento priorizado por sprint.",
-              "Produção de Especificações Técnicas (ET) e Testes Unitários Técnicos (TUT), mantendo rastreabilidade entre requisito, implementação e validação.",
-              "Rastreabilidade ponta a ponta entre ET, TUT e transporte (TR), mantendo o ciclo de sprint auditável pelo cliente final."
-            ]
-          },
-          {
-            "title": "Desenvolvimento greenfield e arquitetura Clean Core",
-            "items": [
-              "Objetos ABAP Cloud e serviços RAP com CDS Views, annotations e Metadata Extensions, priorizando contratos OData estáveis e desacoplamento entre camadas.",
-              "Aplicações Fiori Elements e Freestyle sobre RAP, com draft handling, value help e ações customizadas, integradas ao back-end ECC/S/4HANA.",
-              "Extensibilidade side-by-side em SAP BTP com SAP CAP, sem modificação do standard, garantindo upgradeability sob Clean Core."
-            ]
-          }
-        ]
-      },
       "spro": {
         "role": "Consultor SAP Full Stack (FIORI/ABAP/BTP/RAP)",
         "start": "Abr 2025",
-        "end": "Abr 2026",
+        "end": "Presente",
         "highlights": [
           "Desenvolvimento e suporte de soluções SAP personalizadas e standard em ambientes ECC e S/4HANA, utilizando SAP Fiori UI5 Freestyle, JavaScript, SAP BTP, Azure DevOps, Web IDE, SAP Business Application Studio e SAP Mobile Hybrid.",
           "Desenvolvimento e manutenção de aplicações SAP Fiori UI5 Freestyle, garantindo aderência às Fiori Design Guidelines da SAP (SAP BAS, VS Code e Web IDE).",

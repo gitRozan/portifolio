@@ -75,12 +75,6 @@ export function buildReferenceGroupsForCV(
 
 export const experiences: Experience[] = [
   {
-    id: "ey",
-    company: "EY (Ernst & Young)",
-    logoUrl: "/assets/logos/ey.svg",
-    startYM: "2026-04",
-  },
-  {
     id: "spro",
     company: "SPRO IT Solutions",
     logoUrl: "/assets/logos/spro.svg",

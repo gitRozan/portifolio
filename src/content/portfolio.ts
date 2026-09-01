@@ -198,6 +198,22 @@ export const skillGroups: SkillGroup[] = [
 
 export const credentials: Credential[] = [
   {
+    id: "sap-certified-abap-cloud",
+    title: "SAP Certified - Back-End Developer - ABAP Cloud",
+    kind: "certification",
+    issuer: "SAP",
+    examCode: "C_ABAPD_2601",
+    credentialId: "c5ace97c-c159-4646-9eff-f1100de74e1a",
+    issueYM: "2026-09",
+    validUntilYM: "2027-09",
+    proof: {
+      type: "pdf",
+      href: "/assets/certificados/SAPCertification20260901-20-7xhiak.pdf",
+    },
+    credlyUrl: "https://www.credly.com/badges/c5ace97c-c159-4646-9eff-f1100de74e1a",
+    badgeImageUrl: "/assets/certificados/sap-certified-back-end-developer-abap-cloud.png",
+  },
+  {
     id: "bsc-compsci",
     title: "Ciência da Computação",
     kind: "higherEducation",

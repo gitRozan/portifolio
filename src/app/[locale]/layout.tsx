@@ -81,15 +81,26 @@ function personJsonLd(locale: Locale) {
     address: { "@type": "PostalAddress", addressRegion: "MG", addressCountry: "BR" },
     sameAs: [
       "https://www.linkedin.com/in/nicolas-belchior/",
+      "https://www.credly.com/badges/c5ace97c-c159-4646-9eff-f1100de74e1a",
       "https://www.credly.com/badges/d91a7f87-8e0b-4445-af47-daac97fb2cec",
     ],
-    hasCredential: {
-      "@type": "EducationalOccupationalCredential",
-      name: "SAP Certified - SAP Fiori Application Developer",
-      credentialCategory: "certification",
-      recognizedBy: { "@type": "Organization", name: "SAP" },
-      url: "https://www.credly.com/badges/d91a7f87-8e0b-4445-af47-daac97fb2cec",
-    },
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: "SAP Certified - Back-End Developer - ABAP Cloud",
+        credentialCategory: "certification",
+        recognizedBy: { "@type": "Organization", name: "SAP" },
+        identifier: "C_ABAPD_2601",
+        url: "https://www.credly.com/badges/c5ace97c-c159-4646-9eff-f1100de74e1a",
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: "SAP Certified - SAP Fiori Application Developer",
+        credentialCategory: "certification",
+        recognizedBy: { "@type": "Organization", name: "SAP" },
+        url: "https://www.credly.com/badges/d91a7f87-8e0b-4445-af47-daac97fb2cec",
+      },
+    ],
     knowsAbout: [
       "SAP ABAP",
       "SAP RAP",

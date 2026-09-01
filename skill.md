@@ -15,4 +15,5 @@ Portfolio pessoal de Nicolas Belchior — consultor SAP Full Stack. Site Next.js
 * Datas de inicio usam formato `YYYY-MM` em `portfolio.ts`; fim fica no JSON traduzido
 
 ## Estado Atual & Ultimas Alteracoes
+* **2026-09-01:** Certificacao SAP C_ABAPD_2601 com badge `sap-certified-back-end-developer-abap-cloud.png`, PDF `SAPCertification20260901-20-7xhiak.pdf` e Credly. Validade assumida 2027-09.
 * **2026-07-30:** Referencias Maylon (BRF AppGrãos/AMS Freestyle) e Mauricio (fabrica RAP/CDS/Fiori) com contexto distinto no site e CV.

@@ -89,6 +89,7 @@ function Card({
           <div className="text-sm font-semibold tracking-tight text-slate-900 dark:text-slate-100">{title}</div>
           <div className="text-xs font-semibold tracking-tight text-slate-500 dark:text-slate-400">
             {item.issuer}
+            {item.examCode ? ` • ${item.examCode}` : ""}
             {item.status === "inProgress" ? ` • ${t("credentials.statusInProgress")}` : ""}
             {issue && validEnd
               ? ` • ${issue} • ${t("credentials.validUntil", { date: validEnd })}`

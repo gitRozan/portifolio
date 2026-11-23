@@ -13,7 +13,7 @@ const ogImage = `${siteUrl}/assets/profile.jpg`;
 
 export const metadata: Metadata = {
   title: "Nicolas Belchior | Desenvolvedor ABAP Fiori Senior",
-  description: "Nicolas Belchior — Consultor SAP Full Stack na SPRO. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer e ABAP Cloud.",
+  description: "Nicolas Belchior — Desenvolvedor SAP Fiori/BTP Sênior. SAPUI5 Freestyle, RAP, SAP BTP, Integration Suite e Clean Core em projetos ECC e S/4HANA (greenfield e brownfield). Certificado SAP Fiori Application Developer e ABAP Cloud.",
   metadataBase: new URL(siteUrl),
   icons: {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   openGraph: {
     title: "Nicolas Belchior | Desenvolvedor ABAP Fiori Senior",
-    description: "Nicolas Belchior — Consultor SAP Full Stack na SPRO. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer e ABAP Cloud.",
+    description: "Nicolas Belchior — Desenvolvedor SAP Fiori/BTP Sênior. SAPUI5 Freestyle, RAP, SAP BTP, Integration Suite e Clean Core em projetos ECC e S/4HANA (greenfield e brownfield). Certificado SAP Fiori Application Developer e ABAP Cloud.",
     type: "website",
     url: `${siteUrl}/`,
     siteName: "Nicolas Belchior",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Nicolas Belchior | Desenvolvedor ABAP Fiori Senior",
-    description: "Nicolas Belchior — Consultor SAP Full Stack na SPRO. RAP, SAP BTP, CAP e Clean Core em projetos ECC e S/4HANA. Certificado SAP Fiori Application Developer e ABAP Cloud.",
+    description: "Nicolas Belchior — Desenvolvedor SAP Fiori/BTP Sênior. SAPUI5 Freestyle, RAP, SAP BTP, Integration Suite e Clean Core em projetos ECC e S/4HANA (greenfield e brownfield). Certificado SAP Fiori Application Developer e ABAP Cloud.",
     images: [ogImage],
   },
 };

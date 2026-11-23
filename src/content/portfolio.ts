@@ -75,34 +75,54 @@ export function buildReferenceGroupsForCV(
 
 export const experiences: Experience[] = [
   {
+    id: "braskem",
+    company: "Braskem",
+    startYM: "2026-07",
+  },
+  {
+    id: "vale",
+    company: "Vale",
+    startYM: "2026-01",
+  },
+  {
     id: "spro",
     company: "SPRO IT Solutions",
     logoUrl: "/assets/logos/spro.svg",
-    startYM: "2025-04",
+    startYM: "2024-02",
+  },
+  {
+    id: "thomson-reuters",
+    company: "Thomson Reuters",
+    startYM: "2023-09",
+  },
+  {
+    id: "ibm",
+    company: "IBM",
+    startYM: "2023-03",
   },
   {
     id: "ztg",
     company: "ZTG Consulting",
     logoUrl: "/assets/logos/ztg.svg",
-    startYM: "2022-03",
+    startYM: "2021-03",
   },
   {
     id: "agrobold",
     company: "AgroBold Tecnologia",
     logoUrl: "/assets/logos/agrobold.svg",
-    startYM: "2021-05",
+    startYM: "2020-05",
   },
   {
     id: "compilart",
     company: "Compilart",
     logoUrl: "/assets/logos/compilart.svg",
-    startYM: "2020-03",
+    startYM: "2019-03",
   },
   {
     id: "alastra",
     company: "Alastra",
     logoUrl: "/assets/logos/alastra.svg",
-    startYM: "2020-01",
+    startYM: "2019-01",
   },
 ];
 
@@ -166,11 +186,11 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: "platforms",
-    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Fiori Launchpad", "SAP Build Work Zone"],
+    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Cloud Platform (Neo)", "SAP EWM", "SAP Event Management", "SAP Fiori Launchpad", "SAP Build Work Zone"],
   },
   {
     id: "abapClassic",
-    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC"],
+    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC", "SPAU/SPDD", "ST05 / SAT"],
   },
   {
     id: "integration",
@@ -182,7 +202,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: "architecture",
-    items: ["Clean Core", "Extensibilidade side-by-side", "SAP Activate", "Transportes (TASK/TR)", "Azure DevOps", "Git"],
+    items: ["Clean Core", "Extensibilidade side-by-side", "Brownfield Conversion (ECC → S/4HANA)", "Custom Code Migration", "SAP Activate", "Figma (pixel perfect)", "Transportes (TASK/TR)", "Azure DevOps", "Git"],
   },
   {
     id: "web",

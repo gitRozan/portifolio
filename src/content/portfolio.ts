@@ -77,52 +77,63 @@ export const experiences: Experience[] = [
   {
     id: "braskem",
     company: "Braskem",
-    startYM: "2026-07",
+    startYM: "2026-05",
+  },
+  {
+    id: "domvs",
+    company: "DOMVS IT",
+    startYM: "2025-11",
+  },
+  {
+    id: "ey",
+    company: "EY (Ernst & Young)",
+    logoUrl: "/assets/logos/ey.svg",
+    startYM: "2024-11",
   },
   {
     id: "vale",
     company: "Vale",
-    startYM: "2026-01",
+    startYM: "2024-05",
   },
   {
     id: "spro",
     company: "SPRO IT Solutions",
     logoUrl: "/assets/logos/spro.svg",
-    startYM: "2024-02",
+    startYM: "2022-05",
   },
   {
     id: "thomson-reuters",
     company: "Thomson Reuters",
-    startYM: "2023-09",
+    startYM: "2021-09",
   },
   {
     id: "ibm",
     company: "IBM",
-    startYM: "2023-03",
+    startYM: "2021-03",
   },
   {
     id: "ztg",
     company: "ZTG Consulting",
     logoUrl: "/assets/logos/ztg.svg",
-    startYM: "2021-03",
+    startYM: "2020-03",
   },
   {
     id: "agrobold",
     company: "AgroBold Tecnologia",
     logoUrl: "/assets/logos/agrobold.svg",
-    startYM: "2020-05",
+    startYM: "2019-05",
   },
   {
     id: "compilart",
     company: "Compilart",
     logoUrl: "/assets/logos/compilart.svg",
-    startYM: "2019-03",
+    startYM: "2018-03",
   },
   {
     id: "alastra",
     company: "Alastra",
     logoUrl: "/assets/logos/alastra.svg",
-    startYM: "2019-01",
+    startYM: "2018-01",
   },
 ];
 
@@ -186,11 +197,11 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     id: "platforms",
-    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "Cloud Foundry", "SAP Cloud Platform (Neo)", "SAP EWM", "SAP Event Management", "SAP Fiori Launchpad", "SAP Build Work Zone"],
+    items: ["SAP S/4HANA", "SAP ECC", "SAP BTP", "SAP HANA Cloud", "SAP HANA Native (Calculation Views, Table Functions)", "Cloud Foundry", "SAP Cloud Platform (Neo)", "SAP EWM", "SAP Event Management", "SAP Fiori Launchpad", "SAP Build Work Zone"],
   },
   {
     id: "abapClassic",
-    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC", "SPAU/SPDD", "ST05 / SAT"],
+    items: ["BAdI", "User Exit", "Enhancement Point", "BAPI", "RFC", "IDoc", "Web Services", "ALV", "Report", "Module Pool", "SmartForms", "Adobe Forms", "BDC", "SPAU/SPDD", "ST05 / SAT", "ATC"],
   },
   {
     id: "integration",

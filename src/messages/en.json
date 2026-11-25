@@ -26,7 +26,7 @@
   "about": {
     "kicker": "Braskem · SAP Certified Fiori Application Developer · SAP Certified ABAP Cloud",
     "headline": "From GAP to go-live: Fiori, RAP and BTP on greenfield and brownfield ECC and S/4HANA projects.",
-    "body": "Senior SAP Fiori/BTP Developer, currently on Braskem's greenfield SAP ↔ Vendavo integration project. I run the delivery cycle (analysis, technical specification, sprint and functional delivery) with no modification to standard, following Clean Core guidelines.\n\nOn the front end, I build Fiori/SAPUI5 Freestyle and Fiori Elements experiences aligned with Design Guidelines, pixel perfect to Figma prototypes. On the back end, I model with RAP, ABAP Cloud and CDS Views, prioritizing solid OData contracts, performance and traceability.\n\nOn SAP BTP, I deliver solutions with BAS, CAP, Integration Suite, Destinations and HANA Cloud. I have hands-on experience with brownfield ECC → S/4HANA conversion (EWM, Event Management and maintenance), ICMS tax solutions for telecom and production support in high-volume retail.",
+    "body": "Senior SAP Fiori/BTP Developer, currently on Braskem's greenfield SAP ↔ Vendavo integration project. I run the delivery cycle (analysis, technical specification, sprint and functional delivery) with no modification to standard, following Clean Core guidelines.\n\nOn the front end, I build Fiori/SAPUI5 Freestyle and Fiori Elements experiences aligned with Design Guidelines, pixel perfect to Figma prototypes. On the back end, I model with RAP, ABAP Cloud and CDS Views, prioritizing solid OData contracts, performance and traceability.\n\nOn SAP BTP, I deliver solutions with BAS, CAP, Integration Suite, Destinations and HANA Cloud. I have hands-on experience with brownfield ECC → S/4HANA conversion (EWM, Event Management and maintenance), ICMS tax solutions for telecom and production support in high-volume retail. I also build AI solutions applied to SAP support.",
     "locationLabel": "Base",
     "location": "Minas Gerais, Brazil · 100% remote",
     "photoAlt": "Professional photo of Nicolas Belchior",
@@ -92,7 +92,7 @@
     "experience": {
       "braskem": {
         "role": "Senior SAP Fiori / BTP Developer (SAPUI5 Freestyle, Integration Suite)",
-        "start": "Jul 2026",
+        "start": "May 2026",
         "end": "Present",
         "highlights": [
           "Working on the greenfield project integrating SAP with the Vendavo pricing platform, building SAPUI5 Freestyle applications on SAP BTP.",
@@ -102,38 +102,46 @@
           "Keep every extension side-by-side on BTP, following Clean Core guidelines with no modifications to ECC standard."
         ]
       },
+      "domvs": {
+        "role": "AI Developer and SAP Solutions (BTP, CAP, Integration Suite)",
+        "start": "Nov 2025",
+        "end": "May 2026",
+        "highlights": [
+          "Built artificial intelligence solutions applied to SAP support (AMS) environments, assisting ticket analysis and handling with automation.",
+          "Structured end-to-end tests and automated reports for the solution, ensuring traceable executions and stable deliveries.",
+          "Integrated the solutions with ECC and S/4HANA landscapes through SAP BTP, SAP CAP and Integration Suite (iFlows), following Clean Core guidelines.",
+          "Maintained persistence and services on SAP HANA Cloud with Node.js, deployed to Cloud Foundry with Approuter and XSUAA."
+        ]
+      },
+      "ey": {
+        "role": "Senior SAP ABAP Fiori Developer (S/4HANA Greenfield, BTP, Fiori)",
+        "start": "Nov 2024",
+        "end": "Nov 2025",
+        "highlights": [
+          "Worked in the software factory of a greenfield SAP S/4HANA project for the pharmaceutical industry, delivering dozens of GAPs from technical specification to go-live within the client's sprint calendar.",
+          "Built the Controlled Sample Management GAP (parts A and B) entirely on SAP BTP, with a movement report, density-based unit conversion, control ledger and traceability per tax document.",
+          "Built maintenance KPI Fiori apps (available times, indicators, weight and metrics) with filters by plant, operational area, location and equipment.",
+          "Delivered a mobile app for maintenance orders, with confirmations, results catalog and deviation cause.",
+          "Implemented shipped-loads reports, sample box and box label printing, integrated with the S/4HANA core with no modification to standard.",
+          "Wrote Technical Specifications (TS) and Technical Unit Tests (TUT), handled ATC remediation, transport validation and took part in SIT and War Room testing, supporting the functional team."
+        ]
+      },
       "vale": {
         "role": "Senior SAP ABAP Fiori Developer (Brownfield S/4HANA Conversion)",
-        "start": "Jan 2026",
-        "end": "Jul 2026",
+        "start": "May 2024",
+        "end": "Nov 2024",
         "highlights": [
           "Worked on the brownfield migration from SAP ECC to SAP S/4HANA, adapting custom developments to the new ecosystem and using the conversion to improve business flows.",
-          "Actively contributed to technical specification and development, proposing and implementing improvements that simplified processes and cut manual steps for users.",
-          "Adapted legacy code to S/4HANA (adaptability): remediated Z objects flagged by Custom Code Migration and ATC, adjusted to data model simplifications and replaced obsolete tables and transactions.",
-          "Handled modifications and enhancements during the upgrade (SPAU/SPDD), prioritizing return to standard and migration to BAdIs and Clean Core-aligned extensions.",
+          "Actively contributed to specification and development, proposing and implementing improvements that simplified processes and cut manual steps for users.",
+          "Built Fiori apps (Freestyle and Fiori Elements) and OData services (SEGW and RAP), such as the Unrealized Profit app, replacing legacy transactions.",
+          "Adapted legacy code to S/4HANA (adaptability): Z object remediation, adjustments to data model simplifications and replacement of obsolete tables and transactions.",
           "Optimized critical transactions and reports with performance analysis via ST05 and SAT, rewriting data access with CDS Views and modern Open SQL."
-        ],
-        "subtopics": [
-          {
-            "title": "Logistics: SAP EWM and Event Management",
-            "items": [
-              "Adapted and extended warehouse processes in SAP EWM (Extended Warehouse Management) with BAdIs, enhancements and interface adjustments to the S/4HANA core.",
-              "Adjusted SAP Event Management for logistics event tracking, keeping integrations running after the conversion."
-            ]
-          },
-          {
-            "title": "Maintenance (MRO) and Fiori",
-            "items": [
-              "Adapted maintenance developments (MRO, Maintenance, Repair and Operations) to S/4HANA, preserving ECC business rules.",
-              "Built and extended Fiori apps (Freestyle and Fiori Elements) and OData services (SEGW and RAP) to replace legacy transactions."
-            ]
-          }
         ]
       },
       "spro": {
         "role": "SAP Full Stack Consultant (FIORI/ABAP/BTP/RAP)",
-        "start": "Feb 2024",
-        "end": "Jan 2026",
+        "start": "May 2022",
+        "end": "May 2024",
         "highlights": [
           "Development and support of custom and standard SAP solutions in ECC and S/4HANA landscapes, using SAP Fiori UI5 Freestyle, JavaScript, SAP BTP, Azure DevOps, Web IDE, SAP Business Application Studio and SAP Mobile Hybrid.",
           "Development and maintenance of SAP Fiori UI5 Freestyle applications, ensuring adherence to SAP Fiori Design Guidelines (SAP BAS, VS Code and Web IDE).",
@@ -179,20 +187,20 @@
         ]
       },
       "thomson-reuters": {
-        "role": "SAP Full Stack JavaScript Developer (SAP Cloud Platform Neo, Tax/ICMS)",
-        "start": "Sep 2023",
-        "end": "Feb 2024",
+        "role": "SAP Full Stack Developer (JavaScript/SAPUI5 on Neo, Native HANA, Tax/ICMS)",
+        "start": "Sep 2021",
+        "end": "May 2022",
         "highlights": [
-          "Developed and supported tax solutions in JavaScript and SAPUI5 on SAP Cloud Platform (Neo) for enterprise telecom clients such as Vivo (Telefônica).",
-          "Implemented and tuned ICMS calculation and assessment rules, ensuring tax compliance across high volumes of fiscal documents.",
-          "Maintained integrations between the tax solution and the SAP back end, diagnosing and fixing critical production incidents.",
-          "Evolved HTML5/SAPUI5 applications on Neo with SAP Web IDE, owning deployment, stability and performance."
+          "Developed and supported ICMS and FECP tax assessment solutions (Tax One for SAP) for enterprise clients, notably Vivo (Telefônica).",
+          "On the front end, evolved HTML5/SAPUI5 JavaScript applications on SAP Cloud Platform (Neo) with SAP Web IDE, owning deployment, stability and performance.",
+          "On the database, built and tuned native SAP HANA objects (calculation views and table functions) for invoice drill-down and automatic adjustments, improving performance on high volumes of fiscal documents.",
+          "Diagnosed and fixed critical production incidents, reconciling assessment summaries, adjustments and invoices to guarantee tax compliance."
         ]
       },
       "ibm": {
         "role": "SAP ABAP / Fiori Developer (Americanas Project)",
-        "start": "Mar 2023",
-        "end": "Sep 2023",
+        "start": "Mar 2021",
+        "end": "Sep 2021",
         "highlights": [
           "Developed and supported SAP ABAP and Fiori on the Americanas project, a very high-volume, business-critical retail landscape.",
           "Delivered enhancements and fixes in ABAP OO programs, enhancements (BAdIs, User Exits) and interfaces via BAPI, RFC and IDoc.",
@@ -202,8 +210,8 @@
       },
       "ztg": {
         "role": "SAPUI5 Consultant / JavaScript Full Stack (Fiori, BTP Neo/BAS)",
-        "start": "Mar 2021",
-        "end": "Mar 2023",
+        "start": "Mar 2020",
+        "end": "Mar 2021",
         "highlights": [
           "SAPUI5 Freestyle and Fiori Elements applications for ECC and S/4HANA, aligned with Fiori Design Guidelines and deployed to the SAP Fiori Launchpad (FLP).",
           "SAP BTP (Neo) with SAP Web IDE and Business Application Studio (BAS), covering development, deployment and support.",
@@ -231,8 +239,8 @@
       },
       "agrobold": {
         "role": "Web Developer (React/Node/Vue)",
-        "start": "May 2020",
-        "end": "Mar 2021",
+        "start": "May 2019",
+        "end": "Mar 2020",
         "highlights": [
           "MVC web systems for an auction platform in Vue.js and PHP, with real-time bidding over WebSocket.",
           "Integrations with external APIs (WhatsApp, Instagram) and business rules on MySQL."
@@ -240,8 +248,8 @@
       },
       "compilart": {
         "role": "Systems Analyst (Management/ERP Systems)",
-        "start": "Mar 2019",
-        "end": "Apr 2020",
+        "start": "Mar 2018",
+        "end": "Apr 2019",
         "highlights": [
           "Management/ERP systems for local retail (order tabs, NFC-e, tax routines) with JavaScript, React, Vue and MySQL.",
           "Tax and management reports (DRE, Sintegra) and per-client customizations."
@@ -249,8 +257,8 @@
       },
       "alastra": {
         "role": "Web Developer (Volunteer)",
-        "start": "Jan 2019",
-        "end": "Feb 2019",
+        "start": "Jan 2018",
+        "end": "Feb 2018",
         "highlights": [
           "Layout and usability improvements with HTML/CSS/JavaScript (volunteer work)."
         ]

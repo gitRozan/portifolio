@@ -15,6 +15,7 @@ Portfolio pessoal de Nicolas Belchior — consultor SAP Full Stack. Site Next.js
 * Datas de inicio usam formato `YYYY-MM` em `portfolio.ts`; fim fica no JSON traduzido
 
 ## Estado Atual & Ultimas Alteracoes
+* **2026-11-23:** Experiencias Braskem (cargo atual, Jul 2026 – Presente), Vale, Thomson Reuters e IBM adicionadas; SPRO e ZTG com data de fim. About/meta/JSON-LD alinhados a Braskem. Novas empresas sem logo (fallback de iniciais).
 * **2026-09-01:** Corte pontual de CV: experiencia EY removida da timeline; SPRO como cargo atual (Abr 2025 – Presente). About/meta/JSON-LD alinhados a SPRO. Restaurar EY no git quando o CV pontual nao for mais necessario.
 * **2026-09-01:** Certificacao SAP C_ABAPD_2601 com badge `sap-certified-back-end-developer-abap-cloud.png`, PDF `SAPCertification20260901-20-7xhiak.pdf` e Credly. Validade assumida 2027-09.
 * **2026-07-30:** Referencias Maylon (BRF AppGrãos/AMS Freestyle) e Mauricio (fabrica RAP/CDS/Fiori) com contexto distinto no site e CV.
